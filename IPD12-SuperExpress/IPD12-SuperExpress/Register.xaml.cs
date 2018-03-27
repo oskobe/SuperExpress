@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SuperExpress
+namespace IPD12_SuperExpress
 {
     /// <summary>
     /// Interaction logic for Register.xaml

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SuperExpress
+namespace IPD12_SuperExpress
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,14 +24,17 @@ namespace SuperExpress
         {
             InitializeComponent();
         }
+     
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            Tracking trackdlg = new Tracking();
-            trackdlg.ShowDialog();
-            */
-            Login dlg = new Login();
+            Register dlg = new Register();
+            dlg.ShowDialog();
+        }
+
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            MainDialog dlg = new MainDialog();
             dlg.ShowDialog();
         }
     }

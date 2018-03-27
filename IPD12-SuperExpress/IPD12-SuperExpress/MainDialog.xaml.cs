@@ -12,16 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SuperExpress
+namespace IPD12_SuperExpress
 {
     /// <summary>
-    /// Interaction logic for Tracking.xaml
+    /// Interaction logic for MainDialog.xaml
     /// </summary>
-    public partial class Tracking : Window
+    public partial class MainDialog : Window
     {
-        public Tracking()
+        public MainDialog()
         {
             InitializeComponent();
+        }
+
+        private void btnTracking_Click(object sender, RoutedEventArgs e)
+        {
+            Tracking dlg = new Tracking();
+            dlg.ShowDialog();
         }
     }
 }

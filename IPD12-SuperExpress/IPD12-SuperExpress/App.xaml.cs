@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SuperExpress
+namespace IPD12_SuperExpress
 {
     /// <summary>
     /// Interaction logic for App.xaml

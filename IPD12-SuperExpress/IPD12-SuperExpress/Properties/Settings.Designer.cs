@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SuperExpress.Properties
+namespace IPD12_SuperExpress.Properties
 {
 
 

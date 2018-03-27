@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperExpress", "SuperExpress\SuperExpress.csproj", "{BBDA7716-F8FD-4DE3-A20D-09D4658E043E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPD12-SuperExpress", "IPD12-SuperExpress\IPD12-SuperExpress.csproj", "{68367698-42D8-48ED-B14E-21F1A7DFDCCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BBDA7716-F8FD-4DE3-A20D-09D4658E043E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBDA7716-F8FD-4DE3-A20D-09D4658E043E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBDA7716-F8FD-4DE3-A20D-09D4658E043E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBDA7716-F8FD-4DE3-A20D-09D4658E043E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68367698-42D8-48ED-B14E-21F1A7DFDCCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68367698-42D8-48ED-B14E-21F1A7DFDCCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68367698-42D8-48ED-B14E-21F1A7DFDCCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68367698-42D8-48ED-B14E-21F1A7DFDCCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {11848C3B-8522-4A7F-8ED2-09172396B6B9}
+		SolutionGuid = {0CD409B2-6D8A-419A-9B54-1FF234469E73}
 	EndGlobalSection
 EndGlobal

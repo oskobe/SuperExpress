@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BBDA7716-F8FD-4DE3-A20D-09D4658E043E}</ProjectGuid>
+    <ProjectGuid>{68367698-42D8-48ED-B14E-21F1A7DFDCCA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>SuperExpress</RootNamespace>
-    <AssemblyName>SuperExpress</AssemblyName>
+    <RootNamespace>IPD12_SuperExpress</RootNamespace>
+    <AssemblyName>IPD12-SuperExpress</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -54,8 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="MainDlg.xaml.cs">
-      <DependentUpon>MainDlg.xaml</DependentUpon>
+    <Compile Include="MainDialog.xaml.cs">
+      <DependentUpon>MainDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
@@ -63,7 +63,7 @@
     <Compile Include="Tracking.xaml.cs">
       <DependentUpon>Tracking.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainDlg.xaml">
+    <Page Include="MainDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
