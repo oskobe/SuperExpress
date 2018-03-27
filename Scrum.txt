@@ -32,3 +32,6 @@ Each member writes down answers to 3 questions:
  - Insert some test data into database.
 3. Need assistance / figure things out
  - Find out how to use JTable.
+
+
+2018/03/28 Jing Wang
