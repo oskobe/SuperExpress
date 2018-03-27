@@ -1,0 +1,35 @@
+DAILY SCRUM - EVERY DAY AT 9AM
+==============================
+
+
+
+Each member writes down answers to 3 questions:
+
+<< current date goes here >>
+1. What I have done / not done since last Scrum?
+2. What I plan to do from this scrum to next? (next 24 hours)
+3. Where do I need assistance? What do I need to figure out?
+
+2018/02/28 Jing Wang
+1. Done since last scrum:
+- Created project Proposal (first 2 pages, project contents & database structure)
+- created database pjms
+- Created 4 tables (users, projects, teams, tasks)
+2. Plan until next Scrum
+- Do research on JDring library (using for task reminder)
+- Finish Project detail window form design, and coding 
+3. Need assistance / figure things out
+- Find out how to set remainder by using JDring library
+
+2018/03/27 Jie Zhu
+1. Done since last scrum:
+ - Desgin windows.
+ - Input trello items.
+2. Plan until next Scrum
+ - Improve dialogs design.
+ - setup the initial project
+ - Create User login dialog.
+ - Create Main dialog.
+ - Insert some test data into database.
+3. Need assistance / figure things out
+ - Find out how to use JTable.
