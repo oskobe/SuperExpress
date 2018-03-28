@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IPD12_SuperExpress
 {
-    class TrackDetail
+    public class TrackDetail
     {
         public string City { get; set; }
         public string StateProvinceCode { get; set; }
