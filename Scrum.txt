@@ -10,25 +10,37 @@ Each member writes down answers to 3 questions:
 2. What I plan to do from this scrum to next? (next 24 hours)
 3. Where do I need assistance? What do I need to figure out?
 
+
 2018/03/27 Jing Wang
 1. Done since last scrum:
-- Created project Proposal (first 2 pages, project contents & database structure)
-- created database pjms
-- Created 4 tables (users, projects, teams, tasks)
+- Created project Proposal (first page)
+- Did rearch on ShipEngine API
 2. Plan until next Scrum
-- Do research on JDring library (using for task reminder)
-- Finish Project detail window form design, and coding 
+- Continue doing research on ShipEngine API
+- Code on package tracking function
 3. Need assistance / figure things out
-- Find out how to set remainder by using JDring library
+- Find out how to parse JSON format document
 
 2018/03/27 Jie Zhu
 1. Done since last scrum:
- - Created windows,Database structure
- - Tested APIs to make sure whether it is practical
- - Built github and trello
+ - Desgin windows.
+ - Input trello items.
 2. Plan until next Scrum
- - Test map control component
- - Develop the core part first
+ - Improve dialogs design.
+ - setup the initial project
+ - Create User login dialog.
+ - Create Main dialog.
+ - Insert some test data into database.
 3. Need assistance / figure things out
- - How to use bing map component
- - How to display city label on map component when just know the city name.
+ - Find out how to use JTable.
+
+
+2018/03/28 Jing Wang
+1. Done since last scrum:
+- Created project Proposal (first page)
+- Did rearch on ShipEngine API
+2. Plan until next Scrum
+- Continue doing research on ShipEngine API
+- Code on package tracking function
+3. Need assistance / figure things out
+- Find out how to parse JSON format document
