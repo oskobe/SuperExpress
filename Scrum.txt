@@ -37,10 +37,9 @@ Each member writes down answers to 3 questions:
 
 2018/03/28 Jing Wang
 1. Done since last scrum:
-- Created project Proposal (first page)
-- Did rearch on ShipEngine API
+- Coding on track package window
+- Coding on estimate price & time window
 2. Plan until next Scrum
-- Continue doing research on ShipEngine API
-- Code on package tracking function
+- Finish coding of above two windows (basic function)
 3. Need assistance / figure things out
-- Find out how to parse JSON format document
+- Find out how to set local currency for estimating shipping price

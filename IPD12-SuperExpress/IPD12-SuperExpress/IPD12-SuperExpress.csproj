@@ -63,6 +63,7 @@
     <Compile Include="Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TrackDetail.cs" />
     <Compile Include="Tracking.xaml.cs">
       <DependentUpon>Tracking.xaml</DependentUpon>
     </Compile>
