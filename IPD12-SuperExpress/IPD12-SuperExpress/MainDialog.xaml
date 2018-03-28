@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Super Express Ver0.1" Height="877" Width="1413.507" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,2,14">
-        <TabControl HorizontalAlignment="Left" Height="754" Margin="10,70,0,0" VerticalAlignment="Top" Width="1376">
+        <TabControl HorizontalAlignment="Left" Height="708" Margin="10,70,0,0" VerticalAlignment="Top" Width="1376">
             <TabItem Header="Tracking">
                 <Grid Background="#FFE5E5E5">
                     <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="15,41,0,0" VerticalAlignment="Top" Width="105" Height="21">
@@ -27,14 +27,14 @@
                     </ListView>
                     <TextBox x:Name="tbTrackNumber" HorizontalAlignment="Left" Height="21" Margin="149,41,0,0" TextWrapping="Wrap" Text="1Z89E5Y0DK99172830" VerticalAlignment="Top" Width="155"/>
                     <Button x:Name="btTrack" Click="btTrack_Click" Content="Track" HorizontalAlignment="Left" Margin="334,42,0,0" VerticalAlignment="Top" Width="75"/>
-
+                    <!--
                     <StatusBar HorizontalAlignment="Left" Height="56" Margin="0,670,0,0" VerticalAlignment="Top" Width="1360">
                         <Label x:Name="lblStatus" Content=":::" Width="1350" Height="34"/>
                     </StatusBar>
-
+-->
                     <Button x:Name="btnTracking" Content="Tracking" HorizontalAlignment="Left" Margin="1035,56,0,0" VerticalAlignment="Top" Width="105" Height="35" FontSize="18" Click="btnTracking_Click"/>
 
-                    <WPF:Map x:Name="myMap" CredentialsProvider="AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm" Center="47.740,-122.125" ZoomLevel="11" Margin="701,110,0,61"/>
+                    <WPF:Map x:Name="myMap" CredentialsProvider="AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm" Center="47.740,-122.125" ZoomLevel="11" Margin="701,110,0,15"/>
 
 
                 </Grid>
@@ -43,44 +43,44 @@
                 <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.206,0.356">
                     <Label Content="Shipping Cost Calculator" FontSize="36" HorizontalAlignment="Left" Margin="92,39,0,0" VerticalAlignment="Top"/>
                     <Label Content="Please provide information about your shipment to estimate the &#xD;&#xA;shipping cost. &#xD;&#xA;&#xD;&#xA;If you're looking to ship larger items, please contact us to inquire &#xD;&#xA;about the freight services." FontSize="16" HorizontalAlignment="Left" Margin="92,109,0,0" VerticalAlignment="Top"/>
-                    <GroupBox Header="Step 1 - Origin/Destination Information" HorizontalAlignment="Left" Height="325" Margin="712,17,0,0" VerticalAlignment="Top" Width="577">
+                    <GroupBox Header="Step 1 - Origin/Destination Information" HorizontalAlignment="Left" Height="299" Margin="712,17,0,0" VerticalAlignment="Top" Width="577">
                         <Grid>
-                            <Label Content="Ship From Country:" Margin="4,18,258,257"/>
+                            <Label Content="Ship From Country:" Margin="4,18,354.333,230.333"/>
                             <ComboBox Name="cbCountryFrom" HorizontalAlignment="Left" Margin="8,50,0,0" VerticalAlignment="Top" Width="203"/>
-                            <Label Content="Province/State: " Margin="4,90,258,185"/>
-                            <ComboBox Name="cbProvinceStateFrom" HorizontalAlignment="Left" Margin="8,122,0,0" VerticalAlignment="Top" Width="203"/>
-                            <Label Content="City:" Margin="4,162,258,110"/>
-                            <TextBox Name="tbCityFrom" HorizontalAlignment="Left" Margin="10,197,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
-                            <Label Content="Postal Code/Zip:" Margin="4,234,258,41"/>
-                            <TextBox Name="tbPostalCodeFrom" HorizontalAlignment="Left" Margin="8,266,0,0" VerticalAlignment="Top" Width="203" Height="22">
+                            <Label Content="Province/State: " Margin="4,82,352.333,161.333"/>
+                            <ComboBox Name="cbProvinceStateFrom" HorizontalAlignment="Left" Margin="8,114,0,0" VerticalAlignment="Top" Width="203"/>
+                            <Label Content="City:" Margin="4,146,354.333,99.333"/>
+                            <TextBox Name="tbCityFrom" HorizontalAlignment="Left" Margin="10,181,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Postal Code/Zip:" Margin="4,210,354.333,38.333"/>
+                            <TextBox Name="tbPostalCodeFrom" HorizontalAlignment="Left" Margin="8,242,0,0" VerticalAlignment="Top" Width="203" Height="22">
                             </TextBox>
 
-                            <Label Content="Ship To Country:" Margin="322,18,-59.667,257"/>
-                            <ComboBox Name="tb" HorizontalAlignment="Left" Margin="325,50,-108,0" VerticalAlignment="Top" Width="203"/>
-                            <Label Content="Province/State: " Margin="322,90,-59.667,185"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="325,122,-108,0" VerticalAlignment="Top" Width="203"/>
-                            <Label Content="City:" Margin="322,162,-59.667,110"/>
-                            <TextBox HorizontalAlignment="Left" Margin="326,197,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
-                            <Label Content="Postal Code/Zip:" Margin="322,234,-59.667,41"/>
-                            <TextBox HorizontalAlignment="Left" Margin="326,266,0,0" VerticalAlignment="Top" Width="202" Height="22">
+                            <Label Content="Ship To Country:" Margin="322,18,36.333,225.333"/>
+                            <ComboBox Name="tbCountryTo" HorizontalAlignment="Left" Margin="325,50,-108,0" VerticalAlignment="Top" Width="203"/>
+                            <Label Content="Province/State: " Margin="322,82,36.333,166.333"/>
+                            <ComboBox Name="cbProvinceStateTo" HorizontalAlignment="Left" Margin="325,114,0,0" VerticalAlignment="Top" Width="203"/>
+                            <Label Content="City:" Margin="322,146,37.333,94.333"/>
+                            <TextBox Name="tbCityTo" HorizontalAlignment="Left" Margin="326,181,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Postal Code/Zip:" Margin="322,210,36.333,38.333"/>
+                            <TextBox Name="tbPostalCodeTo" HorizontalAlignment="Left" Margin="326,242,0,0" VerticalAlignment="Top" Width="202" Height="22">
                             </TextBox>
-                            
-                            
+
+
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="Step 2 - Shipping Information" HorizontalAlignment="Left" Height="325" Margin="712,381,0,0" VerticalAlignment="Top" Width="577">
+                    <GroupBox Header="Step 2 - Shipping Information" HorizontalAlignment="Left" Height="309" Margin="712,350,0,0" VerticalAlignment="Top" Width="577">
                         <Grid>
-                            <Label Content="Weight:" Margin="4,22,354.333,253"/>
-                            <TextBox Name="tbWeight" HorizontalAlignment="Left" Margin="8,54,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
-                            <Label Content="Length:" Margin="4,94,258.333,172"/>
-                            <TextBox Name="tbLength" HorizontalAlignment="Left" Margin="9,126,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
-                            <Label Content="Width:" Margin="4,158,258.333,118"/>
-                            <TextBox Name="tbWidth" HorizontalAlignment="Left" Margin="8,198,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
-                            <Label Content="Height:" Margin="4,230,258.333,43"/>
-                            <TextBox Name="tbHeight" HorizontalAlignment="Left" Margin="8,264,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Weight:" Margin="4,22,354.333,234"/>
+                            <TextBox Name="tbWeight" HorizontalAlignment="Left" Margin="8,57,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Length:" Margin="4,86,353.333,165"/>
+                            <TextBox Name="tbLength" HorizontalAlignment="Left" Margin="9,121,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Width:" Margin="4,150,353.333,104"/>
+                            <TextBox Name="tbWidth" HorizontalAlignment="Left" Margin="8,182,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Height:" Margin="4,210,353.333,46"/>
+                            <TextBox Name="tbHeight" HorizontalAlignment="Left" Margin="8,245,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
                             <ComboBox Name="cbWeithtUnit" HorizontalAlignment="Left" Margin="219,54,0,0" VerticalAlignment="Top" Width="88"/>
-                            <ComboBox Name="cbDimensionUnit" HorizontalAlignment="Left" Margin="222,126,0,0" VerticalAlignment="Top" Width="88"/>
-                            <Button Name="btEstimate" Margin="337,264,41.333,16">Estimate</Button>
+                            <ComboBox Name="cbDimensionUnit" HorizontalAlignment="Left" Margin="222,118,0,0" VerticalAlignment="Top" Width="88"/>
+                            <Button Name="btEstimate" Click="btEstimate_Click" Margin="337,245,41.333,19.333">Estimate</Button>
                         </Grid>
                     </GroupBox>
 
@@ -89,7 +89,9 @@
             </TabItem>
         </TabControl>
         <Label x:Name="lblTitle" Content="Super Express V1.0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="70" Width="792" FontSize="36"/>
-
+        <StatusBar HorizontalAlignment="Left" Height="41" Margin="10,783,0,0" VerticalAlignment="Top" Width="1376">
+            <Label x:Name="lblStatus" Content=":::" Width="1366" Height="31"/>
+        </StatusBar>
 
 
     </Grid>

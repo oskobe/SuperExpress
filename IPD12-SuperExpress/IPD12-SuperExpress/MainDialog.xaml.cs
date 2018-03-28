@@ -215,5 +215,27 @@ namespace IPD12_SuperExpress
             }
 
         }
+
+        private void btEstimate_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            var apiRatesInstance = new RatesApi();
+            var estimateRequest = new RateEstimateRequest("se-241902", "CA", "H3T1E8", "CA", "H7T2T2", "Laval", "QC", w);
+            try
+            {
+                List<Rate> result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
+                foreach (Rate r in result)
+                {
+                    tbMsg.Text += r.ToJson();
+                    tbMsg.Text += r;
+                }
+            }
+            catch (Exception e)
+            {
+                tbMsg.Text += "Exception when calling RatesApi.RatesEstimate: " + e.Message;
+                tbMsg.Text += "\n";
+            }
+        }
     }
 }
