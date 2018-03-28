@@ -14,6 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
+using ShipEngine.ApiClient.Api;
+using ShipEngine.ApiClient.Client;
+using ShipEngine.ApiClient.Model;
+using static ShipEngine.ApiClient.Model.Weight;
 
 namespace IPD12_SuperExpress
 {
@@ -22,6 +26,7 @@ namespace IPD12_SuperExpress
     /// </summary>
     public partial class Tracking : Window
     {
+        List<TrackDetail> trackDetailList = new List<TrackDetail>();
         string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
         public Tracking()
         {
@@ -114,10 +119,12 @@ namespace IPD12_SuperExpress
         //Add label element to application
         private void AddLabel(Panel parent, string labelString)
         {
+            /*
             Label dname = new Label();
             dname.Content = labelString;
             dname.Style = (Style)FindResource("AddressStyle");
             parent.Children.Add(dname);
+            //*/
         }
 
         //Add a pushpin with a label to the map
@@ -174,5 +181,32 @@ namespace IPD12_SuperExpress
             }
             
         }
+
+        private void btTrack_Click(object sender, RoutedEventArgs e)
+        {
+            var apiTrackInstance = new TrackingApi();
+            var trackingNumber = tbTrackNumber.Text;
+
+            try
+            {
+                TrackingInformation result = apiTrackInstance.TrackingTrack(Globals.APIKEY_SHIPENGINE, Globals.CARRIER_CODE_UPS, trackingNumber);
+
+                List<TrackEvent> list = result.Events;
+                trackDetailList.Clear();
+                foreach (TrackEvent t in list)
+                {
+                    trackDetailList.Add(new TrackDetail() { City = t.CityLocality, StateProvinceCode = t.StateProvince, CountryCode = t.CountryCode, PostalCode = t.PostalCode, OccurredAt = (DateTime)t.OccurredAt, Activity = t.Description });
+                }
+
+                lvTrackDetails.ItemsSource = trackDetailList;
+
+            }
+            catch (Exception ex)
+            {
+                lblStatus.Content += "Exception when calling TrackingApi.TrackingTrack: " + ex.Message;
+            }
+
+        }
+
     }
 }
