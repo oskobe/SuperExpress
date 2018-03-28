@@ -23,24 +23,23 @@ Each member writes down answers to 3 questions:
 
 2018/03/27 Jie Zhu
 1. Done since last scrum:
- - Desgin windows.
- - Input trello items.
+ - Created windows,Database structure
+ - Tested APIs to make sure whether it is practical
+ - Built github and trello
 2. Plan until next Scrum
- - Improve dialogs design.
- - setup the initial project
- - Create User login dialog.
- - Create Main dialog.
- - Insert some test data into database.
+ - Test map control component
+ - Develop the core part first
 3. Need assistance / figure things out
- - Find out how to use JTable.
+ - How to use bing map component
+ - How to display city label on map component when just know the city name.
 
-
-2018/03/28 Jing Wang
+2018/03/28 Jie Zhu
 1. Done since last scrum:
-- Created project Proposal (first page)
-- Did rearch on ShipEngine API
+ - Got know how to use bing maps,bing REST and bing spatial
+ - Added some labels what I want on the bing maps.
+ - Converted city name, postalCode to coordinate and displayed on bing maps
 2. Plan until next Scrum
-- Continue doing research on ShipEngine API
-- Code on package tracking function
+ - Make core part of bing maps
+ - Adjust structure of Main dialog
 3. Need assistance / figure things out
-- Find out how to parse JSON format document
+ - Parse xml data
