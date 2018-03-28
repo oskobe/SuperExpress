@@ -1,29 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IPD12_SuperExpress
 {
     public class TrackDetail
     {
-        public string City { get; set; }
         public string StateProvinceCode { get; set; }
         public string CountryCode { get; set; }
         public string PostalCode { get; set; }
         public DateTime OccurredAt { get; set; }
 
+        public string _city;
         public string _activity;
+
+        static CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+        static TextInfo textInfo = cultureInfo.TextInfo;
+
+        public string City {
+            get {
+                return _city;
+            }
+            set {
+                _city = textInfo.ToTitleCase(textInfo.ToLower(value));
+            }
+        }
+
         public string Activity
         {
             get
             {
-                return _activity.ToLower();
+                return _activity;
             }
             set
             {
-                _activity = value;
+                
+                _activity = textInfo.ToTitleCase(textInfo.ToLower(value));
             }
         }
 

@@ -14,12 +14,13 @@
             <ComboBoxItem Content="UPS" IsSelected="True"/>
         </ComboBox>
         <ListView x:Name="lvTrackDetails" HorizontalAlignment="Left" Height="555" Margin="15,110,0,0" VerticalAlignment="Top" Width="640">
+            
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Location" Width="160" DisplayMemberBinding="{Binding Location}" />
                     <GridViewColumn Header="Date" Width="80" DisplayMemberBinding="{Binding Date}" />
                     <GridViewColumn Header="Local Time" Width="80" DisplayMemberBinding="{Binding LocalTime}" />
-                    <GridViewColumn Header="Activity" Width="290" DisplayMemberBinding="{Binding Activity}" />
+                    <GridViewColumn Header="Activity" Width="290"  DisplayMemberBinding="{Binding Activity}" />
                 </GridView>
             </ListView.View>
         </ListView>
