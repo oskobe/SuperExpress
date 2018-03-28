@@ -19,7 +19,7 @@ namespace IPD12_SuperExpress
         {
             get
             {
-                return _activity.ToLower();
+                return _activity.ToLowerInvariant();
             }
             set
             {
