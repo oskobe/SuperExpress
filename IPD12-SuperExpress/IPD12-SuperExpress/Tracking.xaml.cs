@@ -71,6 +71,8 @@ namespace IPD12_SuperExpress
             AddPushpinToMap();
             AddPolyline();
             myMap.Visibility = Visibility.Visible;
+            //myMap.Center = new Location(Convert.ToDouble(latitude), Convert.ToDouble(longitude));
+            myMap.ZoomLevel = 12;
             //myMapLabel.Visibility = Visibility.Visible;
             myMap.Focus(); //allows '+' and '-' to zoom the map
         }
