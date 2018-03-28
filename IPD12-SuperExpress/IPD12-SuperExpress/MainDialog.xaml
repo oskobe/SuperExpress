@@ -40,55 +40,51 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Shipping">
-                <Grid Background="#FFE5E5E5">
-                    <Label x:Name="label1_Copy1" Content="name:" HorizontalAlignment="Left" Margin="30,110,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label2_Copy1" Content="Cell Phone" HorizontalAlignment="Left" Margin="264,114,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label3_Copy1" Content="Email" HorizontalAlignment="Left" Margin="515,116,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="23" Margin="105,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="textBox1_Copy1" HorizontalAlignment="Left" Height="23" Margin="360,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="textBox2_Copy1" HorizontalAlignment="Left" Height="23" Margin="600,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                    <Label x:Name="label4_Copy9" Content="Street" HorizontalAlignment="Left" Margin="30,165,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label5_Copy1" Content="Sender" HorizontalAlignment="Left" Margin="30,75,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label4_Copy10" Content="APT." HorizontalAlignment="Left" Margin="144,165,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label4_Copy11" Content="City" HorizontalAlignment="Left" Margin="269,165,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label4_Copy12" Content="Province" HorizontalAlignment="Left" Margin="421,165,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label4_Copy13" Content="Country" HorizontalAlignment="Left" Margin="574,165,0,0" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="comboBox_Copy5" HorizontalAlignment="Left" Margin="645,167,0,0" VerticalAlignment="Top" Width="75" SelectedIndex="0" RenderTransformOrigin="1.05,-1.19">
-                        <ComboBoxItem Content="Canada"/>
-                    </ComboBox>
-                    <ComboBox x:Name="comboBox_Copy6" HorizontalAlignment="Left" Margin="494,167,0,0" VerticalAlignment="Top" Width="75" SelectedIndex="0">
-                        <ComboBoxItem Content="Quebec"/>
-                    </ComboBox>
-                    <ComboBox x:Name="comboBox_Copy7" HorizontalAlignment="Left" Margin="325,165,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0">
-                        <ComboBoxItem Content="Montreal"/>
-                    </ComboBox>
-                    <TextBox x:Name="textBox3_Copy3" HorizontalAlignment="Left" Height="23" Margin="91,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="53" RenderTransformOrigin="0.256,0.435"/>
-                    <TextBox x:Name="textBox3_Copy4" HorizontalAlignment="Left" Height="23" Margin="186,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.256,0.435"/>
-                    <Label x:Name="label1_Copy2" Content="name:" HorizontalAlignment="Left" Margin="30,250,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label2_Copy2" Content="Cell Phone" HorizontalAlignment="Left" Margin="264,254,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label3_Copy2" Content="Email" HorizontalAlignment="Left" Margin="515,256,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="textBox_Copy2" HorizontalAlignment="Left" Height="23" Margin="105,254,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="textBox1_Copy2" HorizontalAlignment="Left" Height="23" Margin="360,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="textBox2_Copy2" HorizontalAlignment="Left" Height="23" Margin="600,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                    <Label x:Name="label5_Copy2" Content="Recevier" HorizontalAlignment="Left" Margin="30,215,0,0" VerticalAlignment="Top"/>
-                    <Button x:Name="btnConfirm_Copy" Content="Confirm" HorizontalAlignment="Left" Margin="645,366,0,0" VerticalAlignment="Top" Width="75"/>
+                <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.206,0.356">
+                    <Label Content="Shipping Cost Calculator" FontSize="36" HorizontalAlignment="Left" Margin="92,39,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Please provide information about your shipment to estimate the &#xD;&#xA;shipping cost. &#xD;&#xA;&#xD;&#xA;If you're looking to ship larger items, please contact us to inquire &#xD;&#xA;about the freight services." FontSize="16" HorizontalAlignment="Left" Margin="92,109,0,0" VerticalAlignment="Top"/>
+                    <GroupBox Header="Step 1 - Origin/Destination Information" HorizontalAlignment="Left" Height="325" Margin="712,17,0,0" VerticalAlignment="Top" Width="577">
+                        <Grid>
+                            <Label Content="Ship From Country:" Margin="4,18,258,257"/>
+                            <ComboBox Name="cbCountryFrom" HorizontalAlignment="Left" Margin="8,50,0,0" VerticalAlignment="Top" Width="203"/>
+                            <Label Content="Province/State: " Margin="4,90,258,185"/>
+                            <ComboBox Name="cbProvinceStateFrom" HorizontalAlignment="Left" Margin="8,122,0,0" VerticalAlignment="Top" Width="203"/>
+                            <Label Content="City:" Margin="4,162,258,110"/>
+                            <TextBox Name="tbCityFrom" HorizontalAlignment="Left" Margin="10,197,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Postal Code/Zip:" Margin="4,234,258,41"/>
+                            <TextBox Name="tbPostalCodeFrom" HorizontalAlignment="Left" Margin="8,266,0,0" VerticalAlignment="Top" Width="203" Height="22">
+                            </TextBox>
 
-                    <Label x:Name="label4_Copy14" Content="Street" HorizontalAlignment="Left" Margin="30,291,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label4_Copy15" Content="APT." HorizontalAlignment="Left" Margin="144,291,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label4_Copy16" Content="City" HorizontalAlignment="Left" Margin="269,291,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label4_Copy17" Content="Province" HorizontalAlignment="Left" Margin="421,291,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label4_Copy18" Content="Country" HorizontalAlignment="Left" Margin="574,291,0,0" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="comboBox_Copy8" HorizontalAlignment="Left" Margin="645,293,0,0" VerticalAlignment="Top" Width="75" SelectedIndex="0" RenderTransformOrigin="1.05,-1.19">
-                        <ComboBoxItem Content="Canada"/>
-                    </ComboBox>
-                    <ComboBox x:Name="comboBox_Copy9" HorizontalAlignment="Left" Margin="494,293,0,0" VerticalAlignment="Top" Width="75" SelectedIndex="0">
-                        <ComboBoxItem Content="Quebec"/>
-                    </ComboBox>
-                    <ComboBox x:Name="comboBox_Copy10" HorizontalAlignment="Left" Margin="325,291,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0">
-                        <ComboBoxItem Content="Montreal"/>
-                    </ComboBox>
-                    <TextBox x:Name="textBox3_Copy5" HorizontalAlignment="Left" Height="23" Margin="91,291,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="53" RenderTransformOrigin="0.256,0.435"/>
-                    <TextBox x:Name="textBox3_Copy6" HorizontalAlignment="Left" Height="23" Margin="186,291,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.256,0.435"/>
+                            <Label Content="Ship To Country:" Margin="322,18,-59.667,257"/>
+                            <ComboBox Name="tb" HorizontalAlignment="Left" Margin="325,50,-108,0" VerticalAlignment="Top" Width="203"/>
+                            <Label Content="Province/State: " Margin="322,90,-59.667,185"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="325,122,-108,0" VerticalAlignment="Top" Width="203"/>
+                            <Label Content="City:" Margin="322,162,-59.667,110"/>
+                            <TextBox HorizontalAlignment="Left" Margin="326,197,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Postal Code/Zip:" Margin="322,234,-59.667,41"/>
+                            <TextBox HorizontalAlignment="Left" Margin="326,266,0,0" VerticalAlignment="Top" Width="202" Height="22">
+                            </TextBox>
+                            
+                            
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Step 2 - Shipping Information" HorizontalAlignment="Left" Height="325" Margin="712,381,0,0" VerticalAlignment="Top" Width="577">
+                        <Grid>
+                            <Label Content="Weight:" Margin="4,22,354.333,253"/>
+                            <TextBox Name="tbWeight" HorizontalAlignment="Left" Margin="8,54,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Length:" Margin="4,94,258.333,172"/>
+                            <TextBox Name="tbLength" HorizontalAlignment="Left" Margin="9,126,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Width:" Margin="4,158,258.333,118"/>
+                            <TextBox Name="tbWidth" HorizontalAlignment="Left" Margin="8,198,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <Label Content="Height:" Margin="4,230,258.333,43"/>
+                            <TextBox Name="tbHeight" HorizontalAlignment="Left" Margin="8,264,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                            <ComboBox Name="cbWeithtUnit" HorizontalAlignment="Left" Margin="219,54,0,0" VerticalAlignment="Top" Width="88"/>
+                            <ComboBox Name="cbDimensionUnit" HorizontalAlignment="Left" Margin="222,126,0,0" VerticalAlignment="Top" Width="88"/>
+                            <Button Name="btEstimate" Margin="337,264,41.333,16">Estimate</Button>
+                        </Grid>
+                    </GroupBox>
+
+
                 </Grid>
             </TabItem>
         </TabControl>
