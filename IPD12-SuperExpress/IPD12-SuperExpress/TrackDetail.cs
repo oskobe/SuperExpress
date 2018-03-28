@@ -68,7 +68,7 @@ namespace IPD12_SuperExpress
                     locList.Add(PostalCode);
                 }
 
-                return string.Join(",", locList);
+                return string.Join(", ", locList);
             }
         }
 
