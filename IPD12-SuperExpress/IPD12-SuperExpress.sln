@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPD12-SuperExpress", "IPD12-SuperExpress\IPD12-SuperExpress.csproj", "{68367698-42D8-48ED-B14E-21F1A7DFDCCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBingMap2", "D:\IPD12-DotNet\TestBingMap2\TestBingMap2\TestBingMap2.csproj", "{746846F1-5108-4639-B270-0C8DF37A1C31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,11 +17,15 @@ Global
 		{68367698-42D8-48ED-B14E-21F1A7DFDCCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68367698-42D8-48ED-B14E-21F1A7DFDCCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68367698-42D8-48ED-B14E-21F1A7DFDCCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{746846F1-5108-4639-B270-0C8DF37A1C31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{746846F1-5108-4639-B270-0C8DF37A1C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{746846F1-5108-4639-B270-0C8DF37A1C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{746846F1-5108-4639-B270-0C8DF37A1C31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0CD409B2-6D8A-419A-9B54-1FF234469E73}
+		SolutionGuid = {D6235B3D-7437-4C30-A02C-E6C3B1B335AD}
 	EndGlobalSection
 EndGlobal
