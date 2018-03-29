@@ -18,6 +18,7 @@ using ShipEngine.ApiClient.Api;
 using ShipEngine.ApiClient.Client;
 using ShipEngine.ApiClient.Model;
 using static ShipEngine.ApiClient.Model.Weight;
+using BingMapsRESTToolkit;
 
 namespace IPD12_SuperExpress
 {
@@ -84,7 +85,7 @@ namespace IPD12_SuperExpress
             {
                 Pushpin pushpin = new Pushpin();
                 pushpin.Content = "" +i++;
-                pushpin.Location = new Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
+                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
                 myMap.Children.Add(pushpin);
             }
         }
@@ -97,7 +98,7 @@ namespace IPD12_SuperExpress
             LocationCollection locationCollection = new LocationCollection();
             foreach (Coordinate cd in coordinateList)
             {
-                locationCollection.Add(new Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude)));
+                locationCollection.Add(new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude)));
             }
             polyline.Locations = locationCollection;
             myMap.Children.Add(polyline);
@@ -156,66 +157,7 @@ namespace IPD12_SuperExpress
                  latitude = displayGeocodePoints[0].SelectSingleNode(".//rest:Latitude", nsmgr).InnerText;
                  longitude = displayGeocodePoints[0].SelectSingleNode(".//rest:Longitude", nsmgr).InnerText;
             }
-            return new Coordinate(latitude, longitude);
-        }
-
-
-        //Add label element to application
-        private void AddLabel(Panel parent, string labelString)
-        {
-            /*
-            Label dname = new Label();
-            dname.Content = labelString;
-            dname.Style = (Style)FindResource("AddressStyle");
-            parent.Children.Add(dname);
-            //*/
-        }
-
-        
-
-        //Show the POI address information and insert pushpins on the map
-        private void DisplayResults(XmlDocument nearbyPOI)
-        {
-            
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(nearbyPOI.NameTable);
-            nsmgr.AddNamespace("d", "http://schemas.microsoft.com/ado/2007/08/dataservices");
-            nsmgr.AddNamespace("m", "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata");
-            nsmgr.AddNamespace("a", "http://www.w3.org/2005/Atom");
-
-            //Get the the entityID for each POI entity in the response
-            XmlNodeList displayNameList = nearbyPOI.SelectNodes("//d:DisplayName", nsmgr);
-
-            //Provide entity information and put a pushpin on the map.
-            if (displayNameList.Count == 0)
-            {
-                //ErrorMessage.Content = "No results were found for this location.";
-                //ErrorMessage.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                XmlNodeList addressLineList = nearbyPOI.SelectNodes("//d:AddressLine", nsmgr);
-                XmlNodeList localityList = nearbyPOI.SelectNodes("//d:Locality", nsmgr);
-                XmlNodeList adminDistrictList = nearbyPOI.SelectNodes("//d:AdminDistrict", nsmgr);
-                XmlNodeList postalCodeList = nearbyPOI.SelectNodes("//d:PostalCode", nsmgr);
-                XmlNodeList latitudeList = nearbyPOI.SelectNodes("//d:Latitude", nsmgr);
-                XmlNodeList longitudeList = nearbyPOI.SelectNodes("//d:Longitude", nsmgr);
-                for (int i = 0; i < displayNameList.Count; i++)
-                {
-                    /*
-                    AddLabel(AddressList, "[" + Convert.ToString(i + 1) + "] " + displayNameList[i].InnerText);
-                    AddLabel(AddressList, addressLineList[i].InnerText);
-                    AddLabel(AddressList, localityList[i].InnerText + ", " + adminDistrictList[i].InnerText);
-                    AddLabel(AddressList, postalCodeList[i].InnerText);
-                    AddLabel(AddressList, "");
-                    */
-                    //AddPushpinToMap(Convert.ToDouble(latitudeList[i].InnerText), Convert.ToDouble(longitudeList[i].InnerText), Convert.ToString(i + 1));
-                }
-                //SearchResults.Visibility = Visibility.Visible;
-                myMap.Visibility = Visibility.Visible;
-                //myMapLabel.Visibility = Visibility.Visible;
-                myMap.Focus(); //allows '+' and '-' to zoom the map
-            }
-            
+            return new Coordinate(Convert.ToDouble(latitude), Convert.ToDouble(longitude));
         }
 
         private void btTrack_Click(object sender, RoutedEventArgs e)

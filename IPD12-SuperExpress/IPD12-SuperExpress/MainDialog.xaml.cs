@@ -18,6 +18,9 @@ using ShipEngine.ApiClient.Model;
 using static ShipEngine.ApiClient.Model.Weight;
 using System.Net;
 using Microsoft.Maps.MapControl.WPF;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using BingMapsRESTToolkit;
 
 namespace IPD12_SuperExpress
 {
@@ -28,33 +31,187 @@ namespace IPD12_SuperExpress
     public partial class MainDialog : Window
     {
         List<TrackDetail> trackDetailList = new List<TrackDetail>();
-        string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
+        List<Coordinate> coordinateList = new List<Coordinate>();
+        double distance;
+        private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
 
         public MainDialog()
         {
             InitializeComponent();
         }
-        /*
-        private void btnTracking_Click(object sender, RoutedEventArgs e)
-        {
-            Tracking dlg = new Tracking();
-            dlg.ShowDialog();
-        }
-        */
-        private void btnTracking_Click(object sender, RoutedEventArgs e)
-        {
-            string postalCode = "h3e 1g4";
-            //Get latitude and longitude coordinates for specified location
-            XmlDocument searchResponse = Geocode(postalCode);
 
-            //Find and display points of interest near the specified location
-            FindandDisplayNearbyPOI(searchResponse);
+        public class TrackDetailComparer : IEqualityComparer<TrackDetail>
+        {
+            //remove the the same location      
+            public bool Equals(TrackDetail x, TrackDetail y)
+            {
+                if (x.PostalCode.CompareTo(y.PostalCode) == 0)
+                    return true;
+                else
+                    return false;
+            }
+
+            public int GetHashCode(TrackDetail obj)
+            {
+                return 0;
+            }            
+        }
+        public static Response MakeRequest(string requestUrl)
+        {
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        throw new Exception(String.Format(
+                        "Server error (HTTP {0}: {1}).",
+                        response.StatusCode,
+                        response.StatusDescription));
+                    DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(Response));
+                    object objResponse = jsonSerializer.ReadObject(response.GetResponseStream());
+                    Response jsonResponse
+                    = objResponse as Response;
+                    return jsonResponse;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+
+        }
+        private void TestRequest()
+        {
+            string url = "https://dev.virtualearth.net/REST/v1/Routes/DistanceMatrix?origins=47.6044,-122.3345;47.6731,-122.1185;47.6149,-122.1936&destinations=45.5347,-122.6231;47.4747,-122.2057&travelMode=driving&key=" + BingMapsKey;
+            Response locationsResponse = MakeRequest(url);
+            ProcessResponse(locationsResponse);
+        }
+        public void ProcessResponse(Response locationsResponse)
+        {
+
+            int locNum = locationsResponse.ResourceSets[0].Resources.Length;
+
+            //Get formatted addresses: Option 1
+            //Get all locations in the response and then extract the formatted address for each location
+            Console.WriteLine("Show all formatted addresses");
+            for (int i = 0; i < locNum; i++)
+            {
+                DistanceMatrix matrix = (DistanceMatrix)locationsResponse.ResourceSets[0].Resources[i];
+                Console.WriteLine(matrix.Results[0].TravelDistance);
+            }
+            Console.WriteLine();
+        }
+        private async void CaculateMaxDistance()
+        {
+            int count = coordinateList.Count();
+            if (true)
+            {
+                //var startPoint = coordinateList.ElementAt(0);
+                //var endPoint = coordinateList.ElementAt(count - 1);
+                Coordinate a = new Coordinate(88.590868, -122.336729);
+                Coordinate b = new Coordinate(47.4747, -122.2057);
+                
+                
+                var request = new DistanceMatrixRequest()
+                {
+                    Origins = new List<SimpleWaypoint>()
+                {
+                    new SimpleWaypoint(47.6044, -122.3345),
+                    new SimpleWaypoint(47.6731, -122.1185),
+                    new SimpleWaypoint(47.6149, -122.1936)
+                },
+                    Destinations = new List<SimpleWaypoint>()
+                {
+                    new SimpleWaypoint(45.5347, -122.6231),
+                    new SimpleWaypoint(47.4747, -122.2057)
+                },
+                    BingMapsKey = BingMapsKey,
+                    TimeUnits = TimeUnitType.Minute,
+                    DistanceUnits = DistanceUnitType.Kilometers,
+                    TravelMode = TravelModeType.Driving
+                };
+                try
+                {
+                    Response response = await request.Execute();
+                    //(DistanceMatrix)(response.ResourceSets[0].Resources[0]);
+                    //response.ResourceSets[0].Resources[0].
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                distance = 5;
+            }            
+        }
+        
+        private void btnTracking_Click(object sender, RoutedEventArgs e)
+        {
+            string postalCode = string.Empty;
+            string countryCode = string.Empty;
+            //remove the distinct location
+            List<TrackDetail> tempList = trackDetailList.Distinct(new TrackDetailComparer()).ToList();
+            //remove the location whose postalCode is null
+            var filteredTrackList = from td in tempList where td.PostalCode != string.Empty select td;
+            foreach (var td in filteredTrackList)
+            {
+                postalCode = td.PostalCode;
+                countryCode = td.CountryCode;
+                XmlDocument searchResponse = Geocode(postalCode, countryCode);
+                coordinateList.Add(ConvertLocationToCoordinate(searchResponse));
+            }
+            int count = filteredTrackList.Count();
+            if (count >1)
+            {
+                AddPolyline();
+                AddPushpinToMap();
+            }
+            else if (count == 1)
+            {
+                AddPushpinToMap();
+            }
+            //CaculateMaxDistance();
+            TestRequest();
+
+            myMap.Visibility = Visibility.Visible;
+            //myMap.Center = new Location(Convert.ToDouble(latitude), Convert.ToDouble(longitude));
+            myMap.ZoomLevel = 12;
+            //myMapLabel.Visibility = Visibility.Visible;
+            myMap.Focus(); //allows '+' and '-' to zoom the map
+        }
+        //Add a pushpin with a label to the map
+        private void AddPushpinToMap()
+        {
+            int i = 1;
+            foreach (Coordinate cd in coordinateList)
+            {
+                Pushpin pushpin = new Pushpin();
+                pushpin.Content = "" + i++;
+                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
+                myMap.Children.Add(pushpin);
+            }
+        }
+        private void AddPolyline()
+        {
+            MapPolyline polyline = new MapPolyline();
+            polyline.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Blue);
+            polyline.StrokeThickness = 5;
+            polyline.Opacity = 0.7;
+            LocationCollection locationCollection = new LocationCollection();
+            foreach (Coordinate cd in coordinateList)
+            {
+                locationCollection.Add(new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude)));
+            }
+            polyline.Locations = locationCollection;
+            myMap.Children.Add(polyline);
         }
         // Geocode an address and return a latitude and longitude
-        public XmlDocument Geocode(string addressQuery)
+        public XmlDocument Geocode(string postCode, string countryCode)
         {
             //Create REST Services geocode request using Locations API
-            string geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations/" + addressQuery + "?o=xml&key=" + BingMapsKey;
+            string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postCode + "?o=xml&key=" + BingMapsKey;
 
             //Make the request and get the response
             XmlDocument geocodeResponse = GetXmlResponse(geocodeRequest);
@@ -62,6 +219,21 @@ namespace IPD12_SuperExpress
             return (geocodeResponse);
         }
 
+        /// <summary>
+        /// This method has a lot of logic that is specific to the sample. To process a request you can easily just call the Execute method on the request.
+        /// </summary>
+        /// <param name="request"></param>
+        private async void ProcessRequest(BaseRestRequest request)
+        {
+            try
+            {
+                var response = await request.Execute();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }           
+        }
 
         // Submit a REST Services or Spatial Data Services request and return the response
         private XmlDocument GetXmlResponse(string requestUrl)
@@ -81,11 +253,12 @@ namespace IPD12_SuperExpress
         }
 
         //Search for POI near a point
-        private void FindandDisplayNearbyPOI(XmlDocument xmlDoc)
+        private Coordinate ConvertLocationToCoordinate(XmlDocument xmlDoc)
         {
             //Get location information from geocode response 
-
             //Create namespace manager
+            string latitude = string.Empty;
+            string longitude = string.Empty;
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
             nsmgr.AddNamespace("rest", "http://schemas.microsoft.com/search/local/ws/rest/v1");
 
@@ -93,101 +266,17 @@ namespace IPD12_SuperExpress
             XmlNodeList locationElements = xmlDoc.SelectNodes("//rest:Location", nsmgr);
             if (locationElements.Count == 0)
             {
-                //ErrorMessage.Visibility = Visibility.Visible;
-                //ErrorMessage.Content = "The location you entered could not be geocoded.";
+                MessageBox.Show("Sorry! There is no tracking information");
             }
             else
             {
                 //Get the geocode location points that are used for display (UsageType=Display)
                 XmlNodeList displayGeocodePoints =
                         locationElements[0].SelectNodes(".//rest:GeocodePoint/rest:UsageType[.='Display']/parent::node()", nsmgr);
-                string latitude = displayGeocodePoints[0].SelectSingleNode(".//rest:Latitude", nsmgr).InnerText;
-                string longitude = displayGeocodePoints[0].SelectSingleNode(".//rest:Longitude", nsmgr).InnerText;
-                //ComboBoxItem entityTypeID = (ComboBoxItem)EntityType.SelectedItem;
-                //ComboBoxItem distance = (ComboBoxItem)Distance.SelectedItem;
-
-                //Create the Bing Spatial Data Services request to get the user-specified POI entity type near the selected point  
-                string findNearbyPOIRequest = "http://spatial.virtualearth.net/REST/v1/data/f22876ec257b474b82fe2ffcb8393150/NavteqNA/NavteqPOIs?spatialfilter=nearby("
-                + latitude + "," + longitude + "," + "10" + ")"
-                + "&$filter=EntityTypeID%20EQ%20'" + "7011" + "'&$select=EntityID,DisplayName,__Distance,Latitude,Longitude,AddressLine,Locality,AdminDistrict,PostalCode&$top=10"
-                + "&key=" + BingMapsKey;
-
-                //Submit the Bing Spatial Data Services request and retrieve the response
-                XmlDocument nearbyPOI = GetXmlResponse(findNearbyPOIRequest);
-
-                //Center the map at the geocoded location and display the results
-                myMap.Center = new Location(Convert.ToDouble(latitude), Convert.ToDouble(longitude));
-                myMap.ZoomLevel = 12;
-                DisplayResults(nearbyPOI);
-
+                latitude = displayGeocodePoints[0].SelectSingleNode(".//rest:Latitude", nsmgr).InnerText;
+                longitude = displayGeocodePoints[0].SelectSingleNode(".//rest:Longitude", nsmgr).InnerText;
             }
-        }
-
-
-        //Add label element to application
-        private void AddLabel(Panel parent, string labelString)
-        {
-            /*
-            Label dname = new Label();
-            dname.Content = labelString;
-            dname.Style = (Style)FindResource("AddressStyle");
-            parent.Children.Add(dname);
-            //*/
-        }
-
-        //Add a pushpin with a label to the map
-        private void AddPushpinToMap(double latitude, double longitude, string pinLabel)
-        {
-            Location location = new Location(latitude, longitude);
-            Pushpin pushpin = new Pushpin();
-            pushpin.Content = pinLabel;
-            pushpin.Location = location;
-            myMap.Children.Add(pushpin);
-        }
-
-        //Show the POI address information and insert pushpins on the map
-        private void DisplayResults(XmlDocument nearbyPOI)
-        {
-
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(nearbyPOI.NameTable);
-            nsmgr.AddNamespace("d", "http://schemas.microsoft.com/ado/2007/08/dataservices");
-            nsmgr.AddNamespace("m", "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata");
-            nsmgr.AddNamespace("a", "http://www.w3.org/2005/Atom");
-
-            //Get the the entityID for each POI entity in the response
-            XmlNodeList displayNameList = nearbyPOI.SelectNodes("//d:DisplayName", nsmgr);
-
-            //Provide entity information and put a pushpin on the map.
-            if (displayNameList.Count == 0)
-            {
-                //ErrorMessage.Content = "No results were found for this location.";
-                //ErrorMessage.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                XmlNodeList addressLineList = nearbyPOI.SelectNodes("//d:AddressLine", nsmgr);
-                XmlNodeList localityList = nearbyPOI.SelectNodes("//d:Locality", nsmgr);
-                XmlNodeList adminDistrictList = nearbyPOI.SelectNodes("//d:AdminDistrict", nsmgr);
-                XmlNodeList postalCodeList = nearbyPOI.SelectNodes("//d:PostalCode", nsmgr);
-                XmlNodeList latitudeList = nearbyPOI.SelectNodes("//d:Latitude", nsmgr);
-                XmlNodeList longitudeList = nearbyPOI.SelectNodes("//d:Longitude", nsmgr);
-                for (int i = 0; i < displayNameList.Count; i++)
-                {
-                    /*
-                    AddLabel(AddressList, "[" + Convert.ToString(i + 1) + "] " + displayNameList[i].InnerText);
-                    AddLabel(AddressList, addressLineList[i].InnerText);
-                    AddLabel(AddressList, localityList[i].InnerText + ", " + adminDistrictList[i].InnerText);
-                    AddLabel(AddressList, postalCodeList[i].InnerText);
-                    AddLabel(AddressList, "");
-                    */
-                    AddPushpinToMap(Convert.ToDouble(latitudeList[i].InnerText), Convert.ToDouble(longitudeList[i].InnerText), Convert.ToString(i + 1));
-                }
-                //SearchResults.Visibility = Visibility.Visible;
-                myMap.Visibility = Visibility.Visible;
-                //myMapLabel.Visibility = Visibility.Visible;
-                myMap.Focus(); //allows '+' and '-' to zoom the map
-            }
-
+            return new Coordinate(Convert.ToDouble(latitude), Convert.ToDouble(longitude));
         }
 
         private void btTrack_Click(object sender, RoutedEventArgs e)

@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace IPD12_SuperExpress
 {
+    
     public class Coordinate
     {
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
-        public Coordinate(string latitude, string longitude)
+        public Coordinate(double latitude, double longitude)
         {
             Latitude = latitude;
             Longitude = longitude;
         }
-    }
+    }  
+    
 }
