@@ -21,6 +21,7 @@ using Microsoft.Maps.MapControl.WPF;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using BingMapsRESTToolkit;
+using MySql.Data.MySqlClient;
 
 namespace IPD12_SuperExpress
 {

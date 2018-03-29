@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IPD12_SuperExpress;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace DataMigration
 {
@@ -19,7 +19,7 @@ namespace DataMigration
             {
                 db = new Database();
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine("Error opening database connection: " + ex.Message);
