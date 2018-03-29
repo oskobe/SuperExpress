@@ -37,6 +37,7 @@
     <Reference Include="Microsoft.Maps.MapControl.WPF">
       <HintPath>C:\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.10.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -71,10 +72,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Coordinate.cs" />
+    <Compile Include="Country.cs" />
+    <Compile Include="Database.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="MainDialog.xaml.cs">
       <DependentUpon>MainDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Province.cs" />
     <Compile Include="Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
