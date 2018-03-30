@@ -11,5 +11,11 @@ namespace IPD12_SuperExpress
         public string CountryCode { get; set; }
         public string ProvinceStateCode { get; set; }
         public string ProvinceStateName { get; set; }
+
+        public override string ToString()
+        {
+            return ProvinceStateName;
+        }
     }
+
 }

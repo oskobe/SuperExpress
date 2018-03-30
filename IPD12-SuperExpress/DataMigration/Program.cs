@@ -62,7 +62,7 @@ namespace DataMigration
                     db.AddProvince(province);
                     Console.WriteLine("Provice: " + name + " added.");
                 }
-                catch (SqlException ex)
+                catch (MySqlException ex)
                 {
                     Console.WriteLine(ex.StackTrace);
                     Console.WriteLine("Error Adding country to database: " + ex.Message);

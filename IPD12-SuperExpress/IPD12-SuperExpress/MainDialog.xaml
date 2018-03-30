@@ -46,7 +46,7 @@
                     <GroupBox Header="Step 1 - Origin/Destination Information" HorizontalAlignment="Left" Height="299" Margin="712,17,0,0" VerticalAlignment="Top" Width="577">
                         <Grid>
                             <Label Content="Ship From Country:" Margin="4,18,354.333,230.333"/>
-                            <ComboBox Name="cbCountryFrom" HorizontalAlignment="Left" Margin="8,50,0,0" VerticalAlignment="Top" Width="203"/>
+                            <ComboBox Name="cbCountryFrom" SelectionChanged="cbCountryFrom_SelectionChanged" HorizontalAlignment="Left" Margin="8,50,0,0" VerticalAlignment="Top" Width="203"/>
                             <Label Content="Province/State: " Margin="4,82,352.333,161.333"/>
                             <ComboBox Name="cbProvinceStateFrom" HorizontalAlignment="Left" Margin="8,114,0,0" VerticalAlignment="Top" Width="203"/>
                             <Label Content="City:" Margin="4,146,354.333,99.333"/>
@@ -56,7 +56,7 @@
                             </TextBox>
 
                             <Label Content="Ship To Country:" Margin="322,18,36.333,225.333"/>
-                            <ComboBox Name="tbCountryTo" HorizontalAlignment="Left" Margin="325,50,-108,0" VerticalAlignment="Top" Width="203"/>
+                            <ComboBox Name="cbCountryTo" SelectionChanged="cbCountryTo_SelectionChanged" HorizontalAlignment="Left" Margin="325,50,-108,0" VerticalAlignment="Top" Width="203"/>
                             <Label Content="Province/State: " Margin="322,82,36.333,166.333"/>
                             <ComboBox Name="cbProvinceStateTo" HorizontalAlignment="Left" Margin="325,114,0,0" VerticalAlignment="Top" Width="203"/>
                             <Label Content="City:" Margin="322,146,37.333,94.333"/>
