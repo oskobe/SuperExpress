@@ -22,6 +22,11 @@ namespace IPD12_SuperExpress
         public Register()
         {
             InitializeComponent();
+        }        
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
