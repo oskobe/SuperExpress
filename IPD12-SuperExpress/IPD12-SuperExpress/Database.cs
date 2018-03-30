@@ -44,7 +44,7 @@ namespace IPD12_SuperExpress
         public List<Country> GetAllCountry()
         {
             List<Country> list = new List<Country>();
-            MySqlCommand command = new MySqlCommand("SELECT * FROM countries", conn);
+            MySqlCommand command = new MySqlCommand("SELECT * FROM countries ORDER BY name", conn);
 
             using (MySqlDataReader reader = command.ExecuteReader())
             {
@@ -60,7 +60,24 @@ namespace IPD12_SuperExpress
         public List<Province> GetAllProvice()
         {
             List<Province> list = new List<Province>();
-            MySqlCommand command = new MySqlCommand("SELECT * FROM provinces", conn);
+            MySqlCommand command = new MySqlCommand("SELECT * FROM provinces ORDER BY name", conn);
+
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Province province = new Province() { CountryCode = (string)reader["countryCode"], ProvinceStateCode = (string)reader["code"], ProvinceStateName = (string)reader["name"] };
+                    list.Add(province);
+                }
+                return list;
+            }
+        }
+
+        public List<Province> GetAllProviceByCountryCode (string code)
+        {
+            List<Province> list = new List<Province>();
+            MySqlCommand command = new MySqlCommand("SELECT * FROM provinces WHERE countryCode = @code ORDER BY name", conn);
+            command.Parameters.AddWithValue("@code", code);
 
             using (MySqlDataReader reader = command.ExecuteReader())
             {

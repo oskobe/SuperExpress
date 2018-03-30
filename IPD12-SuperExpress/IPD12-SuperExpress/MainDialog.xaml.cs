@@ -34,7 +34,12 @@ namespace IPD12_SuperExpress
     public partial class MainDialog : Window
     {
         List<TrackDetail> trackDetailList = new List<TrackDetail>();
+<<<<<<< HEAD
         List<TrackDetail> filteredtrackDetailList;
+=======
+        List<Country> countryList = new List<Country>();
+        List<Province> provinceList = new List<Province>();
+>>>>>>> 42bfd8020343de7297008d7a248b64ec474a71e7
         List<Coordinate> coordinateList = new List<Coordinate>();
         static int earthRadius = 6367;
         //double distance;
@@ -42,6 +47,7 @@ namespace IPD12_SuperExpress
 
         public MainDialog()
         {
+<<<<<<< HEAD
             InitializeComponent();
             myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);           
         }
@@ -57,6 +63,23 @@ namespace IPD12_SuperExpress
                 Y = y;
                 Z = z;
             }
+=======
+            try
+            {
+                Globals.db = new Database();
+                InitializeComponent();
+                InitializeDataFromDatabase();
+                InitializeShippingCostCalculator();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine("Error opening database connection: " + ex.Message);
+                Environment.Exit(1);
+
+            }
+
+>>>>>>> 42bfd8020343de7297008d7a248b64ec474a71e7
         }
 
         public class TrackDetailComparer : IEqualityComparer<TrackDetail>
@@ -432,10 +455,38 @@ namespace IPD12_SuperExpress
 
         private void btEstimate_Click(object sender, RoutedEventArgs e)
         {
+            // Input check
+            if (tbCityFrom.Text.Trim().Equals(""))
+            {
+                MessageBox.Show("Please enter your origin city.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbCityFrom.Focus();
+                return;
+            }
+
+            if (tbPostalCodeFrom.Text.Trim().Equals(""))
+            {
+                MessageBox.Show("Please enter your origin postal code.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbPostalCodeFrom.Focus();
+                return;
+            }
+
+            if (cbCountryTo.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please choose your destination country.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (tbCityTo.Text.Trim().Equals(""))
+            {
+                MessageBox.Show("Please enter your destination city.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbCityTo.Focus();
+                return;
+            }
+
 
             Weight weight = new Weight(1.5, UnitEnum.Pound);
             var apiRatesInstance = new RatesApi();
-            var estimateRequest = new RateEstimateRequest("se-241902", "CA", "H3T1E8", "CA", "H7T2T2", "Laval", "QCf", weight);
+            var estimateRequest = new RateEstimateRequest("se-241902", "CA", "H3T1E8", "CN", "299500", "Chuzhou", "AH", weight);
             try
             {
                 List<Rate> result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
@@ -450,6 +501,47 @@ namespace IPD12_SuperExpress
                 lblStatus.Content = "Exception when calling RatesApi.RatesEstimate: " + ex.Message;
                 MessageBox.Show(ex.Message);
             }
+
+        }
+
+        private void InitializeDataFromDatabase()
+        {
+            try
+            {
+                countryList = Globals.db.GetAllCountry();
+                //provinceList = Globals.db.GetAllProvice();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine("Error fetching country or provice data from database: " + ex.Message);
+                Environment.Exit(1);
+            }
+        }
+
+        private void InitializeShippingCostCalculator()
+        {
+            //List<String> countryNameList = (from country in countryList orderby country.Name select country.Name).ToList();
+            cbCountryFrom.ItemsSource = countryList;//countryNameList;
+            cbCountryFrom.Text = "Canada";
+            cbCountryTo.ItemsSource = countryList;
+
+        }
+
+        private void cbCountryFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string countryCode = ((Country)cbCountryFrom.SelectedItem).Code;
+            List<Province> provinceInSelectedCountryList = Globals.db.GetAllProviceByCountryCode(countryCode);
+            cbProvinceStateFrom.ItemsSource = provinceInSelectedCountryList;
+            cbProvinceStateFrom.SelectedIndex = 0;
+        }
+
+        private void cbCountryTo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string countryCode = ((Country)cbCountryTo.SelectedItem).Code;
+            List<Province> provinceInSelectedCountryList = Globals.db.GetAllProviceByCountryCode(countryCode);
+            cbProvinceStateTo.ItemsSource = provinceInSelectedCountryList;
+            cbProvinceStateTo.SelectedIndex = 0;
         }
     }
 }

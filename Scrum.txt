@@ -63,3 +63,13 @@ Each member writes down answers to 3 questions:
  - Adjust structure of Main dialog
 3. Need assistance / figure things out
  - Nothing special.
+
+2018/03/27 Jing Wang
+1. Done since last scrum:
+- Re-design shipping cost calculator screen
+- Fix bugs for package tracking 
+- import data to country province/state city table
+2. Plan until next Scrum
+- Finish coding of shipping fee & time estimation
+3. Need assistance / figure things out
+- Nothing special.
