@@ -21,6 +21,7 @@ using Microsoft.Maps.MapControl.WPF;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using BingMapsRESTToolkit;
+using MySql.Data.MySqlClient;
 
 namespace IPD12_SuperExpress
 {
@@ -34,12 +35,9 @@ namespace IPD12_SuperExpress
     public partial class MainDialog : Window
     {
         List<TrackDetail> trackDetailList = new List<TrackDetail>();
-<<<<<<< HEAD
         List<TrackDetail> filteredtrackDetailList;
-=======
         List<Country> countryList = new List<Country>();
         List<Province> provinceList = new List<Province>();
->>>>>>> 42bfd8020343de7297008d7a248b64ec474a71e7
         List<Coordinate> coordinateList = new List<Coordinate>();
         static int earthRadius = 6367;
         //double distance;
@@ -47,23 +45,8 @@ namespace IPD12_SuperExpress
 
         public MainDialog()
         {
-<<<<<<< HEAD
             InitializeComponent();
-            myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);           
-        }
-        public class Cartesian
-        {
-            public double X { set; get; }
-            public double Y { set; get; }
-            public double Z { set; get; }
-
-            public Cartesian(double x, double y, double z)
-            {
-                X = x;
-                Y = y;
-                Z = z;
-            }
-=======
+            myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
             try
             {
                 Globals.db = new Database();
@@ -78,8 +61,19 @@ namespace IPD12_SuperExpress
                 Environment.Exit(1);
 
             }
+        }
+        public class Cartesian
+        {
+            public double X { set; get; }
+            public double Y { set; get; }
+            public double Z { set; get; }
 
->>>>>>> 42bfd8020343de7297008d7a248b64ec474a71e7
+            public Cartesian(double x, double y, double z)
+            {
+                X = x;
+                Y = y;
+                Z = z;
+            }
         }
 
         public class TrackDetailComparer : IEqualityComparer<TrackDetail>

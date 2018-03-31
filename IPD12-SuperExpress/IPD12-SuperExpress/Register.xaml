@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IPD12_SuperExpress"
         mc:Ignorable="d"
-        Title="Register" Height="327" Width="464">
+        Title="Register" Height="327" Width="464" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,2,-1">
         <Label x:Name="label" Content="ID" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="regDlg_tbName" HorizontalAlignment="Left" Height="23" Margin="75,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
@@ -36,8 +36,8 @@
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="346,268,0,0" VerticalAlignment="Top" Width="75" Click="btnSave_Click"/>
         <Label x:Name="label7" Content="Password" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label7_Copy" Content="Confirm" HorizontalAlignment="Left" Margin="237,220,0,0" VerticalAlignment="Top"/>
-        <PasswordBox x:Name="regDlg_pbPassword" HorizontalAlignment="Left" Margin="76,220,0,0" VerticalAlignment="Top" Width="120" Height="25"/>
-        <PasswordBox x:Name="regDlg_pbConfirm" HorizontalAlignment="Left" Margin="301,220,0,0" VerticalAlignment="Top" Width="120" Height="25"/>
+        <PasswordBox x:Name="regDlg_pbPassword" HorizontalAlignment="Left" Margin="76,220,0,0" VerticalAlignment="Top" Width="120" Height="25" PasswordChar="*"/>
+        <PasswordBox x:Name="regDlg_pbConfirm" HorizontalAlignment="Left" Margin="301,220,0,0" VerticalAlignment="Top" Width="120" Height="25" PasswordChar="*"/>
 
     </Grid>
 </Window>

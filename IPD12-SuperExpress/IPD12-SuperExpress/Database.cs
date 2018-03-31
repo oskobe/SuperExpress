@@ -73,7 +73,7 @@ namespace IPD12_SuperExpress
             }
         }
 
-        public List<Province> GetAllProviceByCountryCode (string code)
+        public List<Province> GetAllProviceByCountryCode(string code)
         {
             List<Province> list = new List<Province>();
             MySqlCommand command = new MySqlCommand("SELECT * FROM provinces WHERE countryCode = @code ORDER BY name", conn);
@@ -163,5 +163,29 @@ namespace IPD12_SuperExpress
 
         }
         */
+        public void AddUser(User user)
+        {
+            string query = "INSERT INTO users (name, phone,email,postalCode,countryCode,provinceCode,cityName,streetName,apartment,Password) values(@name, @phone,@email,@postalCode,@countryCode,@provinceCode,@cityName,@streetName,@apartment,@Password)";
+            try
+            {
+                using (MySqlCommand insertCommand = new MySqlCommand(query, Globals.db.conn))
+                {
+                    insertCommand.Parameters.AddWithValue("@name", user.Name);
+                    insertCommand.Parameters.AddWithValue("@phone", user.Phone);
+                    insertCommand.Parameters.AddWithValue("@email", user.Email);
+                    insertCommand.Parameters.AddWithValue("@postalCode", user.PostalCode);
+                    insertCommand.Parameters.AddWithValue("@countryCode", user.CountryCode);
+                    insertCommand.Parameters.AddWithValue("@provinceCode", user.ProvinceCode);
+                    insertCommand.Parameters.AddWithValue("@cityName", user.CityName);
+                    insertCommand.Parameters.AddWithValue("@streetName", user.StreetName);
+                    insertCommand.Parameters.AddWithValue("@apartment", user.Apartment);
+                    insertCommand.Parameters.AddWithValue("@Password", user.Password);
+                    insertCommand.ExecuteNonQuery();
+                }
+            }catch(MySqlException ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

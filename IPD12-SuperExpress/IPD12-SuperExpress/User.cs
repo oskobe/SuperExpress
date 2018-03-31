@@ -18,5 +18,21 @@ namespace IPD12_SuperExpress
         public string CityName { get; set; }
         public string StreetName { get; set; }
         public string Apartment { get; set; }
+        
+        public string Password { get; set; }
+        public User(int iD, string name, long phone, string email, string postalCode, string countryCode, string provinceCode, string cityName, string streetName, string apartment,string password)
+        {
+            ID = iD;
+            Name = name;
+            Phone = phone;
+            Email = email;
+            PostalCode = postalCode;
+            CountryCode = countryCode;
+            ProvinceCode = provinceCode;
+            CityName = cityName;
+            StreetName = streetName;
+            Apartment = apartment;
+            Password = password;
+        }
     }
 }
