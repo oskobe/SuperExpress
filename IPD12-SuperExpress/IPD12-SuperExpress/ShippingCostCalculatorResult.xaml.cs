@@ -23,17 +23,19 @@ namespace IPD12_SuperExpress
     public partial class ShippingCostCalculatorResult : Window
     {
         List<SuperExpressRate> rates = new List<SuperExpressRate>();
+        CostCalculator costCalculator;
 
         public ShippingCostCalculatorResult(CostCalculator calculator)
         {
             InitializeComponent();
-            InitializeCostCalculatorResult(calculator);
+            costCalculator = calculator;
+            InitializeCostCalculatorResult();
         }
 
-        private void InitializeCostCalculatorResult(CostCalculator cal)
+        private void InitializeCostCalculatorResult()
         {
             
-            List<Rate> result = cal.Result;
+            List<Rate> result = costCalculator.Result;
             // Prepare data for listview
             foreach(Rate r in result)
             {
@@ -48,16 +50,16 @@ namespace IPD12_SuperExpress
             }
 
             // Set data to the calculator result window
-            lblCityProvinceFrom.Content = string.Format("{0} {1}", cal.CityFrom, cal.ProvinceFrom);
-            lblCountryFrom.Content = cal.CountryFrom;
-            lblPostalCodeFrom.Content = cal.PostalCodeFrom;
+            lblCityProvinceFrom.Content = string.Format("{0} {1}", costCalculator.CityFrom, costCalculator.ProvinceFrom);
+            lblCountryFrom.Content = costCalculator.CountryFrom;
+            lblPostalCodeFrom.Content = costCalculator.PostalCodeFrom;
 
-            lblCityProvinceTo.Content = string.Format("{0} {1}", cal.CityTo, cal.ProvinceTo);
-            lblCountryTo.Content = cal.CountryTo;
-            lblPostalCodeTo.Content = cal.PostalCodeTo;
+            lblCityProvinceTo.Content = string.Format("{0} {1}", costCalculator.CityTo, costCalculator.ProvinceTo);
+            lblCountryTo.Content = costCalculator.CountryTo;
+            lblPostalCodeTo.Content = costCalculator.PostalCodeTo;
 
-            lblWeight.Content = string.Format("{0:0.00} {1}", cal.Weight.Value, cal.Weight.Unit);
-            lblDimensions.Content = string.Format("{0:0.0} * {1:0.0} * {2:0.0} {3}", cal.Dimensions.Length, cal.Dimensions.Width, cal.Dimensions.Height, cal.Dimensions.Unit);
+            lblWeight.Content = costCalculator.WeightStr;
+            lblDimensions.Content = costCalculator.DimensionsStr;
 
             // Sort by the amount
             rates = (from r in rates orderby r.Amount select r).ToList();
@@ -82,6 +84,16 @@ namespace IPD12_SuperExpress
             // Select one line when the corresponding radio button checked
             RadioButton radioButton = sender as RadioButton;
             lvShippingCostCalculatorResult.SelectedItem = radioButton.DataContext;
+        }
+
+        private void cbCreateShipmentRequest_Click(object sender, RoutedEventArgs e)
+        {
+            SuperExpressRate rate = (SuperExpressRate)lvShippingCostCalculatorResult.SelectedItem;
+            CreateShipmentRequest requestDialog = new CreateShipmentRequest(costCalculator, rate);
+            if (requestDialog.ShowDialog() == true)
+            {
+
+            }
         }
     }
 }

@@ -22,7 +22,7 @@
         <Label Name="lblWeight" Content=":::" HorizontalAlignment="Left" Margin="774,102,0,0" VerticalAlignment="Top"/>
         <Label Name="lblDimensions" Content=":::" HorizontalAlignment="Left" Margin="774,128,0,0" VerticalAlignment="Top"/>
         <Label Name="lblCurrency" Content="CAD" HorizontalAlignment="Left" Margin="774,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.813,0.642"/>
-        <ListView HorizontalAlignment="Left" Height="567" Margin="20,212,0,0" VerticalAlignment="Top" Width="868" Name="lvShippingCostCalculatorResult" SelectionChanged="lvShippingCostCalculatorResult_SelectionChanged" >
+        <ListView HorizontalAlignment="Left" Height="567" Margin="20,212,0,0" VerticalAlignment="Top" Width="868" Name="lvShippingCostCalculatorResult" SelectionChanged="lvShippingCostCalculatorResult_SelectionChanged" SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="" Width="25">

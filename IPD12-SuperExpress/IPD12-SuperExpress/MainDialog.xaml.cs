@@ -51,7 +51,7 @@ namespace IPD12_SuperExpress
             myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
             try
             {                
-                InitializeComponent();
+                //InitializeComponent();
                 InitializeDataFromDatabase();
                 InitializeShippingCostCalculator();
             }
