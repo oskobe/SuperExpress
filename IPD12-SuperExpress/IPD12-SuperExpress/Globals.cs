@@ -12,6 +12,8 @@ namespace IPD12_SuperExpress
         public const string CARRIER_CODE_UPS = "ups";
         public const string CARRIER_ID_UPS = "se-241902";
         public const int PERIMETER_OF_EARTH = 40075;
+        public const string YES = "Yes";
+        public const string NO = "No";
 
         public static Database db;
     }

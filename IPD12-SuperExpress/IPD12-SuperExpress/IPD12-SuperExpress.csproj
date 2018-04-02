@@ -72,7 +72,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Coordinate.cs" />
+    <Compile Include="CostCalculator.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="CreateShipmentRequest.xaml.cs">
+      <DependentUpon>CreateShipmentRequest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Database.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="MainDialog.xaml.cs">
@@ -82,10 +86,18 @@
     <Compile Include="Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ShippingCostCalculatorResult.xaml.cs">
+      <DependentUpon>ShippingCostCalculatorResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SuperExpressRate.cs" />
     <Compile Include="TrackDetail.cs" />
     <Compile Include="Tracking.xaml.cs">
       <DependentUpon>Tracking.xaml</DependentUpon>
     </Compile>
+    <Page Include="CreateShipmentRequest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -103,6 +115,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Register.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ShippingCostCalculatorResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
