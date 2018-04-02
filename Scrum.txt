@@ -90,3 +90,15 @@ Each member writes down answers to 3 questions:
  - Weather API 
 3. Need assistance / figure things out
  - Nothing
+
+2018/04/02 Jing Wang
+1. Done since last scrum:
+- finished shipping cost calculator screen
+- design create shipment request screen 
+- did research on radio button as list view column(Easter weekend)
+2. Plan until next Scrum
+- Finish coding of create shipment request 
+3. Need assistance / figure things out
+- Nothing special.
+
+
