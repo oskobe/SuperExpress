@@ -78,8 +78,8 @@
                             <TextBox Name="tbWidth" HorizontalAlignment="Left" Margin="8,182,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
                             <Label Content="Height:" Margin="4,210,353.333,46"/>
                             <TextBox Name="tbHeight" HorizontalAlignment="Left" Margin="8,245,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
-                            <ComboBox Name="cbWeithtUnit" HorizontalAlignment="Left" Margin="219,54,0,0" VerticalAlignment="Top" Width="88"/>
-                            <ComboBox Name="cbDimensionUnit" HorizontalAlignment="Left" Margin="222,118,0,0" VerticalAlignment="Top" Width="88"/>
+                            <ComboBox Name="cbWeithtUnit" HorizontalAlignment="Left" Margin="222,57,0,0" VerticalAlignment="Top" Width="88" RenderTransformOrigin="0.5,1.152"/>
+                            <ComboBox Name="cbDimensionUnit" HorizontalAlignment="Left" Margin="222,121,0,0" VerticalAlignment="Top" Width="88"/>
                             <Button Name="btEstimate" Click="btEstimate_Click" Margin="337,245,41.333,19.333">Estimate</Button>
                         </Grid>
                     </GroupBox>

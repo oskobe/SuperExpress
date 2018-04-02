@@ -465,46 +465,95 @@ namespace IPD12_SuperExpress
 
         private void btEstimate_Click(object sender, RoutedEventArgs e)
         {
-            // Input check
-            if (tbCityFrom.Text.Trim().Equals(""))
+            // Save input and result in costCalculator OBJ
+            CostCalculator costCalculator = new CostCalculator();
+
+            // Read and check input data
+            costCalculator.CountryFrom = (Country)cbCountryFrom.SelectedItem;
+            costCalculator.ProvinceFrom = (Province)cbProvinceStateFrom.SelectedItem;
+            if (tbCityFrom.Text.Trim().Equals(string.Empty))
             {
                 MessageBox.Show("Please enter your origin city.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbCityFrom.Focus();
                 return;
             }
-
-            if (tbPostalCodeFrom.Text.Trim().Equals(""))
+            costCalculator.CityFrom = tbCityFrom.Text;
+            if (tbPostalCodeFrom.Text.Trim().Equals(string.Empty))
             {
                 MessageBox.Show("Please enter your origin postal code.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbPostalCodeFrom.Focus();
                 return;
             }
-
+            costCalculator.PostalCodeFrom = tbPostalCodeFrom.Text;
             if (cbCountryTo.SelectedIndex == -1)
             {
                 MessageBox.Show("Please choose your destination country.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-            if (tbCityTo.Text.Trim().Equals(""))
+            costCalculator.CountryTo = (Country)cbCountryTo.SelectedItem;
+            costCalculator.ProvinceTo = (Province)cbProvinceStateTo.SelectedItem;
+            if (tbCityTo.Text.Trim().Equals(string.Empty))
             {
                 MessageBox.Show("Please enter your destination city.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbCityTo.Focus();
                 return;
             }
+            costCalculator.CityTo = tbCityTo.Text;
+            costCalculator.PostalCodeTo = tbPostalCodeTo.Text;
 
+            double doubleWeight = 0;
+            if (!double.TryParse(tbWeight.Text, out doubleWeight))
+            {
+                MessageBox.Show("Please enter double weight.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbWeight.Focus();
+                return;
+            }
+            Weight.UnitEnum weightUnit = (Weight.UnitEnum)Enum.Parse(typeof(Weight.UnitEnum), cbWeithtUnit.SelectedItem.ToString(), false);
+            Weight weight = new Weight(doubleWeight, weightUnit);
+            costCalculator.Weight = weight;
 
-            Weight weight = new Weight(1.5, UnitEnum.Pound);
+            double doubleLength = 0, doubleWidth = 0, doubleHeight = 0;
+            if (!double.TryParse(tbLength.Text, out doubleLength))
+            {
+                MessageBox.Show("Please enter double length.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbLength.Focus();
+                return;
+            }
+            if (!double.TryParse(tbWidth.Text, out doubleWidth))
+            {
+                MessageBox.Show("Please enter double width.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbWidth.Focus();
+                return;
+            }
+            if (!double.TryParse(tbHeight.Text, out doubleHeight))
+            {
+                MessageBox.Show("Please enter double height.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbHeight.Focus();
+                return;
+            }
+            Dimensions.UnitEnum dimensionUnit = (Dimensions.UnitEnum)Enum.Parse(typeof(Dimensions.UnitEnum), cbDimensionUnit.SelectedItem.ToString(), false);
+            Dimensions dimensions = new Dimensions(dimensionUnit, doubleLength, doubleWidth, doubleHeight);
+            costCalculator.Dimensions = dimensions;
+
+            // Calculate the rate
             var apiRatesInstance = new RatesApi();
-            var estimateRequest = new RateEstimateRequest("se-241902", "CA", "H3T1E8", "CN", "299500", "Chuzhou", "AH", weight);
+            var estimateRequest = new RateEstimateRequest(Globals.CARRIER_ID_UPS, costCalculator.CountryFrom.Code, costCalculator.PostalCodeFrom, costCalculator.CountryTo.Code, costCalculator.PostalCodeTo, costCalculator.CityTo, costCalculator.ProvinceTo.ProvinceStateCode, costCalculator.Weight, costCalculator.Dimensions);
             try
             {
-                List<Rate> result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
-                foreach (Rate r in result)
+                costCalculator.Result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
+
+                ShippingCostCalculatorResult resultDialog = new ShippingCostCalculatorResult(costCalculator);
+                if (resultDialog.ShowDialog() == true)
+                {
+
+                }
+                /*
+                foreach (Rate r in costCalculator.Result)
                 {
                     lblStatus.Content = r.ToJson();
                     MessageBox.Show(r.ToJson());
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -535,6 +584,30 @@ namespace IPD12_SuperExpress
             cbCountryFrom.ItemsSource = countryList;//countryNameList;
             cbCountryFrom.Text = "Canada";
             cbCountryTo.ItemsSource = countryList;
+
+            cbWeithtUnit.ItemsSource = Enum.GetNames(typeof(Weight.UnitEnum));
+            Weight.UnitEnum defaultWeightUnit = Weight.UnitEnum.Pound;
+            cbWeithtUnit.SelectedIndex = cbWeithtUnit.Items.IndexOf(defaultWeightUnit.ToString());
+
+            cbDimensionUnit.ItemsSource = Enum.GetNames(typeof(Dimensions.UnitEnum));
+            Dimensions.UnitEnum defaultDimensionUnit = Dimensions.UnitEnum.Inch;
+            cbDimensionUnit.SelectedIndex = cbDimensionUnit.Items.IndexOf(defaultDimensionUnit.ToString());
+
+            /* for test start*/
+            cbProvinceStateFrom.Text = "Quebec";
+            tbCityFrom.Text = "laval";
+            tbPostalCodeFrom.Text = "h7t2t4";
+
+            cbCountryTo.Text = "Canada";
+            cbProvinceStateTo.Text = "Quebec";
+            tbCityTo.Text = "montreal";
+            tbPostalCodeTo.Text = "h3t1e6";
+
+            tbWeight.Text = "0.65";
+            tbLength.Text = "2.33";
+            tbWidth.Text = "3.52";
+            tbHeight.Text = "1.0";
+            /* for test end */
 
         }
 

@@ -14,5 +14,8 @@ namespace IPD12_SuperExpress
         public const int PERIMETER_OF_EARTH = 40075;
         public static Database db=new Database();
         public static  string emailExpression = @"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$";
+
+        public const string YES = "Yes";
+        public const string NO = "No";
     }
 }
