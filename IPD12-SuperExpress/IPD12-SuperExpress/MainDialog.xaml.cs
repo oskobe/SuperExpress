@@ -22,6 +22,8 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using BingMapsRESTToolkit;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
+using OpenWeatherMap;
 
 namespace IPD12_SuperExpress
 {
@@ -42,14 +44,13 @@ namespace IPD12_SuperExpress
         static int earthRadius = 6367;
         //double distance;
         private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
-
+        private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient("23a61d3a72f546a7a1659131fb9499c0");
         public MainDialog()
         {
             InitializeComponent();
             myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
             try
-            {
-                Globals.db = new Database();
+            {                
                 InitializeComponent();
                 InitializeDataFromDatabase();
                 InitializeShippingCostCalculator();
@@ -106,6 +107,10 @@ namespace IPD12_SuperExpress
                         response.StatusDescription));
                     DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(Response));
                     object objResponse = jsonSerializer.ReadObject(response.GetResponseStream());
+                    /*
+                    JArray obj = (JArray)objResponse;
+                    obj["resourceSets"];
+                    */
                     Response jsonResponse = objResponse as Response;
                     return jsonResponse;
                 }
@@ -153,12 +158,14 @@ namespace IPD12_SuperExpress
                     for (int j = i + 1; j < locNum; j++)
                     {
                         distanceList2.Add(CaculateArcLength(coordinateList.ElementAt(i), coordinateList.ElementAt(j)));
-                        /*string url = GetDistanceOfTwoEndHTTPRequest(coordinateList.ElementAt(i), coordinateList.ElementAt(j));
+                        //JArray
+                        /*
+                        string url = GetDistanceOfTwoEndHTTPRequest(coordinateList.ElementAt(i), coordinateList.ElementAt(j));
                         Response response = MakeRequest(url);
                         if (response != null)
                         {
                             distanceList.Add(((DistanceMatrix)(response.ResourceSets[0].Resources[0])).Results[0].TravelDistance);
-                        }
+                        }   
                         */
                     }
                 }                
@@ -188,47 +195,47 @@ namespace IPD12_SuperExpress
         {
             // reference:https://msdn.microsoft.com/en-us/library/aa940990.aspx
             
-            if (distance >8555)
+            if (distance >9000)
             {
                 return 1;
             }
-            else if (distance>5268)
+            else if (distance>4500)
             {
                 return 2;
             }
-            else if (distance>2493)
+            else if (distance>2250)
             {
                 return 3;
             }
-            else if (distance > 1248)
+            else if (distance > 1125)
             {
                 return 4;
             }
-            else if (distance > 620)
+            else if (distance > 650)
             {
                 return 5;
             }
-            else if (distance > 317)
+            else if (distance > 325)
             {
                 return 6;
             }
-            else if (distance > 156)
+            else if (distance > 162.5)
             {
                 return 7;
             }
-            else if (distance > 77)
+            else if (distance > 81)
             {
                 return 8;
             }
-            else if (distance > 37)
+            else if (distance > 40)
             {
                 return 9;
             }
-            else if (distance > 19)
+            else if (distance > 20)
             {
                 return 10;
             }
-            else if (distance > 9)
+            else if (distance > 10)
             {
                 return 9;
             }
@@ -236,11 +243,11 @@ namespace IPD12_SuperExpress
             {
                 return 10;
             }
-            else if (distance > 2.4)
+            else if (distance > 2.5)
             {
                 return 11;
             }
-            else if (distance > 1.1)
+            else if (distance > 1.25)
             {
                 return 12;
             }
@@ -293,17 +300,21 @@ namespace IPD12_SuperExpress
                 if (searchResponse != null)
                 {
                     coordinateList.Add(ConvertLocationToCoordinate(searchResponse));
-                }
+                }                
+                else
+                {
+                    filteredtrackDetailList.Remove(td);
+                }                
             }
             int count = coordinateList.Count();
             if (count > 1)
             {
                 AddPolyline();
-                AddPushpinAndTextToMap();
+                AddPushpinAndWeatherInfoToMap();
             }
             else if (count == 1)
             {
-                AddPushpinAndTextToMap();
+                AddPushpinAndWeatherInfoToMap();
             }
             //CaculateMaxDistance();
             //It is for getting the distance between sender and receiver. That is for decide which Zoomlevel the maps will display
@@ -319,20 +330,25 @@ namespace IPD12_SuperExpress
             //myMapLabel.Visibility = Visibility.Visible;
             myMap.Focus(); //allows '+' and '-' to zoom the map
         }
-        //Add a pushpin with a label to the map
-        private void AddPushpinAndTextToMap()
+        
+        //Add a pushpin and a label with weather information to the map
+        private async Task AddPushpinAndWeatherInfoToMap()
         {
             int i = 1;
-            foreach (Coordinate cd in coordinateList)
+            int count = coordinateList.Count();
+            for(int j = 0; j < count; j++)
             {
+                Coordinate cd = coordinateList.ElementAt(j);
                 Pushpin pushpin = new Pushpin();
                 pushpin.Content = "" + i++;
 
                 pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
                 myMap.Children.Add(pushpin);
 
+                TrackDetail td = filteredtrackDetailList.ElementAt(j);
                 System.Windows.Controls.Label customLabel = new System.Windows.Controls.Label();
-                customLabel.Content = "Country:Canada;City:Montreal";
+                CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Latitude, Longitude = cd.Longitude});
+                customLabel.Content = string.Format("City:{0},Tempture:{1} C,Windy:{2}", td.City,result.Temperature.Value-273.15,result.Wind.Speed.Value);
                 Color c = Colors.Blue;
                 c.A = 100; //the point here is that you're setting the A component to 0 (alpha, 0 meaning completely transparent)
                 customLabel.Background = new SolidColorBrush(c);
@@ -340,7 +356,7 @@ namespace IPD12_SuperExpress
                 MapLayer labelLayer = new MapLayer();
                 labelLayer.AddChild(customLabel, pushpin.Location);
                 myMap.Children.Add(labelLayer);
-            }
+            }            
         }
         private void AddPolyline()
         {
@@ -536,6 +552,11 @@ namespace IPD12_SuperExpress
             List<Province> provinceInSelectedCountryList = Globals.db.GetAllProviceByCountryCode(countryCode);
             cbProvinceStateTo.ItemsSource = provinceInSelectedCountryList;
             cbProvinceStateTo.SelectedIndex = 0;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.DialogResult = true;
         }
     }
 }

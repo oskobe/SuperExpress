@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,6 +37,51 @@ namespace IPD12_SuperExpress
         {
             MainDialog dlg = new MainDialog();
             dlg.ShowDialog();
+            /*
+            string email = tbEmail.Text;
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                MessageBox.Show("Please enter an email");
+                tbEmail.Text = "";
+                tbEmail.Focus();
+                return;
+            }
+            MatchCollection mc = Regex.Matches(email, Globals.emailExpression);
+            if (mc.Count == 0)
+            {
+                MessageBox.Show("Please enter an valid email(example@gmail.com)");
+                tbEmail.Text = "";
+                tbEmail.Focus();
+                return;
+            }
+            string passwordInDB = Globals.db.SelectPasswordByEmail(email);
+            string passwordInput = pbPassword.Password;
+            if (passwordInDB != string.Empty)
+            {
+                if (passwordInput.CompareTo(passwordInDB) == 0)
+                {
+                    this.Hide();
+                    MainDialog dlg = new MainDialog();
+                    dlg.ShowDialog();
+                    if ((bool)dlg.DialogResult)
+                    {
+                        this.Show();
+                    }
+                }
+                else
+                {
+                    pbPassword.Password = "";
+                    pbPassword.Focus();
+                    MessageBox.Show("Your password is not correct!");
+                }
+            }
+            else
+            {
+                tbEmail.Text = "";
+                tbEmail.Focus();
+                MessageBox.Show("This email account is not exist!");
+            }   
+            */
         }
     }
 }

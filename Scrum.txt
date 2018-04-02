@@ -76,8 +76,17 @@ Each member writes down answers to 3 questions:
 
 2018/03/30 Jie Zhu
 1. Done since last scrum:
- - Finished the basic function about maps,and enhanced some method - 
+ - Finished the basic function about maps,and enhanced some method
 2. Plan until next Scrum
  - Finish the registion dialog 
 3. Need assistance / figure things out
- - Nothing special.
+ - Need jing to move some function from ship dialog to register.
+
+2018/04/01 Jie Zhu
+1. Done since last scrum:
+ - Finished the registion dialog
+ - Finished login dialog
+2. Plan until next Scrum
+ - Weather API 
+3. Need assistance / figure things out
+ - Nothing

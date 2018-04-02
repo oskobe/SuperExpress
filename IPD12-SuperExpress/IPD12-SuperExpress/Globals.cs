@@ -13,5 +13,6 @@ namespace IPD12_SuperExpress
         public const string CARRIER_ID_UPS = "se-241902";
         public const int PERIMETER_OF_EARTH = 40075;
         public static Database db=new Database();
+        public static  string emailExpression = @"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$";
     }
 }
