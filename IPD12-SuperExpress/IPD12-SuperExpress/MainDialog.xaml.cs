@@ -25,21 +25,28 @@ using MySql.Data.MySqlClient;
 
 namespace IPD12_SuperExpress
 {
-    
+
     /// <summary>
     /// Interaction logic for MainDialog.xaml
     /// </summary>
+    /// 
+
+
     public partial class MainDialog : Window
     {
         List<TrackDetail> trackDetailList = new List<TrackDetail>();
+        List<TrackDetail> filteredtrackDetailList;
         List<Country> countryList = new List<Country>();
         List<Province> provinceList = new List<Province>();
         List<Coordinate> coordinateList = new List<Coordinate>();
+        static int earthRadius = 6367;
         //double distance;
         private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
 
         public MainDialog()
         {
+            InitializeComponent();
+            myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
             try
             {
                 Globals.db = new Database();
@@ -54,7 +61,19 @@ namespace IPD12_SuperExpress
                 Environment.Exit(1);
 
             }
+        }
+        public class Cartesian
+        {
+            public double X { set; get; }
+            public double Y { set; get; }
+            public double Z { set; get; }
 
+            public Cartesian(double x, double y, double z)
+            {
+                X = x;
+                Y = y;
+                Z = z;
+            }
         }
 
         public class TrackDetailComparer : IEqualityComparer<TrackDetail>
@@ -62,7 +81,7 @@ namespace IPD12_SuperExpress
             //remove the the same location      
             public bool Equals(TrackDetail x, TrackDetail y)
             {
-                if ((x.CountryCode.CompareTo(y.CountryCode) == 0)&&(x.City.CompareTo(y.City)==0))
+                if ((x.CountryCode.CompareTo(y.CountryCode) == 0) && (x.City.CompareTo(y.City) == 0))
                     return true;
                 else
                     return false;
@@ -71,7 +90,7 @@ namespace IPD12_SuperExpress
             public int GetHashCode(TrackDetail obj)
             {
                 return 0;
-            }            
+            }
         }
         public static Response MakeRequest(string requestUrl)
         {
@@ -97,30 +116,59 @@ namespace IPD12_SuperExpress
                 return null;
             }
 
-        }       
-        
-        private double CaculateMaxDistance(Response locationsResponse)
+        }
+        private double DegtoRad(double x)
         {
-            int locNum = locationsResponse.ResourceSets[0].Resources.Length;
+            return x * Math.PI / 180;
+        }
+        private Cartesian convertSphericalToCartesian(Coordinate latlong)
+        {
+            var lat = DegtoRad(latlong.Latitude);
+            var lon = DegtoRad(latlong.Longitude);
+            var x = earthRadius * Math.Cos(lat) * Math.Cos(lon);
+            var y = earthRadius * Math.Cos(lat) * Math.Sin(lon);
+            var z = earthRadius * Math.Sin(lat);
+            return new Cartesian(x, y, z);
+        }
+        private double CaculateArcLength(Coordinate a, Coordinate b)
+        {
+            var point1 = convertSphericalToCartesian(a);
+            var point2 = convertSphericalToCartesian(b);
+            var cordLength = Math.Sqrt(Math.Pow(point1.X - point2.X, 2) + Math.Pow(point1.Y - point2.Y, 2) + Math.Pow(point1.Z - point2.Z, 2));
+            var centralAngle = 2 * Math.Asin(cordLength / 2 / earthRadius);
+            return earthRadius * centralAngle;
+        }
+        private double CaculateMaxDistance()
+        {
+            int locNum = coordinateList.Count();
+            //List<double> distanceList = new List<double>();
+            List<double> distanceList2 = new List<double>();
             //Get formatted addresses: Option 1
             //Get all locations in the response and then extract the formatted address for each location            
-            if (locNum>0)
+
+            if (locNum > 1)
             {
-                return ((DistanceMatrix)(locationsResponse.ResourceSets[0].Resources[0])).Results[0].TravelDistance;
+                for (int i = 0; i < locNum; i++)
+                {
+                    for (int j = i + 1; j < locNum; j++)
+                    {
+                        distanceList2.Add(CaculateArcLength(coordinateList.ElementAt(i), coordinateList.ElementAt(j)));
+                        /*string url = GetDistanceOfTwoEndHTTPRequest(coordinateList.ElementAt(i), coordinateList.ElementAt(j));
+                        Response response = MakeRequest(url);
+                        if (response != null)
+                        {
+                            distanceList.Add(((DistanceMatrix)(response.ResourceSets[0].Resources[0])).Results[0].TravelDistance);
+                        }
+                        */
+                    }
+                }                
+                return distanceList2.Max();
             }
-            return 0.0;                       
+            return 0.0;
         }
-        private string GetDistanceOfTwoEndHTTPRequest()
+        private string GetDistanceOfTwoEndHTTPRequest(Coordinate a, Coordinate b)
         {
-            int count = coordinateList.Count();
-            string url = string.Empty;
-            if (count > 1)
-            {
-                Coordinate startPoint = coordinateList.ElementAt(0);
-                Coordinate endPoint = coordinateList.ElementAt(count-1);
-                url =@"https://dev.virtualearth.net/REST/v1/Routes/DistanceMatrix?origins="+startPoint.Latitude+@","+startPoint.Longitude+ @"&destinations=" + endPoint.Latitude + @"," + endPoint.Longitude + @"&distanceUnit=kilometer&travelMode=driving&key=" + BingMapsKey;
-            }
-            return url;
+            return string.Format(@"https://dev.virtualearth.net/REST/v1/Routes/DistanceMatrix?origins={0},{1}&destinations={2},{3}&distanceUnit=kilometer&travelMode=driving&key={4}", a.Latitude, a.Longitude, b.Latitude, b.Longitude, BingMapsKey);
         }
         private Coordinate getCenterPoint()
         {
@@ -129,7 +177,8 @@ namespace IPD12_SuperExpress
             if (count > 1)
             {
                 c = coordinateList.ElementAt(count / 2);
-            }else if (count == 1)
+            }
+            else if (count == 1)
             {
                 c = coordinateList.ElementAt(0);
             }
@@ -138,19 +187,64 @@ namespace IPD12_SuperExpress
         private int getZoomLevel(double distance)
         {
             // reference:https://msdn.microsoft.com/en-us/library/aa940990.aspx
-            int levelUnit = Globals.PERIMETER_OF_EARTH / 20;
-            if (distance < levelUnit)
+            
+            if (distance >8555)
             {
-                return 14;
-            }else if (distance < levelUnit * 2)
-            {
-                return 10;
+                return 1;
             }
-            else if (distance < levelUnit * 3)
+            else if (distance>5268)
+            {
+                return 2;
+            }
+            else if (distance>2493)
+            {
+                return 3;
+            }
+            else if (distance > 1248)
             {
                 return 4;
             }
-            return 1;
+            else if (distance > 620)
+            {
+                return 5;
+            }
+            else if (distance > 317)
+            {
+                return 6;
+            }
+            else if (distance > 156)
+            {
+                return 7;
+            }
+            else if (distance > 77)
+            {
+                return 8;
+            }
+            else if (distance > 37)
+            {
+                return 9;
+            }
+            else if (distance > 19)
+            {
+                return 10;
+            }
+            else if (distance > 9)
+            {
+                return 9;
+            }
+            else if (distance > 5)
+            {
+                return 10;
+            }
+            else if (distance > 2.4)
+            {
+                return 11;
+            }
+            else if (distance > 1.1)
+            {
+                return 12;
+            }
+            return 13;
         }
         private static Coordinate GetCentralGeoCoordinate(IList<Coordinate> geoCoordinates)
         {
@@ -170,17 +264,13 @@ namespace IPD12_SuperExpress
                 y += Math.Cos(latitude) * Math.Sin(longitude);
                 z += Math.Sin(latitude);
             }
-
             var total = geoCoordinates.Count;
-
             x = x / total;
             y = y / total;
             z = z / total;
-
             var centralLongitude = Math.Atan2(y, x);
             var centralSquareRoot = Math.Sqrt(x * x + y * y);
             var centralLatitude = Math.Atan2(z, centralSquareRoot);
-
             return new Coordinate(centralLatitude * 180 / Math.PI, centralLongitude * 180 / Math.PI);
         }
 
@@ -192,73 +282,82 @@ namespace IPD12_SuperExpress
             //remove the distinct location
             List<TrackDetail> tempList = trackDetailList.Distinct(new TrackDetailComparer()).ToList();
             //remove the location whose postalCode is null
-            var filteredTrackList = from td in tempList where td.CountryCode!=string.Empty||td.City!=string.Empty select td;
-            var orderTrackList = filteredTrackList.Reverse();
-            foreach (var td in orderTrackList)
+            var filteredTrackList = from td in tempList where td.CountryCode != string.Empty && td.City != string.Empty select td;
+            filteredtrackDetailList = filteredTrackList.Reverse().ToList();
+            foreach (var td in filteredtrackDetailList)
             {
                 postalCode = td.PostalCode;
                 countryCode = td.CountryCode;
                 cityName = td.City;
-                XmlDocument searchResponse = Geocode(postalCode, countryCode,cityName);
+                XmlDocument searchResponse = Geocode(postalCode, countryCode, cityName);
                 if (searchResponse != null)
                 {
                     coordinateList.Add(ConvertLocationToCoordinate(searchResponse));
-                }                
+                }
             }
             int count = coordinateList.Count();
-            if (count >1)
+            if (count > 1)
             {
                 AddPolyline();
-                AddPushpinToMap();
+                AddPushpinAndTextToMap();
             }
             else if (count == 1)
             {
-                AddPushpinToMap();
+                AddPushpinAndTextToMap();
             }
             //CaculateMaxDistance();
             //It is for getting the distance between sender and receiver. That is for decide which Zoomlevel the maps will display
             //string url = "https://dev.virtualearth.net/REST/v1/Routes/DistanceMatrix?origins=47.6149,-122.1936&destinations=47.4747,-122.2057&distanceUnit=mile&travelMode=driving&key=" + BingMapsKey;
-            string url = GetDistanceOfTwoEndHTTPRequest();
-            Response reponse = MakeRequest(url);
-            double distance = CaculateMaxDistance(reponse);
-            //myMap.Visibility = Visibility.Visible;
+
+            double maxDistance = CaculateMaxDistance();            
             Coordinate center = GetCentralGeoCoordinate(coordinateList);
             if (center != null)
             {
                 myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(center.Latitude, center.Longitude);
-            }            
-            myMap.ZoomLevel = getZoomLevel(distance);
+            }
+            myMap.ZoomLevel = getZoomLevel(maxDistance);
             //myMapLabel.Visibility = Visibility.Visible;
             myMap.Focus(); //allows '+' and '-' to zoom the map
         }
         //Add a pushpin with a label to the map
-        private void AddPushpinToMap()
+        private void AddPushpinAndTextToMap()
         {
             int i = 1;
             foreach (Coordinate cd in coordinateList)
             {
                 Pushpin pushpin = new Pushpin();
                 pushpin.Content = "" + i++;
+
                 pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
                 myMap.Children.Add(pushpin);
+
+                System.Windows.Controls.Label customLabel = new System.Windows.Controls.Label();
+                customLabel.Content = "Country:Canada;City:Montreal";
+                Color c = Colors.Blue;
+                c.A = 100; //the point here is that you're setting the A component to 0 (alpha, 0 meaning completely transparent)
+                customLabel.Background = new SolidColorBrush(c);
+                // With map layers we can add WPF children to lat long (WPF Location obj) on the map.
+                MapLayer labelLayer = new MapLayer();
+                labelLayer.AddChild(customLabel, pushpin.Location);
+                myMap.Children.Add(labelLayer);
             }
         }
         private void AddPolyline()
         {
             MapPolyline polyline = new MapPolyline();
-            polyline.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Blue);
+            polyline.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.GreenYellow);
             polyline.StrokeThickness = 5;
             polyline.Opacity = 0.7;
             LocationCollection locationCollection = new LocationCollection();
             foreach (Coordinate cd in coordinateList)
             {
-                locationCollection.Add(new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude)));
+                locationCollection.Add(new Microsoft.Maps.MapControl.WPF.Location(cd.Latitude, cd.Longitude));
             }
             polyline.Locations = locationCollection;
             myMap.Children.Add(polyline);
         }
         // Geocode an address and return a latitude and longitude
-        public XmlDocument Geocode(string postCode, string countryCode,string cityName)
+        public XmlDocument Geocode(string postCode, string countryCode, string cityName)
         {
             string geocodeRequest = string.Empty;
             //Create REST Services geocode request using Locations API
@@ -268,15 +367,15 @@ namespace IPD12_SuperExpress
             }
             else
             {
-                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + countryCode +@"/"+cityName+ @"?o=xml&key=" + BingMapsKey;
+                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + countryCode + @"/" + cityName + @"?o=xml&key=" + BingMapsKey;
             }
-            
+
 
             //Make the request and get the response
             XmlDocument geocodeResponse = GetXmlResponse(geocodeRequest);
 
             return (geocodeResponse);
-        }        
+        }
 
         // Submit a REST Services or Spatial Data Services request and return the response
         private XmlDocument GetXmlResponse(string requestUrl)

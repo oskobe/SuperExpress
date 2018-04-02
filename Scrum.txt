@@ -45,7 +45,7 @@ Each member writes down answers to 3 questions:
  - Parse xml data
 
 
-2018/03/27 Jing Wang
+2018/03/28 Jing Wang
 1. Done since last scrum:
 - Coding on track package window
 - Coding on estimate price & time window
@@ -54,7 +54,7 @@ Each member writes down answers to 3 questions:
 3. Need assistance / figure things out
 - Find out how to set local currency for estimating shipping price
 
-2018/03/28 Jie Zhu
+2018/03/29 Jie Zhu
 1. Done since last scrum:
  - Got know how to parse xml and json data from bing maps and REST
  - Made a part of core functions to make a friendly application 
@@ -64,7 +64,7 @@ Each member writes down answers to 3 questions:
 3. Need assistance / figure things out
  - Nothing special.
 
-2018/03/27 Jing Wang
+2018/03/29 Jing Wang
 1. Done since last scrum:
 - Re-design shipping cost calculator screen
 - Fix bugs for package tracking 
@@ -73,3 +73,11 @@ Each member writes down answers to 3 questions:
 - Finish coding of shipping fee & time estimation
 3. Need assistance / figure things out
 - Nothing special.
+
+2018/03/30 Jie Zhu
+1. Done since last scrum:
+ - Finished the basic function about maps,and enhanced some method - 
+2. Plan until next Scrum
+ - Finish the registion dialog 
+3. Need assistance / figure things out
+ - Nothing special.
