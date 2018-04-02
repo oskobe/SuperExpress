@@ -21,7 +21,7 @@ namespace IPD12_SuperExpress
     /// </summary>
     public partial class Register : Window
     {
-        string emailExpression = @"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$";
+        
         public Register()
         {
             InitializeComponent();
@@ -46,7 +46,7 @@ namespace IPD12_SuperExpress
                 regDlg_tbEmail.Focus();
                 return;
             }
-            MatchCollection mc = Regex.Matches(email, emailExpression);
+            MatchCollection mc = Regex.Matches(email,Globals.emailExpression);
             if (mc.Count == 0)
             {
                 MessageBox.Show("Please enter an valid email(example@gmail.com)");

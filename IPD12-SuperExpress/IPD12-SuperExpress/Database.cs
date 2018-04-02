@@ -182,9 +182,32 @@ namespace IPD12_SuperExpress
                     insertCommand.Parameters.AddWithValue("@Password", user.Password);
                     insertCommand.ExecuteNonQuery();
                 }
-            }catch(MySqlException ex)
+            }
+            catch (MySqlException ex)
             {
                 throw ex;
+            }
+        }
+        public string SelectPasswordByEmail(string email)
+        {
+            using (MySqlCommand command = new MySqlCommand("SELECT password FROM users WHERE email = @email", conn))
+            {
+                command.Parameters.AddWithValue("@email", email);
+                try
+                {
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return reader["password"].ToString();
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    throw ex;
+                }
+                return string.Empty;
             }
         }
     }
