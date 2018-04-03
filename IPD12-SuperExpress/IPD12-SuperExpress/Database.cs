@@ -90,9 +90,9 @@ namespace IPD12_SuperExpress
             }
         }
 
-        public void AddOrder(ShipmentRequest sr)
+        public string AddOrder(ShipmentRequest sr)
         {
-            using (MySqlCommand insertCommand = new MySqlCommand("INSERT INTO orders (serviceType, guaranteedService, estimatedDeliveryDate, weight, weightUnit, length, width, height, dimensionsUnit, amount, currency, countryFrom, provinceFrom, cityFrom, address1From, address2From, postalCodeFrom, countryTo, provinceTo, cityTo, address1To, address2To, postalCodeTo) VALUES (@serviceType, @guaranteedService, @estimatedDeliveryDate, @weight, @weightUnit, @length, @width, @height, @dimensionsUnit, @amount, @currency, @countryFrom, @provinceFrom, @cityFrom, @address1From, @address2From, @postalCodeFrom, @countryTo, @provinceTo, @cityTo, @address1To, @address2To, @postalCodeTo)", conn))
+            using (MySqlCommand insertCommand = new MySqlCommand("INSERT INTO orders (serviceType, guaranteedService, estimatedDeliveryDate, weight, weightUnit, length, width, height, dimensionsUnit, amount, currency, countryFrom, provinceFrom, cityFrom, address1From, address2From, postalCodeFrom, countryTo, provinceTo, cityTo, address1To, address2To, postalCodeTo) VALUES (@serviceType, @guaranteedService, @estimatedDeliveryDate, @weight, @weightUnit, @length, @width, @height, @dimensionsUnit, @amount, @currency, @countryFrom, @provinceFrom, @cityFrom, @address1From, @address2From, @postalCodeFrom, @countryTo, @provinceTo, @cityTo, @address1To, @address2To, @postalCodeTo); SELECT LAST_INSERT_ID()", conn))
 
             {
                 insertCommand.Parameters.AddWithValue("@serviceType", sr.ServiceType);
@@ -119,8 +119,9 @@ namespace IPD12_SuperExpress
                 insertCommand.Parameters.AddWithValue("@address2To", sr.Address2To);
                 insertCommand.Parameters.AddWithValue("@postalCodeTo", sr.PostalCodeTo);
                 
-                long id = insertCommand.ExecuteNonQuery();
-                Console.WriteLine("ID is:  {0}", id);
+                var generatedId = insertCommand.ExecuteScalar();
+                return generatedId.ToString();
+                //Console.WriteLine("ID is:  {0}", id);
             }
         }
 

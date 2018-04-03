@@ -149,8 +149,8 @@ namespace IPD12_SuperExpress
 
             try
             {
-                Globals.db.AddOrder(sr);
-                MessageBox.Show("new order was created");
+                string newGeneratedId = Globals.db.AddOrder(sr);
+                MessageBox.Show("Shipment request " + newGeneratedId + " was created.");
             } catch (MySqlException ex)
             {
                 Console.WriteLine(ex.StackTrace);
