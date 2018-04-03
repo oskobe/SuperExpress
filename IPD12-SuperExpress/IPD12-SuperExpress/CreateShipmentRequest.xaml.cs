@@ -111,7 +111,17 @@ namespace IPD12_SuperExpress
 
         private void btCreate_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("XXXX");
+            if (tbAddressFrom1.Text.Trim().Equals(string.Empty))
+            {
+                MessageBox.Show("Please enter the origin address1.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (tbAddressTo1.Text.Trim().Equals(string.Empty))
+            {
+                MessageBox.Show("Please enter the destination address1.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             ShipmentRequest sr = new ShipmentRequest();
             sr.ServiceType = rate.ServiceType;
             sr.GuaranteedService = rate.GuaranteedService;
@@ -123,7 +133,7 @@ namespace IPD12_SuperExpress
             sr.Height = costCalculator.Dimensions.Height ?? 0;
             sr.DimensionsUnit = costCalculator.Dimensions.Unit.ToString();
             sr.Amount = rate.Amount;
-            sr.Currency = Globals.CURRENCY_CAD;
+            sr.Currency = Globals.CURRENCY_CAD.Trim();
             sr.CountryFrom = cbCountryFrom.Text;
             sr.ProvinceFrom = cbProvinceStateFrom.Text;
             sr.CityFrom = tbCityFrom.Text;

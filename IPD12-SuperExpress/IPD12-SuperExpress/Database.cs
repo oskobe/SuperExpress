@@ -119,7 +119,8 @@ namespace IPD12_SuperExpress
                 insertCommand.Parameters.AddWithValue("@address2To", sr.Address2To);
                 insertCommand.Parameters.AddWithValue("@postalCodeTo", sr.PostalCodeTo);
                 
-                insertCommand.ExecuteNonQuery();
+                long id = insertCommand.ExecuteNonQuery();
+                Console.WriteLine("ID is:  {0}", id);
             }
         }
 
