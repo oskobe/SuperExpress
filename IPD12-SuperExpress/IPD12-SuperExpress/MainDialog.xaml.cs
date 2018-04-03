@@ -50,7 +50,7 @@ namespace IPD12_SuperExpress
             InitializeComponent();
             myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
             try
-            {                
+            {
                 //InitializeComponent();
                 InitializeDataFromDatabase();
                 InitializeShippingCostCalculator();
@@ -106,7 +106,7 @@ namespace IPD12_SuperExpress
                         response.StatusCode,
                         response.StatusDescription));
                     DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(Response));
-                    object objResponse = jsonSerializer.ReadObject(response.GetResponseStream());                  
+                    object objResponse = jsonSerializer.ReadObject(response.GetResponseStream());
                     Response jsonResponse = objResponse as Response;
                     return jsonResponse;
                 }
@@ -124,7 +124,7 @@ namespace IPD12_SuperExpress
         }
         private double RadtoDeg(double x)
         {
-            return x * 180  / Math.PI;
+            return x * 180 / Math.PI;
         }
         private Cartesian convertSphericalToCartesian(Coordinate latlong)
         {
@@ -145,7 +145,7 @@ namespace IPD12_SuperExpress
         }
         private double CaculateMaxDistance()
         {
-            int locNum = coordinateList.Count();            
+            int locNum = coordinateList.Count();
             List<double> distanceList2 = new List<double>();
             //Get formatted addresses: Option 1
             //Get all locations in the response and then extract the formatted address for each location   
@@ -155,14 +155,14 @@ namespace IPD12_SuperExpress
                 {
                     for (int j = i + 1; j < locNum; j++)
                     {
-                        distanceList2.Add(CaculateArcLength(coordinateList.ElementAt(i), coordinateList.ElementAt(j)));                        
+                        distanceList2.Add(CaculateArcLength(coordinateList.ElementAt(i), coordinateList.ElementAt(j)));
                     }
-                }                
+                }
                 return distanceList2.Max();
             }
             return 0.0;
         }
-       
+
         private Coordinate getCenterPoint()
         {
             int count = coordinateList.Count();
@@ -180,16 +180,16 @@ namespace IPD12_SuperExpress
         private int getZoomLevel(double distance)
         {
             // reference:https://msdn.microsoft.com/en-us/library/aa940990.aspx
-            
-            if (distance >9000)
+
+            if (distance > 9000)
             {
                 return 1;
             }
-            else if (distance>4500)
+            else if (distance > 4500)
             {
                 return 2;
             }
-            else if (distance>2250)
+            else if (distance > 2250)
             {
                 return 3;
             }
@@ -239,8 +239,8 @@ namespace IPD12_SuperExpress
             }
             return 13;
         }
-      
-        private  Coordinate GetCentralGeoCoordinate(IList<Coordinate> geoCoordinates)
+
+        private Coordinate GetCentralGeoCoordinate(IList<Coordinate> geoCoordinates)
         {
             if (geoCoordinates.Count == 1)
             {
@@ -265,7 +265,7 @@ namespace IPD12_SuperExpress
             var centralLongitude = Math.Atan2(y, x);
             var centralSquareRoot = Math.Sqrt(x * x + y * y);
             var centralLatitude = Math.Atan2(z, centralSquareRoot);
-            return new Coordinate(RadtoDeg(centralLatitude), RadtoDeg( centralLongitude ));
+            return new Coordinate(RadtoDeg(centralLatitude), RadtoDeg(centralLongitude));
         }
 
         private void btnTracking_Click(object sender, RoutedEventArgs e)
@@ -288,34 +288,34 @@ namespace IPD12_SuperExpress
                 if (tempCoordinate != null)
                 {
                     coordinateList.Add(tempCoordinate);
-                }                
+                }
                 else
                 {
                     filteredtrackDetailList.Remove(td);
-                }                
+                }
             }
             int count = coordinateList.Count();
             if (count > 1)
             {
                 AddPolyline();
-                 AddPushpinAndWeatherInfoToMap();
+                AddPushpinAndWeatherInfoToMap();
             }
             else if (count == 1)
             {
-                 AddPushpinAndWeatherInfoToMap();
+                AddPushpinAndWeatherInfoToMap();
             }
-            
 
-            double maxDistance = CaculateMaxDistance();            
+
+            double maxDistance = CaculateMaxDistance();
             Coordinate center = GetCentralGeoCoordinate(coordinateList);
             if (center != null)
             {
                 myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(center.Latitude, center.Longitude);
             }
-            myMap.ZoomLevel = getZoomLevel(maxDistance);            
+            myMap.ZoomLevel = getZoomLevel(maxDistance);
             myMap.Focus(); //allows '+' and '-' to zoom the map
         }
-        
+
         //Add a pushpin and a label with weather information to the map
         private async Task AddPushpinAndWeatherInfoToMap()
         {
@@ -341,11 +341,11 @@ namespace IPD12_SuperExpress
                     {
                         c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
                     }
-                }                
+                }
                 c.A = 100;
                 customLabel.Background = new SolidColorBrush(c);
                 // With map layers we can add WPF children to lat long (WPF Location obj) on the map.                
-                labelLayer.AddChild(customLabel, pushpin.Location);               
+                labelLayer.AddChild(customLabel, pushpin.Location);
             }
             myMap.Children.Add(labelLayer);
             // With map layers we can add WPF children to lat long (WPF Location obj) on the map. 
@@ -363,7 +363,7 @@ namespace IPD12_SuperExpress
             }
             polyline.Locations = locationCollection;
             myMap.Children.Add(polyline);
-        }        
+        }
 
         public Coordinate GetCoordinate(string postCode, string countryCode, string cityName)
         {
@@ -580,6 +580,6 @@ namespace IPD12_SuperExpress
         {
             this.DialogResult = true;
         }
-  
+
     }
 }
