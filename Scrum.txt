@@ -84,10 +84,19 @@ Each member writes down answers to 3 questions:
 
 2018/04/01 Jie Zhu
 1. Done since last scrum:
- - Finished the registion dialog
- - Finished login dialog
+ - Finished the registion dialog.
 2. Plan until next Scrum
- - Weather API 
+ - To find a good weather API
+ - Finish all function of login dialog. 
+3. Need assistance / figure things out
+ - Nothing
+
+2018/04/02 Jie Zhu
+1. Done since last scrum:
+ - Used the OpenWeatherMap API to display the weather information.
+ - Finish all function of login dialog.
+2. Plan until next Scrum
+ - Develop alert function depend on terrible weather. 
 3. Need assistance / figure things out
  - Nothing
 
