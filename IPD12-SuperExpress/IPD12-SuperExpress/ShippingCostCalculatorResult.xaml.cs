@@ -89,11 +89,18 @@ namespace IPD12_SuperExpress
         private void btCreateShipmentRequest_Click(object sender, RoutedEventArgs e)
         {
             SuperExpressRate rate = (SuperExpressRate)lvShippingCostCalculatorResult.SelectedItem;
-            CreateShipmentRequest requestDialog = new CreateShipmentRequest(costCalculator, rate);
-            if (requestDialog.ShowDialog() == true)
+            if (rate != null)
             {
+                CreateShipmentRequest requestDialog = new CreateShipmentRequest(costCalculator, rate);
+                if (requestDialog.ShowDialog() == true)
+                {
 
+                }
+            } else
+            {
+                MessageBox.Show("Please choose one shipping option", "Selection error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+            
         }
     }
 }
