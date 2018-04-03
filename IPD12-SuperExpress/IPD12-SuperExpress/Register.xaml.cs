@@ -41,16 +41,14 @@ namespace IPD12_SuperExpress
             string email = regDlg_tbEmail.Text;
             if (string.IsNullOrWhiteSpace(email))
             {
-                MessageBox.Show("Please enter an email");
-                regDlg_tbEmail.Text = "";
+                MessageBox.Show("Please enter an email");                
                 regDlg_tbEmail.Focus();
                 return;
             }
             MatchCollection mc = Regex.Matches(email,Globals.emailExpression);
             if (mc.Count == 0)
             {
-                MessageBox.Show("Please enter an valid email(example@gmail.com)");
-                regDlg_tbEmail.Text = "";
+                MessageBox.Show("Please enter an valid email(example@gmail.com)");                
                 regDlg_tbEmail.Focus();
                 return;
             }
@@ -120,6 +118,11 @@ namespace IPD12_SuperExpress
                 MessageBox.Show("Add user failure!");
             }
             
+        }
+
+        private void regDlg_tbEmail_GotFocus(object sender, RoutedEventArgs e)
+        {
+            regDlg_tbEmail.Text = "";
         }
     }
 }
