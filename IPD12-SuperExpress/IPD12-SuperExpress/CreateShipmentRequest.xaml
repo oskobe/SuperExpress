@@ -8,8 +8,8 @@
         Title="Create Shipment Request" Height="877" Width="1413" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.206,0.356">
         <Label Content="Create Shipping Request" FontSize="36" HorizontalAlignment="Left" Margin="92,39,0,0" VerticalAlignment="Top"/>
-        <Label Content="Please provide the full address to create a new shipping request." FontSize="16" HorizontalAlignment="Left" Margin="92,109,0,0" VerticalAlignment="Top"/>
-        <GroupBox Header="Origin/Destination Information" HorizontalAlignment="Left" Height="439" Margin="92,175,0,0" VerticalAlignment="Top" Width="1217">
+        <Label Content="Please provide the full address to create a new shipping request." FontSize="16" HorizontalAlignment="Left" Margin="92,225,0,0" VerticalAlignment="Top"/>
+        <GroupBox Header="Origin/Destination Information" HorizontalAlignment="Left" Height="439" Margin="92,291,0,0" VerticalAlignment="Top" Width="1217">
             <Grid Margin="0,0,-11.667,-13.667">
                 <Label Content="Ship From Country:" Margin="6,18,686,379"/>
                 <ComboBox Name="cbCountryFrom" SelectionChanged="cbCountryFrom_SelectionChanged" HorizontalAlignment="Left" Margin="8,50,0,0" VerticalAlignment="Top" Width="203"/>
@@ -38,17 +38,23 @@
                 <TextBox x:Name="tbAddressTo1" HorizontalAlignment="Left" Margin="621,245,0,0" VerticalAlignment="Top" Width="518" Height="22"/>
                 <Label Content="Address 2:" Margin="621,277,227,120"/>
                 <TextBox x:Name="tbAddressTo2" HorizontalAlignment="Left" Margin="621,309,0,0" VerticalAlignment="Top" Width="518" Height="22"/>
-
-
             </Grid>
         </GroupBox>
-        <Label Content="Shipment Weight:" HorizontalAlignment="Left" Margin="1021,95,0,0" VerticalAlignment="Top"/>
-        <Label Content="Shipment Dimensions:" HorizontalAlignment="Left" Margin="1021,121,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblWeight" Content=":::" HorizontalAlignment="Left" Margin="1161,95,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblDimensions" Content=":::" HorizontalAlignment="Left" Margin="1161,121,0,0" VerticalAlignment="Top"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="347,681,0,0" VerticalAlignment="Top" Width="233"/>
-        <Button Content="Create" HorizontalAlignment="Left" Margin="740,681,0,0" VerticalAlignment="Top" Width="233"/>
+        <Label Content="Service Type:" HorizontalAlignment="Left" Margin="96,121,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblServiceType" Content=":::" HorizontalAlignment="Left" Margin="236,121,0,0" VerticalAlignment="Top"/>
+        <Label Content="Guaranteed Service: " HorizontalAlignment="Left" Margin="96,147,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblGuaranteedService" Content=":::" HorizontalAlignment="Left" Margin="236,147,0,0" VerticalAlignment="Top"/>
+        <Label Content="Estimated Delivery Date:" HorizontalAlignment="Left" Margin="96,173,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblEstimatedDate" Content=":::" HorizontalAlignment="Left" Margin="236,173,0,0" VerticalAlignment="Top"/>
+        <Label Content="Shipment Weight:" HorizontalAlignment="Left" Margin="503,121,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblWeight" Content=":::" HorizontalAlignment="Left" Margin="643,121,0,0" VerticalAlignment="Top"/>
+        <Label Content="Shipment Dimensions:" HorizontalAlignment="Left" Margin="503,147,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblDimensions" Content=":::" HorizontalAlignment="Left" Margin="643,147,0,0" VerticalAlignment="Top"/>
+        <Label Content="Total Amount:" HorizontalAlignment="Left" Margin="504,173,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblAmount" Content=":::" HorizontalAlignment="Left" Margin="644,173,0,0" VerticalAlignment="Top"/>
 
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="347,774,0,0" VerticalAlignment="Top" Width="233"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="740,774,0,0" VerticalAlignment="Top" Width="233"/>
 
     </Grid>
 </Window>
