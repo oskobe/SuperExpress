@@ -86,7 +86,7 @@ namespace IPD12_SuperExpress
             lvShippingCostCalculatorResult.SelectedItem = radioButton.DataContext;
         }
 
-        private void cbCreateShipmentRequest_Click(object sender, RoutedEventArgs e)
+        private void btCreateShipmentRequest_Click(object sender, RoutedEventArgs e)
         {
             SuperExpressRate rate = (SuperExpressRate)lvShippingCostCalculatorResult.SelectedItem;
             CreateShipmentRequest requestDialog = new CreateShipmentRequest(costCalculator, rate);

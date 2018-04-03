@@ -90,7 +90,38 @@ namespace IPD12_SuperExpress
             }
         }
 
+        public void AddOrder(ShipmentRequest sr)
+        {
+            using (MySqlCommand insertCommand = new MySqlCommand("INSERT INTO orders (serviceType, guaranteedService, estimatedDeliveryDate, weight, weightUnit, length, width, height, dimensionsUnit, amount, currency, countryFrom, provinceFrom, cityFrom, address1From, address2From, postalCodeFrom, countryTo, provinceTo, cityTo, address1To, address2To, postalCodeTo) VALUES (@serviceType, @guaranteedService, @estimatedDeliveryDate, @weight, @weightUnit, @length, @width, @height, @dimensionsUnit, @amount, @currency, @countryFrom, @provinceFrom, @cityFrom, @address1From, @address2From, @postalCodeFrom, @countryTo, @provinceTo, @cityTo, @address1To, @address2To, @postalCodeTo)", conn))
 
+            {
+                insertCommand.Parameters.AddWithValue("@serviceType", sr.ServiceType);
+                insertCommand.Parameters.AddWithValue("@guaranteedService", sr.GuaranteedService);
+                insertCommand.Parameters.AddWithValue("@estimatedDeliveryDate", sr.EstimatedDeliveryDate);
+                insertCommand.Parameters.AddWithValue("@weight", sr.Weight);
+                insertCommand.Parameters.AddWithValue("@weightUnit", sr.WeightUnit);
+                insertCommand.Parameters.AddWithValue("@length", sr.Length);
+                insertCommand.Parameters.AddWithValue("@width", sr.Width);
+                insertCommand.Parameters.AddWithValue("@height", sr.Height);
+                insertCommand.Parameters.AddWithValue("@dimensionsUnit", sr.DimensionsUnit);
+                insertCommand.Parameters.AddWithValue("@amount", sr.Amount);
+                insertCommand.Parameters.AddWithValue("@currency", sr.Currency);
+                insertCommand.Parameters.AddWithValue("@countryFrom", sr.CountryFrom);
+                insertCommand.Parameters.AddWithValue("@provinceFrom", sr.ProvinceFrom);
+                insertCommand.Parameters.AddWithValue("@cityFrom", sr.CityFrom);
+                insertCommand.Parameters.AddWithValue("@address1From", sr.Address1From);
+                insertCommand.Parameters.AddWithValue("@address2From", sr.Address2From);
+                insertCommand.Parameters.AddWithValue("@postalCodeFrom", sr.PostalCodeFrom);
+                insertCommand.Parameters.AddWithValue("@countryTo", sr.CountryTo);
+                insertCommand.Parameters.AddWithValue("@provinceTo", sr.ProvinceTo);
+                insertCommand.Parameters.AddWithValue("@cityTo", sr.CityTo);
+                insertCommand.Parameters.AddWithValue("@address1To", sr.Address1To);
+                insertCommand.Parameters.AddWithValue("@address2To", sr.Address2To);
+                insertCommand.Parameters.AddWithValue("@postalCodeTo", sr.PostalCodeTo);
+                
+                insertCommand.ExecuteNonQuery();
+            }
+        }
 
         /*
         public List<Person> GetAllPeople()
@@ -163,7 +194,7 @@ namespace IPD12_SuperExpress
 
         }
         */
-        public void AddUser(User user)
+                public void AddUser(User user)
         {
             string query = "INSERT INTO users (name, phone,email,postalCode,countryCode,provinceCode,cityName,streetName,apartment,Password) values(@name, @phone,@email,@postalCode,@countryCode,@provinceCode,@cityName,@streetName,@apartment,@Password)";
             try
@@ -182,32 +213,9 @@ namespace IPD12_SuperExpress
                     insertCommand.Parameters.AddWithValue("@Password", user.Password);
                     insertCommand.ExecuteNonQuery();
                 }
-            }
-            catch (MySqlException ex)
+            }catch(MySqlException ex)
             {
                 throw ex;
-            }
-        }
-        public string SelectPasswordByEmail(string email)
-        {
-            using (MySqlCommand command = new MySqlCommand("SELECT password FROM users WHERE email = @email", conn))
-            {
-                command.Parameters.AddWithValue("@email", email);
-                try
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return reader["password"].ToString();
-                        }
-                    }
-                }
-                catch (MySqlException ex)
-                {
-                    throw ex;
-                }
-                return string.Empty;
             }
         }
     }
