@@ -41,7 +41,7 @@
             </ListView.View>
         </ListView>
         <Label Content="Please choose one option and click the button &#xD;&#xA;below to create a new shipment request." FontSize="14" HorizontalAlignment="Left" Margin="946,316,0,0" VerticalAlignment="Top" Width="363" Height="49"/>
-        <Button Margin="946,393,141.667,422" Content="Create Shipment Request"/>
+        <Button Name="btCreateShipmentRequest" Click="btCreateShipmentRequest_Click" Margin="946,393,141.667,422" Content="Create Shipment Request"/>
 
     </Grid>
 </Window>

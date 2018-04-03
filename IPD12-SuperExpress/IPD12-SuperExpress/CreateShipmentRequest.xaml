@@ -53,8 +53,8 @@
         <Label Content="Total Amount:" HorizontalAlignment="Left" Margin="504,173,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblAmount" Content=":::" HorizontalAlignment="Left" Margin="644,173,0,0" VerticalAlignment="Top"/>
 
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="347,774,0,0" VerticalAlignment="Top" Width="233"/>
-        <Button Content="Create" HorizontalAlignment="Left" Margin="740,774,0,0" VerticalAlignment="Top" Width="233"/>
+        <Button Name="btCancel" IsCancel="True" Content="Cancel" HorizontalAlignment="Left" Margin="347,774,0,0" VerticalAlignment="Top" Width="233"/>
+        <Button Name="btCreate" Click="btCreate_Click" IsDefault="True" Content="Create" HorizontalAlignment="Left" Margin="740,774,0,0" VerticalAlignment="Top" Width="233"/>
 
     </Grid>
 </Window>

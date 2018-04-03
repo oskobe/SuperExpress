@@ -108,5 +108,44 @@ namespace IPD12_SuperExpress
             cbProvinceStateTo.ItemsSource = provinceInSelectedCountryList;
             cbProvinceStateTo.SelectedIndex = 0;
         }
+
+        private void btCreate_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("XXXX");
+            ShipmentRequest sr = new ShipmentRequest();
+            sr.ServiceType = rate.ServiceType;
+            sr.GuaranteedService = rate.GuaranteedService;
+            sr.EstimatedDeliveryDate = rate.EstimatedDeliveryDateTime;
+            sr.Weight = costCalculator.Weight.Value??0;
+            sr.WeightUnit = costCalculator.Weight.Unit.ToString();
+            sr.Length = costCalculator.Dimensions.Length??0;
+            sr.Width = costCalculator.Dimensions.Width ?? 0;
+            sr.Height = costCalculator.Dimensions.Height ?? 0;
+            sr.DimensionsUnit = costCalculator.Dimensions.Unit.ToString();
+            sr.Amount = rate.Amount;
+            sr.Currency = Globals.CURRENCY_CAD;
+            sr.CountryFrom = cbCountryFrom.Text;
+            sr.ProvinceFrom = cbProvinceStateFrom.Text;
+            sr.CityFrom = tbCityFrom.Text;
+            sr.Address1From = tbAddressFrom1.Text;
+            sr.Address2From = tbAddressFrom2.Text;
+            sr.PostalCodeFrom = tbPostalCodeFrom.Text;
+            sr.CountryTo = cbCountryTo.Text;
+            sr.ProvinceTo = cbProvinceStateTo.Text;
+            sr.CityTo = tbCityTo.Text;
+            sr.Address1To = tbAddressTo1.Text;
+            sr.Address2To = tbAddressTo2.Text;
+            sr.PostalCodeTo = tbPostalCodeTo.Text;
+
+            try
+            {
+                Globals.db.AddOrder(sr);
+                MessageBox.Show("new order was created");
+            } catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                MessageBox.Show("Error writing shipment request into database: \n" + ex.Message, "Database writing error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }
