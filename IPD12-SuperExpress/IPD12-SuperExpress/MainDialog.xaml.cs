@@ -45,10 +45,122 @@ namespace IPD12_SuperExpress
         //double distance;
         private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
         private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient("23a61d3a72f546a7a1659131fb9499c0");
+        /*
+        Dictionary<string, TextBlock> eventBlocks = new Dictionary<string, TextBlock>();
+        // A collection of key/value pairs containing the event name  
+        // and the number of times the event fired.
+        Dictionary<string, int> eventCount = new Dictionary<string, int>();
+                
+
+        void MapWithEvents_MouseLeftButtonUp(object sender, MouseEventArgs e)
+        {
+            // Updates the count of single mouse clicks.
+            ShowEvent("MapWithEvents_MouseLeftButtonUp");
+        }
+
+        void MapWithEvents_MouseWheel(object sender, MouseEventArgs e)
+        {
+            // Updates the count of mouse drag boxes created.
+            ShowEvent("MapWithEvents_MouseWheel");
+        }
+
+        void MapWithEvents_MouseLeftButtonDown(object sender, MouseEventArgs e)
+        {
+            // Updates the count of mouse pans.
+            ShowEvent("MapWithEvents_MouseLeftButtonDown");
+        }
+
+        void MapWithEvents_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            // Updates the count of mouse double clicks.
+            ShowEvent("MapWithEvents_MouseDoubleClick");
+        }
+
+        void MapWithEvents_ViewChangeEnd(object sender, MapEventArgs e)
+        {
+            //Updates the number of times the map view has changed.
+            ShowEvent("ViewChangeEnd");
+        }
+
+        void MapWithEvents_ViewChangeStart(object sender, MapEventArgs e)
+        {
+            //Updates the number of times the map view started changing.
+            ShowEvent("ViewChangeStart");
+        }
+
+        void MapWithEvents_ViewChangeOnFrame(object sender, MapEventArgs e)
+        {
+            // Updates the number of times a map view has changed 
+            // during an animation from one location to another.
+            ShowEvent("ViewChangeOnFrame");
+        }
+        void MapWithEvents_TargetViewChanged(object sender, MapEventArgs e)
+        {
+            // Updates the number of map view changes that occured during
+            // a zoom or pan.
+            ShowEvent("TargetViewChange");
+        }
+
+        void MapWithEvents_ModeChanged(object sender, MapEventArgs e)
+        {
+            // Updates the number of times the map mode changed.
+            ShowEvent("ModeChanged");
+        }
+
+        void ShowEvent(string eventName)
+        {
+            // Updates the display box showing the number of times 
+            // the wired events occured.
+            if (!eventBlocks.ContainsKey(eventName))
+            {
+                TextBlock tb = new TextBlock();
+                tb.Foreground = new SolidColorBrush(
+                    Color.FromArgb(255, 128, 255, 128));
+                tb.Margin = new Thickness(5);
+                eventBlocks.Add(eventName, tb);
+                eventCount.Add(eventName, 0);
+                eventsPanel.Children.Add(tb);
+            }
+
+            eventCount[eventName]++;
+            eventBlocks[eventName].Text = String.Format(
+                "{0}: [{1} times] {2} (HH:mm:ss:ffff)",
+                eventName, eventCount[eventName].ToString(), DateTime.Now.ToString());
+        }
+        */
         public MainDialog()
         {
             InitializeComponent();
             myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
+            // Fires every animated frame from one location to another.
+            /*
+            myMap.ViewChangeOnFrame +=
+                new EventHandler<MapEventArgs>(MapWithEvents_ViewChangeOnFrame);
+            // Fires when the map view location has changed.
+            myMap.TargetViewChanged +=
+                new EventHandler<MapEventArgs>(MapWithEvents_TargetViewChanged);
+            // Fires when the map view starts to move to its new target view.
+            myMap.ViewChangeStart +=
+                new EventHandler<MapEventArgs>(MapWithEvents_ViewChangeStart);
+            // Fires when the map view has reached its new target view.
+            myMap.ViewChangeEnd +=
+                new EventHandler<MapEventArgs>(MapWithEvents_ViewChangeEnd);
+            // Fires when a different mode button on the navigation bar is selected.
+            myMap.ModeChanged +=
+                new EventHandler<MapEventArgs>(MapWithEvents_ModeChanged);
+            // Fires when the mouse is double clicked
+            myMap.MouseDoubleClick +=
+                new MouseButtonEventHandler(MapWithEvents_MouseDoubleClick);
+            // Fires when the mouse wheel is used to scroll the map
+            myMap.MouseWheel +=
+                new MouseWheelEventHandler(MapWithEvents_MouseWheel);
+            // Fires when the left mouse button is depressed
+            myMap.MouseLeftButtonDown +=
+                new MouseButtonEventHandler(MapWithEvents_MouseLeftButtonDown);
+            // Fires when the left mouse button is released
+            myMap.MouseLeftButtonUp +=
+                new MouseButtonEventHandler(MapWithEvents_MouseLeftButtonUp);
+                */
             try
             {
                 //InitializeComponent();
@@ -109,6 +221,30 @@ namespace IPD12_SuperExpress
                     object objResponse = jsonSerializer.ReadObject(response.GetResponseStream());
                     Response jsonResponse = objResponse as Response;
                     return jsonResponse;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        public static object MakeWeatherRequest(string requestUrl)
+        {
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        throw new Exception(String.Format(
+                        "Server error (HTTP {0}: {1}).",
+                        response.StatusCode,
+                        response.StatusDescription));
+                    DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(Response));
+                    object objResponse = jsonSerializer.ReadObject(response.GetResponseStream());
+                    return objResponse;
                 }
             }
             catch (Exception e)
@@ -315,39 +451,66 @@ namespace IPD12_SuperExpress
             myMap.ZoomLevel = getZoomLevel(maxDistance);
             myMap.Focus(); //allows '+' and '-' to zoom the map
         }
-
+        private async Task FullWeatherInfoBoxAsync(object sender, MouseEventArgs e)
+        {
+            Pushpin p = (Pushpin)sender;
+            string strIndex = p.Content.ToString();
+            int index= int.Parse(strIndex);
+            TrackDetail td = filteredtrackDetailList.ElementAt(index - 1);
+            MessageBox.Show(strIndex);
+            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = p.Location.Latitude, Longitude = p.Location.Longitude });
+            mainDlg_lbCountry.Content = result.City.Country;
+            mainDlg_lbCity.Content = result.City.Name;
+            mainDlg_lbTemp.Content = Math.Round(result.Temperature.Value - 273.15) + "°C";
+            mainDlg_lbWindy.Content = result.Wind.Speed.Value + "m/s";
+            mainDlg_lbDescription.Content = result.Weather.Value;
+            mainDlg_lbDate.Content = td.Date;
+        }
+        private void  Pushpin_MouseEnter(object sender, MouseEventArgs e)
+        {
+            // Updates the count of single mouse clicks.
+            //ShowEvent("I am gotmousecapture event!");   
+            FullWeatherInfoBoxAsync(sender, e);
+        }
         //Add a pushpin and a label with weather information to the map
-        private async Task AddPushpinAndWeatherInfoToMap()
+        private async Task AddCurrentWeatherInfoToMap(Coordinate cd, string cityName)
+        {
+            MapLayer labelLayer = new MapLayer();
+            System.Windows.Controls.Label customLabel = new System.Windows.Controls.Label();
+            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Latitude, Longitude = cd.Longitude });            
+            Color c;
+            customLabel.Content = string.Format("City:{0},{1}°C,Windy:{2},{3}", cityName, Math.Round(result.Temperature.Value - 273.15), result.Wind.Speed.Value + "m/s", result.Weather.Value);
+            c = Colors.Blue;
+            
+                if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
+                {
+                    c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
+                }
+            
+            c.A = 100;
+            customLabel.Background = new SolidColorBrush(c);
+            // With map layers we can add WPF children to lat long (WPF Location obj) on the map.                
+            labelLayer.AddChild(customLabel, new Microsoft.Maps.MapControl.WPF.Location(cd.Latitude, cd.Longitude));
+            myMap.Children.Add(labelLayer);
+        }
+        private void AddPushpinAndWeatherInfoToMap()
         {
             int i = 1;
             int count = coordinateList.Count();
-            MapLayer labelLayer = new MapLayer();
+            
+            Coordinate cd;
             for (int j = 0; j < count; j++)
             {
-                Coordinate cd = coordinateList.ElementAt(j);
+                cd = coordinateList.ElementAt(j);
                 Pushpin pushpin = new Pushpin();
+                pushpin.MouseEnter += new MouseEventHandler(Pushpin_MouseEnter);
                 pushpin.Content = "" + i++;
                 pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
                 myMap.Children.Add(pushpin);
-                TrackDetail td = filteredtrackDetailList.ElementAt(j);
-                System.Windows.Controls.Label customLabel = new System.Windows.Controls.Label();
-                CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Latitude, Longitude = cd.Longitude });
-                Color c;
-                customLabel.Content = string.Format("City:{0},{1}°C,Windy:{2},{3}", td.City, Math.Round(result.Temperature.Value - 273.15), result.Wind.Speed.Value + "m/s", result.Weather.Value);
-                c = Colors.Blue;
-                if (j == count - 1)
-                {
-                    if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
-                    {
-                        c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
-                    }
-                }
-                c.A = 100;
-                customLabel.Background = new SolidColorBrush(c);
-                // With map layers we can add WPF children to lat long (WPF Location obj) on the map.                
-                labelLayer.AddChild(customLabel, pushpin.Location);
             }
-            myMap.Children.Add(labelLayer);
+            cd = coordinateList.ElementAt(count - 1);
+            TrackDetail td = filteredtrackDetailList.ElementAt(count - 1);
+            AddCurrentWeatherInfoToMap(cd, td.City);
             // With map layers we can add WPF children to lat long (WPF Location obj) on the map. 
         }
         private void AddPolyline()
@@ -580,6 +743,6 @@ namespace IPD12_SuperExpress
         {
             this.DialogResult = true;
         }
-
+   
     }
 }

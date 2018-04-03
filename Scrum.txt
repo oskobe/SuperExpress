@@ -110,4 +110,12 @@ Each member writes down answers to 3 questions:
 3. Need assistance / figure things out
 - Nothing special.
 
+2018/04/03 Jie Zhu
+1. Done since last scrum:
+ - Developed alert function depend on terrible weather. 
+2. Plan until next Scrum
+ - Add event handler to every pushpin element. 
+3. Need assistance / figure things out
+ - Nothing
+
 
