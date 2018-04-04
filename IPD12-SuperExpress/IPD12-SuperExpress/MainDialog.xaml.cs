@@ -24,6 +24,7 @@ using BingMapsRESTToolkit;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 using OpenWeatherMap;
+using System.Device.Location;
 
 namespace IPD12_SuperExpress
 {
@@ -42,128 +43,34 @@ namespace IPD12_SuperExpress
         List<Province> provinceList = new List<Province>();
         List<Coordinate> coordinateList = new List<Coordinate>();
         static int earthRadius = 6367;
+        double BestZoomLevel = 10;
+        Microsoft.Maps.MapControl.WPF.Location BestCenter = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
         //double distance;
         private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
         private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient("23a61d3a72f546a7a1659131fb9499c0");
-        /*
-        Dictionary<string, TextBlock> eventBlocks = new Dictionary<string, TextBlock>();
-        // A collection of key/value pairs containing the event name  
-        // and the number of times the event fired.
-        Dictionary<string, int> eventCount = new Dictionary<string, int>();
-                
 
-        void MapWithEvents_MouseLeftButtonUp(object sender, MouseEventArgs e)
+        protected void map_MouseMove(object sender, MouseEventArgs e)
         {
-            // Updates the count of single mouse clicks.
-            ShowEvent("MapWithEvents_MouseLeftButtonUp");
-        }
-
-        void MapWithEvents_MouseWheel(object sender, MouseEventArgs e)
-        {
-            // Updates the count of mouse drag boxes created.
-            ShowEvent("MapWithEvents_MouseWheel");
-        }
-
-        void MapWithEvents_MouseLeftButtonDown(object sender, MouseEventArgs e)
-        {
-            // Updates the count of mouse pans.
-            ShowEvent("MapWithEvents_MouseLeftButtonDown");
-        }
-
-        void MapWithEvents_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            // Updates the count of mouse double clicks.
-            ShowEvent("MapWithEvents_MouseDoubleClick");
-        }
-
-        void MapWithEvents_ViewChangeEnd(object sender, MapEventArgs e)
-        {
-            //Updates the number of times the map view has changed.
-            ShowEvent("ViewChangeEnd");
-        }
-
-        void MapWithEvents_ViewChangeStart(object sender, MapEventArgs e)
-        {
-            //Updates the number of times the map view started changing.
-            ShowEvent("ViewChangeStart");
-        }
-
-        void MapWithEvents_ViewChangeOnFrame(object sender, MapEventArgs e)
-        {
-            // Updates the number of times a map view has changed 
-            // during an animation from one location to another.
-            ShowEvent("ViewChangeOnFrame");
-        }
-        void MapWithEvents_TargetViewChanged(object sender, MapEventArgs e)
-        {
-            // Updates the number of map view changes that occured during
-            // a zoom or pan.
-            ShowEvent("TargetViewChange");
-        }
-
-        void MapWithEvents_ModeChanged(object sender, MapEventArgs e)
-        {
-            // Updates the number of times the map mode changed.
-            ShowEvent("ModeChanged");
-        }
-
-        void ShowEvent(string eventName)
-        {
-            // Updates the display box showing the number of times 
-            // the wired events occured.
-            if (!eventBlocks.ContainsKey(eventName))
+            System.Windows.Point viewportPoint = e.GetPosition(myMap);
+            Microsoft.Maps.MapControl.WPF.Location location;
+            if (myMap.TryViewportPointToLocation(viewportPoint, out location))
             {
-                TextBlock tb = new TextBlock();
-                tb.Foreground = new SolidColorBrush(
-                    Color.FromArgb(255, 128, 255, 128));
-                tb.Margin = new Thickness(5);
-                eventBlocks.Add(eventName, tb);
-                eventCount.Add(eventName, 0);
-                eventsPanel.Children.Add(tb);
+                Coords.Text = String.Format("Coordinate: {0:f6},{1:f6}", location.Longitude, location.Latitude);
             }
-
-            eventCount[eventName]++;
-            eventBlocks[eventName].Text = String.Format(
-                "{0}: [{1} times] {2} (HH:mm:ss:ffff)",
-                eventName, eventCount[eventName].ToString(), DateTime.Now.ToString());
         }
-        */
+        private void DisplayBestView()
+        {
+            myMap.Center = BestCenter;
+            myMap.ZoomLevel = BestZoomLevel;
+            myMap.Focus();
+        }
         public MainDialog()
         {
             InitializeComponent();
-            myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
-            // Fires every animated frame from one location to another.
-            /*
-            myMap.ViewChangeOnFrame +=
-                new EventHandler<MapEventArgs>(MapWithEvents_ViewChangeOnFrame);
-            // Fires when the map view location has changed.
-            myMap.TargetViewChanged +=
-                new EventHandler<MapEventArgs>(MapWithEvents_TargetViewChanged);
-            // Fires when the map view starts to move to its new target view.
-            myMap.ViewChangeStart +=
-                new EventHandler<MapEventArgs>(MapWithEvents_ViewChangeStart);
-            // Fires when the map view has reached its new target view.
-            myMap.ViewChangeEnd +=
-                new EventHandler<MapEventArgs>(MapWithEvents_ViewChangeEnd);
-            // Fires when a different mode button on the navigation bar is selected.
-            myMap.ModeChanged +=
-                new EventHandler<MapEventArgs>(MapWithEvents_ModeChanged);
-            // Fires when the mouse is double clicked
-            myMap.MouseDoubleClick +=
-                new MouseButtonEventHandler(MapWithEvents_MouseDoubleClick);
-            // Fires when the mouse wheel is used to scroll the map
-            myMap.MouseWheel +=
-                new MouseWheelEventHandler(MapWithEvents_MouseWheel);
-            // Fires when the left mouse button is depressed
-            myMap.MouseLeftButtonDown +=
-                new MouseButtonEventHandler(MapWithEvents_MouseLeftButtonDown);
-            // Fires when the left mouse button is released
-            myMap.MouseLeftButtonUp +=
-                new MouseButtonEventHandler(MapWithEvents_MouseLeftButtonUp);
-                */
+            myMap.MouseMove += new MouseEventHandler(map_MouseMove);
+            DisplayBestView();
             try
-            {
-                //InitializeComponent();
+            {                
                 InitializeDataFromDatabase();
                 InitializeShippingCostCalculator();
             }
@@ -172,7 +79,6 @@ namespace IPD12_SuperExpress
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine("Error opening database connection: " + ex.Message);
                 Environment.Exit(1);
-
             }
         }
         public class Cartesian
@@ -230,7 +136,7 @@ namespace IPD12_SuperExpress
             }
         }
 
-        public static object MakeWeatherRequest(string requestUrl)
+        public static CurrentWeatherResponse MakeWeatherRequest(string requestUrl)
         {
             try
             {
@@ -243,7 +149,7 @@ namespace IPD12_SuperExpress
                         response.StatusCode,
                         response.StatusDescription));
                     DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(Response));
-                    object objResponse = jsonSerializer.ReadObject(response.GetResponseStream());
+                    CurrentWeatherResponse objResponse =(CurrentWeatherResponse)jsonSerializer.ReadObject(response.GetResponseStream());
                     return objResponse;
                 }
             }
@@ -259,7 +165,7 @@ namespace IPD12_SuperExpress
             return x * Math.PI / 180;
         }
         private double RadtoDeg(double x)
-        {
+        {            
             return x * 180 / Math.PI;
         }
         private Cartesian convertSphericalToCartesian(Coordinate latlong)
@@ -277,7 +183,12 @@ namespace IPD12_SuperExpress
             var point2 = convertSphericalToCartesian(b);
             var cordLength = Math.Sqrt(Math.Pow(point1.X - point2.X, 2) + Math.Pow(point1.Y - point2.Y, 2) + Math.Pow(point1.Z - point2.Z, 2));
             var centralAngle = 2 * Math.Asin(cordLength / 2 / earthRadius);
-            return earthRadius * centralAngle;
+            /* .NET Framework 4 and higher support to calculate distance between two coordinates(just need to reference the System.Device.dll)
+            var sCoord = new GeoCoordinate(a.Latitude, a.Longitude);
+            var eCoord = new GeoCoordinate(b.Latitude, b.Longitude);
+            double aa = sCoord.GetDistanceTo(eCoord);
+            */
+            return earthRadius * centralAngle;            
         }
         private double CaculateMaxDistance()
         {
@@ -298,21 +209,7 @@ namespace IPD12_SuperExpress
             }
             return 0.0;
         }
-
-        private Coordinate getCenterPoint()
-        {
-            int count = coordinateList.Count();
-            Coordinate c = null;
-            if (count > 1)
-            {
-                c = coordinateList.ElementAt(count / 2);
-            }
-            else if (count == 1)
-            {
-                c = coordinateList.ElementAt(0);
-            }
-            return c;
-        }
+       
         private int getZoomLevel(double distance)
         {
             // reference:https://msdn.microsoft.com/en-us/library/aa940990.aspx
@@ -387,24 +284,28 @@ namespace IPD12_SuperExpress
             double z = 0;
             foreach (var geoCoordinate in geoCoordinates)
             {
+                //Given the values location in the list:Convert Lat and Lon from degrees to radians.
                 var latitude = DegtoRad(geoCoordinate.Latitude);
                 var longitude = DegtoRad(geoCoordinate.Longitude);
+                //Convert lat/ lon to Cartesian coordinates.
 
                 x += Math.Cos(latitude) * Math.Cos(longitude);
                 y += Math.Cos(latitude) * Math.Sin(longitude);
                 z += Math.Sin(latitude);
             }
+            //Compute  average x, y and z coordinates.
             var total = geoCoordinates.Count;
             x = x / total;
             y = y / total;
             z = z / total;
+            //Convert average x, y, z coordinate to latitude and longitude. 
             var centralLongitude = Math.Atan2(y, x);
             var centralSquareRoot = Math.Sqrt(x * x + y * y);
             var centralLatitude = Math.Atan2(z, centralSquareRoot);
+            //Convert lat and lon to degrees.
             return new Coordinate(RadtoDeg(centralLatitude), RadtoDeg(centralLongitude));
         }
-
-        private void btnTracking_Click(object sender, RoutedEventArgs e)
+        private void ShowShipmentRouteOnMap()
         {
             string postalCode = string.Empty;
             string countryCode = string.Empty;
@@ -412,9 +313,9 @@ namespace IPD12_SuperExpress
             coordinateList.Clear();
             //remove the distinct location
             List<TrackDetail> tempList = trackDetailList.Distinct(new TrackDetailComparer()).ToList();
-            //remove the location whose postalCode is null
-            var filteredTrackList = from td in tempList where td.CountryCode != string.Empty && td.City != string.Empty select td;
-            filteredtrackDetailList = filteredTrackList.Reverse().ToList();
+            //remove the location who has no city name or countrycode
+            var templist = from td in tempList where td.CountryCode != string.Empty && td.City != string.Empty select td;
+            filteredtrackDetailList = templist.Reverse().ToList();
             foreach (var td in filteredtrackDetailList)
             {
                 postalCode = td.PostalCode;
@@ -440,47 +341,78 @@ namespace IPD12_SuperExpress
             {
                 AddPushpinAndWeatherInfoToMap();
             }
-
-
             double maxDistance = CaculateMaxDistance();
             Coordinate center = GetCentralGeoCoordinate(coordinateList);
+            
             if (center != null)
             {
-                myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(center.Latitude, center.Longitude);
+                BestCenter = new Microsoft.Maps.MapControl.WPF.Location(center.Latitude, center.Longitude);
+                myMap.Center = BestCenter;
             }
-            myMap.ZoomLevel = getZoomLevel(maxDistance);
+            BestZoomLevel = getZoomLevel(maxDistance);
+            myMap.ZoomLevel = BestZoomLevel;
             myMap.Focus(); //allows '+' and '-' to zoom the map
         }
-        private async Task FullWeatherInfoBoxAsync(object sender, MouseEventArgs e)
+        private void btnTracking_Click(object sender, RoutedEventArgs e)
         {
-            Pushpin p = (Pushpin)sender;
-            string strIndex = p.Content.ToString();
-            int index= int.Parse(strIndex);
-            TrackDetail td = filteredtrackDetailList.ElementAt(index - 1);
-            MessageBox.Show(strIndex);
-            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = p.Location.Latitude, Longitude = p.Location.Longitude });
+            DisplayBestView();
+        }
+        private string GetWeatherByDateURL(Coordinate cd,DateTime dt)
+        {
+            return string.Format("http://api.openweathermap.org/data/2.5/weather?lat={0}&lon={1}&APPID=23a61d3a72f546a7a1659131fb9499c0", cd.Latitude, cd.Longitude);
+            //return string.Format("http://history.openweathermap.org/data/2.5/history/city?lat={0}&lon={1}&type=day&start={2}&end={3}&APPID=23a61d3a72f546a7a1659131fb9499c0", cd.Latitude, cd.Longitude, dt.Ticks/((long)10000*1000), dt.AddDays(1).Hour);
+        }
+        private void FillWeatherInfoLable(CurrentWeatherResponse result,TrackDetail td)
+        {
+            Color c;
+            c = Colors.GreenYellow;
+            if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
+            {
+                c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
+            }
+            c.A = 100;
+            SolidColorBrush scb = new SolidColorBrush(c);
+            string iconURL = "http://openweathermap.org/img/w/" + result.Weather.Icon + ".png";
+            maindlg_imgDescription.Source = new BitmapImage(new Uri(iconURL));
+            mainDlg_lbCountry.Background = scb;
             mainDlg_lbCountry.Content = result.City.Country;
+            mainDlg_lbCity.Background = scb;
             mainDlg_lbCity.Content = result.City.Name;
+            mainDlg_lbTemp.Background = scb;
             mainDlg_lbTemp.Content = Math.Round(result.Temperature.Value - 273.15) + "°C";
+            mainDlg_lbWindy.Background = scb;
             mainDlg_lbWindy.Content = result.Wind.Speed.Value + "m/s";
+            mainDlg_lbDescription.Background = scb;
             mainDlg_lbDescription.Content = result.Weather.Value;
+            mainDlg_lbDate.Background = scb;
             mainDlg_lbDate.Content = td.Date;
         }
+        private async Task FillWeatherInfoBoxAsync(Pushpin p)
+        {            
+            string strIndex = p.Content.ToString();
+            int index= int.Parse(strIndex);
+            TrackDetail td = filteredtrackDetailList.ElementAt(index - 1);            
+            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = p.Location.Latitude, Longitude = p.Location.Longitude });
+            FillWeatherInfoLable(result,td);            
+        }
         private void  Pushpin_MouseEnter(object sender, MouseEventArgs e)
-        {
-            // Updates the count of single mouse clicks.
-            //ShowEvent("I am gotmousecapture event!");   
-            FullWeatherInfoBoxAsync(sender, e);
+        {              
+            FillWeatherInfoBoxAsync((Pushpin)sender);
+        }
+        private async Task FillCurrentWeatherInfoBoxAsync(Pushpin p,TrackDetail td)
+        {            
+            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = p.Location.Latitude, Longitude = p.Location.Longitude });
+            FillWeatherInfoLable(result, td);
         }
         //Add a pushpin and a label with weather information to the map
-        private async Task AddCurrentWeatherInfoToMap(Coordinate cd, string cityName)
+        private async Task AddCurrentWeatherInfoToMap(Pushpin cd, TrackDetail td)
         {
             MapLayer labelLayer = new MapLayer();
             System.Windows.Controls.Label customLabel = new System.Windows.Controls.Label();
-            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Latitude, Longitude = cd.Longitude });            
+            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Location.Latitude, Longitude = cd.Location.Longitude });            
             Color c;
-            customLabel.Content = string.Format("City:{0},{1}°C,Windy:{2},{3}", cityName, Math.Round(result.Temperature.Value - 273.15), result.Wind.Speed.Value + "m/s", result.Weather.Value);
-            c = Colors.Blue;
+            customLabel.Content = string.Format("Country:{0},City:{1},{2}°C", result.City.Country,td.City, Math.Round(result.Temperature.Value - 273.15));
+            c = Colors.GreenYellow;
             
                 if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
                 {
@@ -488,16 +420,17 @@ namespace IPD12_SuperExpress
                 }
             
             c.A = 100;
-            customLabel.Background = new SolidColorBrush(c);
+            SolidColorBrush scb = new SolidColorBrush(c);
+            customLabel.Background = scb;
             // With map layers we can add WPF children to lat long (WPF Location obj) on the map.                
-            labelLayer.AddChild(customLabel, new Microsoft.Maps.MapControl.WPF.Location(cd.Latitude, cd.Longitude));
+            labelLayer.AddChild(customLabel, new Microsoft.Maps.MapControl.WPF.Location(cd.Location.Latitude, cd.Location.Longitude));
             myMap.Children.Add(labelLayer);
+            FillWeatherInfoLable(result,td);
         }
         private void AddPushpinAndWeatherInfoToMap()
         {
             int i = 1;
-            int count = coordinateList.Count();
-            
+            int count = coordinateList.Count();            
             Coordinate cd;
             for (int j = 0; j < count; j++)
             {
@@ -506,12 +439,14 @@ namespace IPD12_SuperExpress
                 pushpin.MouseEnter += new MouseEventHandler(Pushpin_MouseEnter);
                 pushpin.Content = "" + i++;
                 pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
+                if (j == count - 1)
+                {
+                    TrackDetail td = filteredtrackDetailList.ElementAt(j);
+                    FillCurrentWeatherInfoBoxAsync(pushpin, td);                    
+                    AddCurrentWeatherInfoToMap(pushpin, td);
+                }
                 myMap.Children.Add(pushpin);
-            }
-            cd = coordinateList.ElementAt(count - 1);
-            TrackDetail td = filteredtrackDetailList.ElementAt(count - 1);
-            AddCurrentWeatherInfoToMap(cd, td.City);
-            // With map layers we can add WPF children to lat long (WPF Location obj) on the map. 
+            }            
         }
         private void AddPolyline()
         {
@@ -572,7 +507,7 @@ namespace IPD12_SuperExpress
             {
                 lblStatus.Content += "Exception when calling TrackingApi.TrackingTrack: " + ex.Message;
             }
-
+            ShowShipmentRouteOnMap();
         }
 
         private void btEstimate_Click(object sender, RoutedEventArgs e)
