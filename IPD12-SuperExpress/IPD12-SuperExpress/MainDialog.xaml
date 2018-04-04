@@ -44,7 +44,11 @@
                                 <RowDefinition Height="1*" />
                                 <RowDefinition Height="15*" />
                             </Grid.RowDefinitions>
-                            <Button x:Name="btnTracking" Grid.Column="1" Content="BestView" Width="93" Height="35" FontSize="18" Click="btnTracking_Click"/>
+                            
+                                <StackPanel Grid.Column="1" Width="30" Height="30">
+                                <Image x:Name="imgFocus" Source="https://image.flaticon.com/teams/slug/smashicons.jpg" MouseDown="imgFocus_MouseDown" />                                    
+                                </StackPanel>
+                          
                         </Grid>
                         <Border Background="#FF000000" CornerRadius="8,8,8,8" Padding="0,8,0,8" Opacity="0.68" MinWidth="190" MinHeight="30"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,5,30">

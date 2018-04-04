@@ -128,3 +128,12 @@ Each member writes down answers to 3 questions:
 3. Need assistance / figure things out
 - Nothing special.
 
+2018/04/04 Jie Zhu
+1. Done since last scrum:
+ - Added event handler to every pushpin element. 
+ - Displayed weather information in a information box with icon.
+2. Plan until next Scrum
+ - Add my own control on bing map. 
+3. Need assistance / figure things out
+ - Nothing
+

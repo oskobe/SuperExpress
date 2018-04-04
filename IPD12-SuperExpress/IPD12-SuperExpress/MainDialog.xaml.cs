@@ -42,8 +42,10 @@ namespace IPD12_SuperExpress
         List<Country> countryList = new List<Country>();
         List<Province> provinceList = new List<Province>();
         List<Coordinate> coordinateList = new List<Coordinate>();
+        List<Pushpin> pushpinList = new List<Pushpin>();
+        MapPolyline currentPolyline;
         static int earthRadius = 6367;
-        double BestZoomLevel = 10;
+        double BestZoomLevel = 12;
         Microsoft.Maps.MapControl.WPF.Location BestCenter = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
         //double distance;
         private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
@@ -69,6 +71,7 @@ namespace IPD12_SuperExpress
             InitializeComponent();
             myMap.MouseMove += new MouseEventHandler(map_MouseMove);
             DisplayBestView();
+            AddPushpinToMap(new Coordinate(BestCenter.Latitude,BestCenter.Longitude), "H");
             try
             {                
                 InitializeDataFromDatabase();
@@ -209,7 +212,16 @@ namespace IPD12_SuperExpress
             }
             return 0.0;
         }
-       
+        private void CleanPushpinAndPolylineOfMap()
+        {            
+            myMap.Children.Remove(currentPolyline);
+            foreach(Pushpin p in pushpinList)
+            {
+                myMap.Children.Remove(p);
+            }
+            currentPolyline = null;
+            pushpinList.Clear();
+        }
         private int getZoomLevel(double distance)
         {
             // reference:https://msdn.microsoft.com/en-us/library/aa940990.aspx
@@ -355,7 +367,7 @@ namespace IPD12_SuperExpress
         }
         private void btnTracking_Click(object sender, RoutedEventArgs e)
         {
-            DisplayBestView();
+            //DisplayBestView();
         }
         private string GetWeatherByDateURL(Coordinate cd,DateTime dt)
         {
@@ -427,6 +439,15 @@ namespace IPD12_SuperExpress
             myMap.Children.Add(labelLayer);
             FillWeatherInfoLable(result,td);
         }
+        private void AddPushpinToMap(Coordinate cd,string content)
+        {            
+            Pushpin pushpin = new Pushpin();
+            pushpin.MouseEnter += new MouseEventHandler(Pushpin_MouseEnter);
+            pushpin.Content = content;
+            pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
+            pushpinList.Add(pushpin);
+            myMap.Children.Add(pushpin);
+        }
         private void AddPushpinAndWeatherInfoToMap()
         {
             int i = 1;
@@ -445,6 +466,7 @@ namespace IPD12_SuperExpress
                     FillCurrentWeatherInfoBoxAsync(pushpin, td);                    
                     AddCurrentWeatherInfoToMap(pushpin, td);
                 }
+                pushpinList.Add(pushpin);
                 myMap.Children.Add(pushpin);
             }            
         }
@@ -460,6 +482,7 @@ namespace IPD12_SuperExpress
                 locationCollection.Add(new Microsoft.Maps.MapControl.WPF.Location(cd.Latitude, cd.Longitude));
             }
             polyline.Locations = locationCollection;
+            currentPolyline = polyline;
             myMap.Children.Add(polyline);
         }
 
@@ -507,6 +530,7 @@ namespace IPD12_SuperExpress
             {
                 lblStatus.Content += "Exception when calling TrackingApi.TrackingTrack: " + ex.Message;
             }
+            CleanPushpinAndPolylineOfMap();
             ShowShipmentRouteOnMap();
         }
 
@@ -678,6 +702,12 @@ namespace IPD12_SuperExpress
         {
             this.DialogResult = true;
         }
-   
+
+       
+
+        private void imgFocus_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DisplayBestView();
+        }
     }
 }
