@@ -137,3 +137,20 @@ Each member writes down answers to 3 questions:
 3. Need assistance / figure things out
  - Nothing
 
+2018/04/04 Jing Wang
+1. Done since last scrum:
+- Finsh PDF invoice printing research (using ITextSharp)
+2. Plan until next Scrum
+- Finalize the whole project
+3. Need assistance / figure things out
+- Nothing special.
+
+
+
+2018/04/05 Jing Wang
+1. Done since last scrum:
+- Finsh PDF invoice printing implementation
+2. Plan until next Scrum
+- Finalize the whole project, and prepare Pesentation PPT
+3. Need assistance / figure things out
+- Nothing special.
