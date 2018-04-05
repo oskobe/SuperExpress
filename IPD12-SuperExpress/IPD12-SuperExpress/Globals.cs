@@ -20,5 +20,6 @@ namespace IPD12_SuperExpress
         public const string YES = "Yes";
         public const string NO = "No";
         public const string CURRENCY_CAD = " CAD";
+        public const string SHIPPING_INVOICE = "Shipping_Invoice_";
     }
 }

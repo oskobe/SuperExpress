@@ -28,6 +28,7 @@ namespace IPD12_SuperExpress
             get
             {
                 if (DeliveryDays > 0)
+                //if (GuaranteedService) 
                 {
                     return DeliveryDays.ToString();
                 }
@@ -43,12 +44,13 @@ namespace IPD12_SuperExpress
         {
             get
             {
-                if (EstimatedDeliveryDateTime <= DateTime.Now)
-                {
-                    return string.Empty;
-                } else
+                if (EstimatedDeliveryDateTime > DateTime.Now)
+                //if (GuaranteedService)
                 {
                     return EstimatedDeliveryDateTime.ToString("MM/dd/yyyy HH:mm");
+                } else
+                {
+                    return string.Empty;
                 }
                 
             }
