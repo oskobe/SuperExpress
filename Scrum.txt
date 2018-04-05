@@ -137,3 +137,11 @@ Each member writes down answers to 3 questions:
 3. Need assistance / figure things out
  - Nothing
 
+2018/04/05 Jie Zhu
+1. Done since last scrum:
+ - Added my own control with our logo icon on bing map.It is called Super View.
+2. Plan until next Scrum
+ - Improve the code. 
+3. Need assistance / figure things out
+ - Nothing
+
