@@ -11,7 +11,7 @@
         <TabControl HorizontalAlignment="Left" Height="708" Margin="10,70,0,0" VerticalAlignment="Top" Width="1376">
             <TabItem Header="Tracking">
                 <Grid Background="#FFE5E5E5">
-                    <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="15,40,0,0" VerticalAlignment="Top" Width="64" Height="21" FontSize="14">
+                    <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="15,41,0,0" VerticalAlignment="Top" Width="64" Height="21">
                         <ComboBoxItem Content="UPS" IsSelected="True"/>
                     </ComboBox>
                     <ListView x:Name="lvTrackDetails" HorizontalAlignment="Left" Height="555" Margin="15,110,0,0" VerticalAlignment="Top" Width="640" SelectionMode="Single" >
@@ -37,8 +37,8 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <TextBox x:Name="tbTrackNumber" HorizontalAlignment="Left" Height="21" Margin="219,41,0,0" TextWrapping="Wrap" Text="1Z8W11E70400554344" VerticalAlignment="Top" Width="193" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible" FontSize="14"/>
-                    <Button x:Name="btTrack" Click="btTrack_Click" Content="Track" HorizontalAlignment="Left" Margin="451,40,0,0" VerticalAlignment="Top" Width="75" FontSize="14"/>
+                    <TextBox x:Name="tbTrackNumber" HorizontalAlignment="Left" Height="22" Margin="219,41,0,0" TextWrapping="Wrap" Text="1Z8W11E70400554344" VerticalAlignment="Top" Width="193" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible"/>
+                    <Button x:Name="btTrack" Click="btTrack_Click" Content="Track" HorizontalAlignment="Left" Margin="451,40,0,0" VerticalAlignment="Top" Width="123" Height="22"/>
 
                     <WPF:Map x:Name="myMap" CredentialsProvider="AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm"  Margin="701,110,0,15" MouseMove="myMap_MouseMove">
                         <Grid>
@@ -81,7 +81,7 @@
                     <Label Content="Date:" HorizontalAlignment="Left" Margin="1100,30,0,0" VerticalAlignment="Top" FontSize="14"/>
                     <Label x:Name="mainDlg_lbDate" Content="" HorizontalAlignment="Left" Margin="1160,30,0,0" VerticalAlignment="Top" Width="107" Background="White" FontSize="14"/>
                     <Image x:Name="maindlg_imgDescription" HorizontalAlignment="Left" Height="78" Margin="1276,21,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-5.222,3.639"/>
-                    <Label Content="Track Number：" HorizontalAlignment="Left" Margin="97,37,0,0" VerticalAlignment="Top" FontSize="14" Width="117" Height="27"/>
+                    <Label Content="Track Number：" HorizontalAlignment="Left" Margin="97,37,0,0" VerticalAlignment="Top" Width="117" Height="27"/>
 
                 </Grid>
             </TabItem>
@@ -138,8 +138,8 @@
                         </Grid>
                     </GroupBox>
                     <Label Content="Ship to PostalCode:" Grid.Column="2" HorizontalAlignment="Left" Margin="296,26,0,0" VerticalAlignment="Top" Height="27" Width="140"/>
-                    <TextBox x:Name="shipTab_tbPostalCode" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="444,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134" />
-                    <Button x:Name="shipTab_btnSearch" Content="Search&#xD;&#xA;" HorizontalAlignment="Left" Margin="604,30,0,0" VerticalAlignment="Top" Width="101" Height="23" Click="shipTab_btnSearch_Click" Grid.Column="2"/>
+                    <TextBox x:Name="shipTab_tbPostalCode" Grid.Column="2" HorizontalAlignment="Left" Height="22" Margin="444,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134" />
+                    <Button x:Name="shipTab_btnSearch" Content="Search&#xD;&#xA;" HorizontalAlignment="Left" Margin="604,30,0,0" VerticalAlignment="Top" Width="101" Height="22" Click="shipTab_btnSearch_Click" Grid.Column="2"/>
                 </Grid>
             </TabItem>
         </TabControl>
