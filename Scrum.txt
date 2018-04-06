@@ -162,3 +162,12 @@ Each member writes down answers to 3 questions:
 3. Need assistance / figure things out
  - Nothing
 
+2018/04/06 Jie Zhu
+1. Done since last scrum:
+ - Added a function based on bing REST API and maps to automatically fill receiver's address.
+ - Improved some part of code.
+2. Plan until next Scrum
+ - Improve code as much as possible. 
+3. Need assistance / figure things out
+ - Nothing
+
