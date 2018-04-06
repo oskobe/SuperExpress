@@ -51,29 +51,29 @@ namespace IPD12_SuperExpress
         //double distance;
         private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
         private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient("23a61d3a72f546a7a1659131fb9499c0");
-        
-         public int currentCount = 0;
-        
-         System.Timers.Timer clickTimer;
-        
-         private void InitTimer()
-         {             
-             int interval = 1;
-             clickTimer = new System.Timers.Timer(interval);             
-             clickTimer.AutoReset = true;             
-             clickTimer.Enabled = true;
-             clickTimer.Elapsed += new System.Timers.ElapsedEventHandler(TimerUp);
-         }
+
+        public int currentCount = 0;
+
+        System.Timers.Timer clickTimer;
+
+        private void InitTimer()
+        {
+            int interval = 1;
+            clickTimer = new System.Timers.Timer(interval);
+            clickTimer.AutoReset = true;
+            clickTimer.Enabled = true;
+            clickTimer.Elapsed += new System.Timers.ElapsedEventHandler(TimerUp);
+        }
         private void ResetTimer()
         {
             currentCount = 0;
         }
 
         private void TimerUp(object sender, System.Timers.ElapsedEventArgs e)
-         {
+        {
             currentCount++;
-         }
-    
+        }
+
         private void DisplayBestView()
         {
             myMap.Center = BestCenter;
@@ -83,13 +83,13 @@ namespace IPD12_SuperExpress
         public MainDialog()
         {
             InitializeComponent();
-            InitTimer();            
+            InitTimer();
             DisplayBestView();
-            AddPushpinToMap(new Coordinate(BestCenter.Latitude,BestCenter.Longitude), "H",1);
+            AddPushpinToMap(new Coordinate(BestCenter.Latitude, BestCenter.Longitude), "H", 1);
             shipMap.Center = BestCenter;
             shipMap.ZoomLevel = BestZoomLevel;
             try
-            {                
+            {
                 InitializeDataFromDatabase();
                 InitializeShippingCostCalculator();
             }
@@ -168,7 +168,7 @@ namespace IPD12_SuperExpress
                         response.StatusCode,
                         response.StatusDescription));
                     DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(Response));
-                    CurrentWeatherResponse objResponse =(CurrentWeatherResponse)jsonSerializer.ReadObject(response.GetResponseStream());
+                    CurrentWeatherResponse objResponse = (CurrentWeatherResponse)jsonSerializer.ReadObject(response.GetResponseStream());
                     return objResponse;
                 }
             }
@@ -184,7 +184,7 @@ namespace IPD12_SuperExpress
             return x * Math.PI / 180;
         }
         private double RadtoDeg(double x)
-        {            
+        {
             return x * 180 / Math.PI;
         }
         private Cartesian convertSphericalToCartesian(Coordinate latlong)
@@ -207,7 +207,7 @@ namespace IPD12_SuperExpress
             var eCoord = new GeoCoordinate(b.Latitude, b.Longitude);
             double aa = sCoord.GetDistanceTo(eCoord);
             */
-            return earthRadius * centralAngle;            
+            return earthRadius * centralAngle;
         }
         private double CaculateMaxDistance()
         {
@@ -229,9 +229,9 @@ namespace IPD12_SuperExpress
             return 0.0;
         }
         private void CleanPushpinAndPolylineOfMap()
-        {            
+        {
             myMap.Children.Remove(currentPolyline);
-            foreach(Pushpin p in pushpinList)
+            foreach (Pushpin p in pushpinList)
             {
                 myMap.Children.Remove(p);
             }
@@ -333,6 +333,54 @@ namespace IPD12_SuperExpress
             //Convert lat and lon to degrees.
             return new Coordinate(RadtoDeg(centralLatitude), RadtoDeg(centralLongitude));
         }
+        private void TestShowShipmentRouteOnMap()
+        {
+            string postalCode = string.Empty;
+            string countryCode = string.Empty;
+            string cityName = string.Empty;
+            coordinateList.Clear();
+            //remove the distinct location
+            List<TrackDetail> tempList = trackDetailList.Distinct(new TrackDetailComparer()).ToList();
+            //remove the location who has no city name or countrycode
+            var templist = from td in tempList where td.CountryCode != string.Empty && td.City != string.Empty select td;
+            filteredtrackDetailList = templist.Reverse().ToList();
+            foreach (var td in filteredtrackDetailList)
+            {
+                postalCode = td.PostalCode;
+                countryCode = td.CountryCode;
+                cityName = td.City;
+                Coordinate tempCoordinate = GetCoordinate(postalCode, countryCode, cityName);
+                if (tempCoordinate != null)
+                {
+                    coordinateList.Add(tempCoordinate);
+                }
+                else
+                {
+                    filteredtrackDetailList.Remove(td);
+                }
+            }
+            int count = coordinateList.Count();
+            if (count > 1)
+            {
+                AddPolyline();
+                AddPushpinAndWeatherInfoToMap();
+            }
+            else if (count == 1)
+            {
+                AddPushpinAndWeatherInfoToMap();
+            }
+            double maxDistance = CaculateMaxDistance();
+            Coordinate center = GetCentralGeoCoordinate(coordinateList);
+
+            if (center != null)
+            {
+                BestCenter = new Microsoft.Maps.MapControl.WPF.Location(center.Latitude, center.Longitude);
+                myMap.Center = BestCenter;
+            }
+            BestZoomLevel = getZoomLevel(maxDistance);
+            myMap.ZoomLevel = BestZoomLevel;
+            myMap.Focus(); //allows '+' and '-' to zoom the map
+        }
         private void ShowShipmentRouteOnMap()
         {
             string postalCode = string.Empty;
@@ -371,7 +419,7 @@ namespace IPD12_SuperExpress
             }
             double maxDistance = CaculateMaxDistance();
             Coordinate center = GetCentralGeoCoordinate(coordinateList);
-            
+
             if (center != null)
             {
                 BestCenter = new Microsoft.Maps.MapControl.WPF.Location(center.Latitude, center.Longitude);
@@ -381,13 +429,13 @@ namespace IPD12_SuperExpress
             myMap.ZoomLevel = BestZoomLevel;
             myMap.Focus(); //allows '+' and '-' to zoom the map
         }
-    
-        private string GetWeatherByDateURL(Coordinate cd,DateTime dt)
+
+        private string GetWeatherByDateURL(Coordinate cd, DateTime dt)
         {
             return string.Format("http://api.openweathermap.org/data/2.5/weather?lat={0}&lon={1}&APPID=23a61d3a72f546a7a1659131fb9499c0", cd.Latitude, cd.Longitude);
             //return string.Format("http://history.openweathermap.org/data/2.5/history/city?lat={0}&lon={1}&type=day&start={2}&end={3}&APPID=23a61d3a72f546a7a1659131fb9499c0", cd.Latitude, cd.Longitude, dt.Ticks/((long)10000*1000), dt.AddDays(1).Hour);
         }
-        private void FillWeatherInfoLable(CurrentWeatherResponse result,TrackDetail td)
+        private void FillWeatherInfoLable(CurrentWeatherResponse result, TrackDetail td)
         {
             Color c;
             c = Colors.GreenYellow;
@@ -413,19 +461,19 @@ namespace IPD12_SuperExpress
             mainDlg_lbDate.Content = td.Date;
         }
         private async Task FillWeatherInfoBoxAsync(Pushpin p)
-        {            
+        {
             string strIndex = p.Content.ToString();
-            int index= int.Parse(strIndex);
-            TrackDetail td = filteredtrackDetailList.ElementAt(index - 1);            
+            int index = int.Parse(strIndex);
+            TrackDetail td = filteredtrackDetailList.ElementAt(index - 1);
             CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = p.Location.Latitude, Longitude = p.Location.Longitude });
-            FillWeatherInfoLable(result,td);            
+            FillWeatherInfoLable(result, td);
         }
-        private void  Pushpin_MouseEnter(object sender, MouseEventArgs e)
-        {              
+        private void Pushpin_MouseEnter(object sender, MouseEventArgs e)
+        {
             FillWeatherInfoBoxAsync((Pushpin)sender);
         }
-        private async Task FillCurrentWeatherInfoBoxAsync(Pushpin p,TrackDetail td)
-        {            
+        private async Task FillCurrentWeatherInfoBoxAsync(Pushpin p, TrackDetail td)
+        {
             CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = p.Location.Latitude, Longitude = p.Location.Longitude });
             FillWeatherInfoLable(result, td);
         }
@@ -434,26 +482,26 @@ namespace IPD12_SuperExpress
         {
             MapLayer labelLayer = new MapLayer();
             System.Windows.Controls.Label customLabel = new System.Windows.Controls.Label();
-            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Location.Latitude, Longitude = cd.Location.Longitude });            
+            CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Location.Latitude, Longitude = cd.Location.Longitude });
             Color c;
-            customLabel.Content = string.Format("Country:{0},City:{1},{2}°C", result.City.Country,td.City, Math.Round(result.Temperature.Value - 273.15));
+            customLabel.Content = string.Format("Country:{0},City:{1},{2}°C", result.City.Country, td.City, Math.Round(result.Temperature.Value - 273.15));
             c = Colors.GreenYellow;
-            
-                if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
-                {
-                    c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
-                }
-            
+
+            if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
+            {
+                c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
+            }
+
             c.A = 100;
             SolidColorBrush scb = new SolidColorBrush(c);
             customLabel.Background = scb;
             // With map layers we can add WPF children to lat long (WPF Location obj) on the map.                
             labelLayer.AddChild(customLabel, new Microsoft.Maps.MapControl.WPF.Location(cd.Location.Latitude, cd.Location.Longitude));
             myMap.Children.Add(labelLayer);
-            FillWeatherInfoLable(result,td);
+            FillWeatherInfoLable(result, td);
         }
-        private void AddPushpinToMap(Coordinate cd,string content,int flag)
-        {            
+        private void AddPushpinToMap(Coordinate cd, string content, int flag)
+        {
             Pushpin pushpin = new Pushpin();
             pushpin.MouseEnter += new MouseEventHandler(Pushpin_MouseEnter);
             pushpin.Content = content;
@@ -468,15 +516,19 @@ namespace IPD12_SuperExpress
                 shipMap.Children.Remove(shipMapPushpin);
                 shipMapPushpin = pushpin;
                 shipMap.Children.Add(shipMapPushpin);
-                //shipMap.ZoomLevel = 15;
-                //shipMap.Center = pushpin.Location;
+                if (flag == 3)
+                {
+                    shipMap.ZoomLevel = 15;
+                    shipMap.Center = pushpin.Location;
+                }
             }
-            
+
+
         }
         private void AddPushpinAndWeatherInfoToMap()
         {
             int i = 1;
-            int count = coordinateList.Count();            
+            int count = coordinateList.Count();
             Coordinate cd;
             for (int j = 0; j < count; j++)
             {
@@ -488,12 +540,12 @@ namespace IPD12_SuperExpress
                 if (j == count - 1)
                 {
                     TrackDetail td = filteredtrackDetailList.ElementAt(j);
-                    FillCurrentWeatherInfoBoxAsync(pushpin, td);                    
+                    FillCurrentWeatherInfoBoxAsync(pushpin, td);
                     AddCurrentWeatherInfoToMap(pushpin, td);
                 }
                 pushpinList.Add(pushpin);
                 myMap.Children.Add(pushpin);
-            }            
+            }
         }
         private void AddPolyline()
         {
@@ -536,7 +588,6 @@ namespace IPD12_SuperExpress
         {
             var apiTrackInstance = new TrackingApi();
             var trackingNumber = tbTrackNumber.Text;
-
             try
             {
                 TrackingInformation result = apiTrackInstance.TrackingTrack(Globals.APIKEY_SHIPENGINE, Globals.CARRIER_CODE_UPS, trackingNumber);
@@ -728,7 +779,7 @@ namespace IPD12_SuperExpress
             this.DialogResult = true;
         }
 
-       
+
 
         private void imgFocus_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -744,9 +795,10 @@ namespace IPD12_SuperExpress
                 shipTab_tbPostalCode.Focus();
                 return;
             }
+            postalCode = postalCode.Replace(" ", string.Empty);
             string geocodeRequest;
             //Create REST Services geocode request using Locations API
-            
+
             geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postalCode + @"?key=" + BingMapsKey;
             Response geocodeResponse = MakeRequest(geocodeRequest);
             BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
@@ -761,9 +813,9 @@ namespace IPD12_SuperExpress
                 string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
                 string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
                 string resultLocality = shipToAddress.Locality;//城市
-                
+
                 Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
-                AddPushpinToMap(cd, "T", 2);
+                AddPushpinToMap(cd, "T", 3);
             }
         }
 
@@ -789,13 +841,13 @@ namespace IPD12_SuperExpress
                     string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
                     string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
                     string resultLocality = shipToAddress.Locality;//城市
-                }                
+                }
             }
             ResetTimer();
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {            
+        {
             clickTimer.Start();
         }
 
