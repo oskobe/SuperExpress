@@ -43,6 +43,7 @@ namespace IPD12_SuperExpress
         List<Province> provinceList = new List<Province>();
         List<Coordinate> coordinateList = new List<Coordinate>();
         List<Pushpin> pushpinList = new List<Pushpin>();
+        Pushpin shipMapPushpin;
         MapPolyline currentPolyline;
         static int earthRadius = 6367;
         double BestZoomLevel = 12;
@@ -50,16 +51,29 @@ namespace IPD12_SuperExpress
         //double distance;
         private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
         private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient("23a61d3a72f546a7a1659131fb9499c0");
-
-        protected void map_MouseMove(object sender, MouseEventArgs e)
+        
+         public int currentCount = 0;
+        
+         System.Timers.Timer clickTimer;
+        
+         private void InitTimer()
+         {             
+             int interval = 1;
+             clickTimer = new System.Timers.Timer(interval);             
+             clickTimer.AutoReset = true;             
+             clickTimer.Enabled = true;
+             clickTimer.Elapsed += new System.Timers.ElapsedEventHandler(TimerUp);
+         }
+        private void ResetTimer()
         {
-            System.Windows.Point viewportPoint = e.GetPosition(myMap);
-            Microsoft.Maps.MapControl.WPF.Location location;
-            if (myMap.TryViewportPointToLocation(viewportPoint, out location))
-            {
-                Coords.Text = String.Format("Coordinate: {0:f6},{1:f6}", location.Longitude, location.Latitude);
-            }
+            currentCount = 0;
         }
+
+        private void TimerUp(object sender, System.Timers.ElapsedEventArgs e)
+         {
+            currentCount++;
+         }
+    
         private void DisplayBestView()
         {
             myMap.Center = BestCenter;
@@ -69,9 +83,11 @@ namespace IPD12_SuperExpress
         public MainDialog()
         {
             InitializeComponent();
-            myMap.MouseMove += new MouseEventHandler(map_MouseMove);
+            InitTimer();            
             DisplayBestView();
-            AddPushpinToMap(new Coordinate(BestCenter.Latitude,BestCenter.Longitude), "H");
+            AddPushpinToMap(new Coordinate(BestCenter.Latitude,BestCenter.Longitude), "H",1);
+            shipMap.Center = BestCenter;
+            shipMap.ZoomLevel = BestZoomLevel;
             try
             {                
                 InitializeDataFromDatabase();
@@ -365,10 +381,7 @@ namespace IPD12_SuperExpress
             myMap.ZoomLevel = BestZoomLevel;
             myMap.Focus(); //allows '+' and '-' to zoom the map
         }
-        private void btnTracking_Click(object sender, RoutedEventArgs e)
-        {
-            //DisplayBestView();
-        }
+    
         private string GetWeatherByDateURL(Coordinate cd,DateTime dt)
         {
             return string.Format("http://api.openweathermap.org/data/2.5/weather?lat={0}&lon={1}&APPID=23a61d3a72f546a7a1659131fb9499c0", cd.Latitude, cd.Longitude);
@@ -439,14 +452,26 @@ namespace IPD12_SuperExpress
             myMap.Children.Add(labelLayer);
             FillWeatherInfoLable(result,td);
         }
-        private void AddPushpinToMap(Coordinate cd,string content)
+        private void AddPushpinToMap(Coordinate cd,string content,int flag)
         {            
             Pushpin pushpin = new Pushpin();
             pushpin.MouseEnter += new MouseEventHandler(Pushpin_MouseEnter);
             pushpin.Content = content;
             pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
-            pushpinList.Add(pushpin);
-            myMap.Children.Add(pushpin);
+            if (flag == 1)
+            {
+                pushpinList.Add(pushpin);
+                myMap.Children.Add(pushpin);
+            }
+            else
+            {
+                shipMap.Children.Remove(shipMapPushpin);
+                shipMapPushpin = pushpin;
+                shipMap.Children.Add(shipMapPushpin);
+                shipMap.ZoomLevel = 15;
+                shipMap.Center = pushpin.Location;
+            }
+            
         }
         private void AddPushpinAndWeatherInfoToMap()
         {
@@ -708,6 +733,80 @@ namespace IPD12_SuperExpress
         private void imgFocus_MouseDown(object sender, MouseButtonEventArgs e)
         {
             DisplayBestView();
+        }
+
+        private void shipTab_btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            string postalCode = shipTab_tbPostalCode.Text;
+            if (string.IsNullOrWhiteSpace(postalCode))
+            {
+                MessageBox.Show("Please enter an unemporty PostalCode！");
+                shipTab_tbPostalCode.Focus();
+                return;
+            }
+            string geocodeRequest;
+            //Create REST Services geocode request using Locations API
+            
+            geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postalCode + @"?key=" + BingMapsKey;
+            Response geocodeResponse = MakeRequest(geocodeRequest);
+            BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
+            Address shipToAddress = new Address();
+            if (l != null)
+            {
+                shipToAddress = new Address();
+                shipToAddress = l.Address;
+                string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
+                string resultAddressLine = shipToAddress.AddressLine;//空值
+                string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
+                string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
+                string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
+                string resultLocality = shipToAddress.Locality;//城市
+                
+                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
+                AddPushpinToMap(cd, "T", 2);
+            }
+        }
+
+        private void shipMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            clickTimer.Stop();
+            if (currentCount < 10)
+            {
+                System.Windows.Point mousePosition = e.GetPosition(this);
+                Microsoft.Maps.MapControl.WPF.Location pinLocation = shipMap.ViewportPointToLocation(mousePosition);
+                AddPushpinToMap(new Coordinate(pinLocation.Latitude, pinLocation.Longitude), "T", 2);
+                string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + BingMapsKey;
+                Response geocodeResponse = MakeRequest(geocodeRequest);
+                BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
+                Address shipToAddress;
+                if (l != null)
+                {
+                    shipToAddress = new Address();
+                    shipToAddress = l.Address;
+                    string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
+                    string resultAddressLine = shipToAddress.AddressLine;//空值
+                    string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
+                    string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
+                    string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
+                    string resultLocality = shipToAddress.Locality;//城市
+                }                
+            }
+            ResetTimer();
+        }
+
+        private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {            
+            clickTimer.Start();
+        }
+
+        private void myMap_MouseMove(object sender, MouseEventArgs e)
+        {
+            System.Windows.Point viewportPoint = e.GetPosition(myMap);
+            Microsoft.Maps.MapControl.WPF.Location location;
+            if (myMap.TryViewportPointToLocation(viewportPoint, out location))
+            {
+                Coords.Text = String.Format("Coordinate: {0:f6},{1:f6}", location.Longitude, location.Latitude);
+            }
         }
     }
 }

@@ -5,39 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IPD12_SuperExpress"
         mc:Ignorable="d"
-        Title="Register" Height="327" Width="464" WindowStartupLocation="CenterScreen">
+        Title="Register" Height="615.677" Width="767.129" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,2,-1">
-        <Label x:Name="label" Content="ID" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="regDlg_tbName" HorizontalAlignment="Left" Height="23" Margin="75,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="132"/>
-        <Label x:Name="regDlg_lbID" Content="......" HorizontalAlignment="Left" Margin="70,19,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label2" Content="Name" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label3" Content="Email" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label4" Content="Phone" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label5" Content="PostCode" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label6" Content="Country" HorizontalAlignment="Left" Margin="244,27,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label6_Copy" Content="Province" HorizontalAlignment="Left" Margin="244,68,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label6_Copy1" Content="City" HorizontalAlignment="Left" Margin="244,108,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label5_Copy" Content="Street" HorizontalAlignment="Left" Margin="244,148,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label5_Copy1" Content="Apt." HorizontalAlignment="Left" Margin="244,180,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="regDlg_tbEmail" HorizontalAlignment="Left" Height="23" Margin="75,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="132" Text="example@gmail.com" GotFocus="regDlg_tbEmail_GotFocus"/>
-        <TextBox x:Name="regDlg_tbPhone" HorizontalAlignment="Left" Height="23" Margin="75,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="132"/>
-        <TextBox x:Name="regDlg_tbPostalCode" HorizontalAlignment="Left" Height="23" Margin="75,183,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="132"/>
-        <ComboBox x:Name="regDlg_cbxCountry" HorizontalAlignment="Left" Margin="301,31,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
-            <ComboBoxItem Content="Canada"/>
+        <Label Content="User ID:" HorizontalAlignment="Left" Margin="128,30,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbUserId" HorizontalAlignment="Left" Height="23" Margin="216,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
+        <Label Content="Password:" HorizontalAlignment="Left" Margin="117,67,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbPassword" HorizontalAlignment="Left" Height="23" Margin="216,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
+        <Label Content="Confirm password:" HorizontalAlignment="Left" Margin="70,109,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbConfirmPassword" HorizontalAlignment="Left" Height="23" Margin="216,104,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
+        <Label  Content="Name:" HorizontalAlignment="Left" Margin="135,156,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbName" HorizontalAlignment="Left" Height="23" Margin="216,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
+        <Label Content="Phone Number:" HorizontalAlignment="Left" Margin="86,193,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbPhoneNumber" HorizontalAlignment="Left" Height="23" Margin="216,188,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
+        <Label Content="Email:" HorizontalAlignment="Left" Margin="138,230,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbEmail" HorizontalAlignment="Left" Height="23" Margin="216,225,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Text="example@gmail.com"/>
+
+
+        <Label Content="Country:" HorizontalAlignment="Left" Margin="124,271,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="regDlg_cbCountry" HorizontalAlignment="Left" Margin="216,285,0,0" VerticalAlignment="Top" Width="226" SelectedIndex="0">
         </ComboBox>
-        <ComboBox x:Name="regDlg_cbxProvince" HorizontalAlignment="Left" Margin="301,72,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
-            <ComboBoxItem Content="Quebec"/>
+        <Label Content="Province:" HorizontalAlignment="Left" Margin="121,312,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="regDlg_cbProvince" HorizontalAlignment="Left" Margin="216,326,0,0" VerticalAlignment="Top" Width="226" SelectedIndex="0">
         </ComboBox>
-        <ComboBox x:Name="regDlg_cbxCity" HorizontalAlignment="Left" Margin="301,112,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
-            <ComboBoxItem Content="Montreal"/>
-        </ComboBox>
-        <TextBox x:Name="regDlg_tbStreet" HorizontalAlignment="Left" Height="23" Margin="301,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="regDlg_tbApt" HorizontalAlignment="Left" Height="23" Margin="301,183,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="346,268,0,0" VerticalAlignment="Top" Width="75" Click="btnSave_Click"/>
-        <Label x:Name="label7" Content="Password" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label7_Copy" Content="Confirm" HorizontalAlignment="Left" Margin="237,220,0,0" VerticalAlignment="Top"/>
-        <PasswordBox x:Name="regDlg_pbPassword" HorizontalAlignment="Left" Margin="76,220,0,0" VerticalAlignment="Top" Width="131" Height="25" PasswordChar="*"/>
-        <PasswordBox x:Name="regDlg_pbConfirm" HorizontalAlignment="Left" Margin="301,220,0,0" VerticalAlignment="Top" Width="120" Height="25" PasswordChar="*"/>
+        <Label Content="City:" HorizontalAlignment="Left" Margin="146,353,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbCity" HorizontalAlignment="Left" Height="23" Margin="217,368,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
+        <Label Content="Address:" HorizontalAlignment="Left" Margin="124,392,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbAddress" HorizontalAlignment="Left" Height="23" Margin="216,405,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="457"/>
+        <Label Content="PostCode:" HorizontalAlignment="Left" Margin="116,438,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="regDlg_tbPostCode" HorizontalAlignment="Left" Height="23" Margin="216,447,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
+        <Button Content="Register" HorizontalAlignment="Left" Margin="391,504,0,0" VerticalAlignment="Top" Width="114"/>
+        <Button Content="Clear" HorizontalAlignment="Left" Margin="216,504,0,0" VerticalAlignment="Top" Width="114"/>
+
+
+
+
+
+
+
+
+
+
+
+
 
     </Grid>
 </Window>

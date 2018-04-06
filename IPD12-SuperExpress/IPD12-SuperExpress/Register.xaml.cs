@@ -109,7 +109,8 @@ namespace IPD12_SuperExpress
             try
             {
                 //Globals.db.AddUser(new User(1, name, phone, email, postalCode, countryCode, provinceCode, cityName, streetName, apartment, Password1));
-                Globals.db.AddUser(new User(1, name, phone, email, postalCode, "Ca", "QC", cityName, streetName, apartment, Password1));
+                Globals.currentUser = new User(1, name, phone, email, postalCode, "Ca", "QC", cityName, streetName, apartment, Password1);
+                Globals.db.AddUser(Globals.currentUser);
                 MessageBox.Show("Add user Successfully!");
                 this.Close();
             }
