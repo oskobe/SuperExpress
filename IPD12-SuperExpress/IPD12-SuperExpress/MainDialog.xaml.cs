@@ -468,8 +468,8 @@ namespace IPD12_SuperExpress
                 shipMap.Children.Remove(shipMapPushpin);
                 shipMapPushpin = pushpin;
                 shipMap.Children.Add(shipMapPushpin);
-                shipMap.ZoomLevel = 15;
-                shipMap.Center = pushpin.Location;
+                //shipMap.ZoomLevel = 15;
+                //shipMap.Center = pushpin.Location;
             }
             
         }
