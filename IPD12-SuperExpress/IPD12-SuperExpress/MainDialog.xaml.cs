@@ -726,17 +726,11 @@ namespace IPD12_SuperExpress
                 costCalculator.Result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
 
                 ShippingCostCalculatorResult resultDialog = new ShippingCostCalculatorResult(costCalculator);
-                if (resultDialog.ShowDialog() == true)
+                resultDialog.ShowDialog();
+                if ( resultDialog.DialogResult == true)
                 {
-
+                   
                 }
-                /*
-                foreach (Rate r in costCalculator.Result)
-                {
-                    lblStatus.Content = r.ToJson();
-                    MessageBox.Show(r.ToJson());
-                }
-                */
             }
             catch (Exception ex)
             {
