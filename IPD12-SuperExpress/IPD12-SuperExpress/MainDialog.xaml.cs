@@ -42,6 +42,7 @@ namespace IPD12_SuperExpress
         List<Country> countryList = new List<Country>();
         List<Province> provinceList = new List<Province>();
         List<Coordinate> coordinateList = new List<Coordinate>();
+        List<Coordinate> testcoordinateList = new List<Coordinate>();
         List<Pushpin> pushpinList = new List<Pushpin>();
         Pushpin shipMapPushpin;
         MapPolyline currentPolyline;
@@ -333,14 +334,34 @@ namespace IPD12_SuperExpress
             //Convert lat and lon to degrees.
             return new Coordinate(RadtoDeg(centralLatitude), RadtoDeg(centralLongitude));
         }
+        private void TestAddPushpinAndWeatherInfoToMap()
+        {
+            int i = 1;
+            int count = coordinateList.Count();
+            Coordinate cd;
+            for (int j = 0; j < count; j++)
+            {
+                cd = testcoordinateList.ElementAt(j);
+                Pushpin pushpin = new Pushpin();
+                pushpin.MouseEnter += new MouseEventHandler(Pushpin_MouseEnter);
+                pushpin.Content = "" + i++;
+                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
+                
+                pushpinList.Add(pushpin);
+                myMap.Children.Add(pushpin);
+            }
+        }
         private void TestShowShipmentRouteOnMap()
         {
+
+            testcoordinateList.Add(new Coordinate(45.604438, -73.651505));
+            testcoordinateList.Add(new Coordinate(43.856324, -107.862930));
+            testcoordinateList.Add(new Coordinate(42.283413, -99.908829));
+            testcoordinateList.Add(new Coordinate(36.833478, -104.083633));
+            testcoordinateList.Add(new Coordinate(33.236399, -89.010391));
+            AddPolyline();
+            AddPushpinAndWeatherInfoToMap();
             /*
-            coordinateList.Add(new Coordinate(45.604438, -73.651505));
-            coordinateList.Add(new Coordinate(43.856324, -107.862930));
-            coordinateList.Add(new Coordinate());
-            coordinateList.Add(new Coordinate());
-            coordinateList.Add(new Coordinate());
             coordinateList.Add(new Coordinate());
             coordinateList.Add(new Coordinate());
             coordinateList.Add(new Coordinate());
