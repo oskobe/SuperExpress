@@ -475,9 +475,14 @@ namespace IPD12_SuperExpress
         {
             Color c;
             c = Colors.GreenYellow;
-            if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
+            
+            if (result.Temperature.Value <= Globals.EXTRAMELY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
             {
                 c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
+            }
+            else if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_POWER)
+            {
+                c = Colors.Yellow;//if there is a very terrible weather at current location,alert it with a red color.
             }
             c.A = 100;
             SolidColorBrush scb = new SolidColorBrush(c);

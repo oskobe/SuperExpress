@@ -13,7 +13,9 @@ namespace IPD12_SuperExpress
         public const string CARRIER_ID_UPS = "se-241902";
         public const int PERIMETER_OF_EARTH = 40075;
         public const double SPEECH_HURRICANE = 28.5;
-        public const double VERY_COLD = -25;
+        public const double VERY_COLD = -15;
+        public const double SPEECH_POWER = 20.8;
+        public const double EXTRAMELY_COLD = -25;
         public static Database db=new Database();
         public static string emailExpression = @"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$";
         public static User currentUser;
