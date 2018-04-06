@@ -772,7 +772,7 @@ namespace IPD12_SuperExpress
             clickTimer.Stop();
             if (currentCount < 10)
             {
-                System.Windows.Point mousePosition = e.GetPosition(this);
+                System.Windows.Point mousePosition = e.GetPosition(shipMap);
                 Microsoft.Maps.MapControl.WPF.Location pinLocation = shipMap.ViewportPointToLocation(mousePosition);
                 AddPushpinToMap(new Coordinate(pinLocation.Latitude, pinLocation.Longitude), "T", 2);
                 string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + BingMapsKey;
