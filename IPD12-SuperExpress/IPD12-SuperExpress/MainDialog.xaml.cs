@@ -901,7 +901,12 @@ namespace IPD12_SuperExpress
             }
 
             tbCityTo.Text = address.Locality;
-            tbPostalCodeTo.Text = address.PostalCode.Replace(" ", "");
+            string postalCode = "";
+            if (address.PostalCode != null)
+            {
+                postalCode = address.PostalCode.Replace(" ", "");
+            }
+            tbPostalCodeTo.Text = postalCode;
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
