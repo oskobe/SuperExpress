@@ -118,107 +118,32 @@ namespace IPD12_SuperExpress
                 insertCommand.Parameters.AddWithValue("@address1To", sr.Address1To);
                 insertCommand.Parameters.AddWithValue("@address2To", sr.Address2To);
                 insertCommand.Parameters.AddWithValue("@postalCodeTo", sr.PostalCodeTo);
-                
+
                 var generatedId = insertCommand.ExecuteScalar();
                 return generatedId.ToString();
                 //Console.WriteLine("ID is:  {0}", id);
             }
         }
 
-        /*
-        public List<Person> GetAllPeople()
+        public int AddUser(User user)
         {
-            List<Person> list = new List<Person>();
-            SqlCommand command = new SqlCommand("SELECT * FROM people", conn);
+            using (MySqlCommand insertCommand = new MySqlCommand("INSERT INTO users (userId, password, name, phone, email, countryCode, provinceCode, cityName, address, postalCode) VALUES (@userId, @password, @name, @phone, @email, @countryCode, @provinceCode, @cityName, @address, @postalCode); SELECT LAST_INSERT_ID()", conn))
 
-            using (SqlDataReader reader = command.ExecuteReader())
             {
-                while (reader.Read())
-                {
-                    Person person = new Person((int)reader[0], (string)reader[1], (int)reader[2], (double)reader[3]);
-                    list.Add(person);
-                }
-                return list;
-            }
+                insertCommand.Parameters.AddWithValue("@userId", user.UserId);
+                insertCommand.Parameters.AddWithValue("@password", user.Password);
+                insertCommand.Parameters.AddWithValue("@name", user.Name);
+                insertCommand.Parameters.AddWithValue("@phone", user.Phone);
+                insertCommand.Parameters.AddWithValue("@email", user.Email);
+                insertCommand.Parameters.AddWithValue("@countryCode", user.CountryCode);
+                insertCommand.Parameters.AddWithValue("@provinceCode", user.ProvinceCode);
+                insertCommand.Parameters.AddWithValue("@cityName", user.CityName);
+                insertCommand.Parameters.AddWithValue("@address", user.Address);
+                insertCommand.Parameters.AddWithValue("@postalCode", user.PostalCode);
 
-        }
-
-        public void GetAllPeople(List<Person> list)
-        {
-            List<Person> list2 = new List<Person>();
-            list = list2;
-            SqlCommand command = new SqlCommand("SELECT * FROM people", conn);
-
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    Person person = new Person((int)reader[0], (string)reader[1], (int)reader[2], (double)reader[3]);
-                    list2.Add(person);
-                }
-                //return list;
-            }
-
-        }
-
-        public void AddPerson(Person person)
-        {
-            using (SqlCommand insertCommand = new SqlCommand("INSERT INTO people (name, age, height) VALUES (@name, @age, @height)", conn))
-            {
-                insertCommand.Parameters.AddWithValue(@"name", person.Name);
-                insertCommand.Parameters.AddWithValue(@"age", person.Age);
-                insertCommand.Parameters.AddWithValue(@"height", person.Height);
-                insertCommand.ExecuteNonQuery();
-            }
-
-        }
-
-        public void UpdatePerson(Person person)
-        {
-            using (SqlCommand insertCommand = new SqlCommand("UPDATE people SET name = @name, age = @age, height = @height WHERE id = @id", conn))
-            {
-                insertCommand.Parameters.AddWithValue(@"name", person.Name);
-                insertCommand.Parameters.AddWithValue(@"age", person.Age);
-                insertCommand.Parameters.AddWithValue(@"height", person.Height);
-                insertCommand.Parameters.AddWithValue(@"id", person.Id);
-                insertCommand.ExecuteNonQuery();
-            }
-
-        }
-
-        public void DeletePerson(int id)
-        {
-            using (SqlCommand insertCommand = new SqlCommand("DELETE FROM people WHERE id = @id", conn))
-            {
-                insertCommand.Parameters.AddWithValue(@"id", id);
-                insertCommand.ExecuteNonQuery();
-            }
-
-        }
-        */
-                public void AddUser(User user)
-        {
-            string query = "INSERT INTO users (name, phone,email,postalCode,countryCode,provinceCode,cityName,streetName,apartment,Password) values(@name, @phone,@email,@postalCode,@countryCode,@provinceCode,@cityName,@streetName,@apartment,@Password)";
-            try
-            {
-                using (MySqlCommand insertCommand = new MySqlCommand(query, Globals.db.conn))
-                {
-                    insertCommand.Parameters.AddWithValue("@name", user.Name);
-                    insertCommand.Parameters.AddWithValue("@phone", user.Phone);
-                    insertCommand.Parameters.AddWithValue("@email", user.Email);
-                    insertCommand.Parameters.AddWithValue("@postalCode", user.PostalCode);
-                    insertCommand.Parameters.AddWithValue("@countryCode", user.CountryCode);
-                    insertCommand.Parameters.AddWithValue("@provinceCode", user.ProvinceCode);
-                    insertCommand.Parameters.AddWithValue("@cityName", user.CityName);
-                    insertCommand.Parameters.AddWithValue("@streetName", user.StreetName);
-                    insertCommand.Parameters.AddWithValue("@apartment", user.Apartment);
-                    insertCommand.Parameters.AddWithValue("@Password", user.Password);
-                    insertCommand.ExecuteNonQuery();
-                }
-            }catch(MySqlException ex)
-            {
-                throw ex;
-            }
+                var generatedId = insertCommand.ExecuteScalar();
+                return int.Parse(generatedId.ToString());
+            } 
         }
     }
 }

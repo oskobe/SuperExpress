@@ -740,7 +740,7 @@ namespace IPD12_SuperExpress
             string postalCode = shipTab_tbPostalCode.Text;
             if (string.IsNullOrWhiteSpace(postalCode))
             {
-                MessageBox.Show("Please enter an unemporty PostalCode！");
+                MessageBox.Show("Please enter an PostalCode!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 shipTab_tbPostalCode.Focus();
                 return;
             }
