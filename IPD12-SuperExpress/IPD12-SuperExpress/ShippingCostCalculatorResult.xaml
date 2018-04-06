@@ -22,7 +22,7 @@
         <Label Name="lblWeight" Content=":::" HorizontalAlignment="Left" Margin="774,102,0,0" VerticalAlignment="Top"/>
         <Label Name="lblDimensions" Content=":::" HorizontalAlignment="Left" Margin="774,128,0,0" VerticalAlignment="Top"/>
         <Label Name="lblCurrency" Content="CAD" HorizontalAlignment="Left" Margin="774,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.813,0.642"/>
-        <ListView HorizontalAlignment="Left" Height="567" Margin="20,212,0,0" VerticalAlignment="Top" Width="868" Name="lvShippingCostCalculatorResult" SelectionChanged="lvShippingCostCalculatorResult_SelectionChanged" SelectionMode="Single">
+        <ListView HorizontalAlignment="Left" Height="366" Margin="20,212,0,0" VerticalAlignment="Top" Width="868" Name="lvShippingCostCalculatorResult" SelectionChanged="lvShippingCostCalculatorResult_SelectionChanged" SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="" Width="25">
@@ -41,7 +41,8 @@
             </ListView.View>
         </ListView>
         <Label Content="Please choose one option and click the button &#xD;&#xA;below to create a new shipment request." FontSize="14" HorizontalAlignment="Left" Margin="946,316,0,0" VerticalAlignment="Top" Width="363" Height="49"/>
-        <Button Name="btCreateShipmentRequest" Click="btCreateShipmentRequest_Click" Margin="946,393,141.667,422" Content="Create Shipment Request"/>
+        <Button Name="btCreateShipmentRequest" Click="btCreateShipmentRequest_Click" Margin="156,627,1083,193" Content="Create Shipment Request"/>
+        <Button x:Name="btCreateShipmentRequest_Copy" Click="btCreateShipmentRequest_Click" Margin="334,627,905,193" Content="Create Shipment Request" RenderTransformOrigin="1.429,0.423"/>
 
     </Grid>
 </Window>

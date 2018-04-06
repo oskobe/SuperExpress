@@ -728,17 +728,11 @@ namespace IPD12_SuperExpress
                 costCalculator.Result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
 
                 ShippingCostCalculatorResult resultDialog = new ShippingCostCalculatorResult(costCalculator);
-                if (resultDialog.ShowDialog() == true)
+                resultDialog.ShowDialog();
+                if ( resultDialog.DialogResult == true)
                 {
-
+                   
                 }
-                /*
-                foreach (Rate r in costCalculator.Result)
-                {
-                    lblStatus.Content = r.ToJson();
-                    MessageBox.Show(r.ToJson());
-                }
-                */
             }
             catch (Exception ex)
             {
@@ -899,7 +893,12 @@ namespace IPD12_SuperExpress
             }
 
             tbCityTo.Text = address.Locality;
-            //tbPostalCodeTo.Text = address.PostalCode.Replace(" ", string.Empty);
+            string postalCode = "";
+            if (address.PostalCode != null)
+            {
+                postalCode = address.PostalCode.Replace(" ", "");
+            }
+            tbPostalCodeTo.Text = postalCode;
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
