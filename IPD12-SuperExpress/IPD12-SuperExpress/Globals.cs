@@ -15,11 +15,13 @@ namespace IPD12_SuperExpress
         public const double SPEECH_HURRICANE = 28.5;
         public const double VERY_COLD = -25;
         public static Database db=new Database();
-        public static  string emailExpression = @"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$";
+        public static string emailExpression = @"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$";
         public static User currentUser;
         public const string YES = "Yes";
         public const string NO = "No";
         public const string CURRENCY_CAD = " CAD";
         public const string SHIPPING_INVOICE = "Shipping_Invoice_";
+        public const string COUNTRY_CANADA = "Canada";
+        public const string DEFAULT_EMAIL = "example@superexpress.com";
     }
 }
