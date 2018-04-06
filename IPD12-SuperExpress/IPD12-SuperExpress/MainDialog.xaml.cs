@@ -837,40 +837,16 @@ namespace IPD12_SuperExpress
 
             geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postalCode + @"?key=" + BingMapsKey;
             Response geocodeResponse = MakeRequest(geocodeRequest);
+            Address shipToAddress;
             if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
             {
-<<<<<<< HEAD
+
                 shipToAddress = new Address();
-                shipToAddress = l.Address;
-                string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
-                string resultAddressLine = shipToAddress.AddressLine;//空值
-                string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
-                string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
-                string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
-                string resultLocality = shipToAddress.Locality;//城市
-
-                UpdateShipToAddress(shipToAddress);
-
-                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
-                AddPushpinToMap(cd, "T", 2);
-=======
                 BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
-                Address shipToAddress = new Address();
-                if (l != null)
-                {
-                    shipToAddress = new Address();
-                    shipToAddress = l.Address;
-                    string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
-                    string resultAddressLine = shipToAddress.AddressLine;//空值
-                    string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
-                    string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
-                    string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
-                    string resultLocality = shipToAddress.Locality;//城市
-
-                    Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
-                    AddPushpinToMap(cd, "T", 3);
-                }
->>>>>>> origin/master
+                shipToAddress = l.Address;
+                UpdateShipToAddress(shipToAddress);
+                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);                
+                AddPushpinToMap(cd, "T", 3);                
             }
             else
             {
@@ -888,40 +864,20 @@ namespace IPD12_SuperExpress
                 AddPushpinToMap(new Coordinate(pinLocation.Latitude, pinLocation.Longitude), "T", 2);
                 string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + BingMapsKey;
                 Response geocodeResponse = MakeRequest(geocodeRequest);
+                Address shipToAddress;
                 if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
                 {
-<<<<<<< HEAD
+                    BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
                     shipToAddress = new Address();
                     shipToAddress = l.Address;
-                    string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
-                    string resultAddressLine = shipToAddress.AddressLine;//空值
-                    string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
-                    string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
-                    string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
-                    string resultLocality = shipToAddress.Locality;//城市
-
                     UpdateShipToAddress(shipToAddress);
-                }                
-=======
-                    BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
-                    Address shipToAddress;
-                    if (l != null)
-                    {
-                        shipToAddress = new Address();
-                        shipToAddress = l.Address;
-                        string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
-                        string resultAddressLine = shipToAddress.AddressLine;//空值
-                        string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
-                        string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
-                        string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
-                        string resultLocality = shipToAddress.Locality;//城市
-                    }
-                }
+                    Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
+                    AddPushpinToMap(cd, "T", 2);
+                } 
                 else
                 {
                     MessageBox.Show("Please enter a valid PostalCode!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
->>>>>>> origin/master
             }
             ResetTimer();
         }
