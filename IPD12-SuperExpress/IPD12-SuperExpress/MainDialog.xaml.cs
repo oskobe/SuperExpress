@@ -797,8 +797,8 @@ namespace IPD12_SuperExpress
         private void cbCountryFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string countryCode = ((Country)cbCountryFrom.SelectedItem).Code;
-            List<Province> provinceInSelectedCountryList = Globals.db.GetAllProviceByCountryCode(countryCode);
-            cbProvinceStateFrom.ItemsSource = provinceInSelectedCountryList;
+            provinceList = Globals.db.GetAllProviceByCountryCode(countryCode);
+            cbProvinceStateFrom.ItemsSource = provinceList;
             cbProvinceStateFrom.SelectedIndex = 0;
         }
 
@@ -839,6 +839,21 @@ namespace IPD12_SuperExpress
             Response geocodeResponse = MakeRequest(geocodeRequest);
             if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
             {
+<<<<<<< HEAD
+                shipToAddress = new Address();
+                shipToAddress = l.Address;
+                string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
+                string resultAddressLine = shipToAddress.AddressLine;//空值
+                string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
+                string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
+                string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
+                string resultLocality = shipToAddress.Locality;//城市
+
+                UpdateShipToAddress(shipToAddress);
+
+                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
+                AddPushpinToMap(cd, "T", 2);
+=======
                 BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
                 Address shipToAddress = new Address();
                 if (l != null)
@@ -855,6 +870,7 @@ namespace IPD12_SuperExpress
                     Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
                     AddPushpinToMap(cd, "T", 3);
                 }
+>>>>>>> origin/master
             }
             else
             {
@@ -874,6 +890,19 @@ namespace IPD12_SuperExpress
                 Response geocodeResponse = MakeRequest(geocodeRequest);
                 if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
                 {
+<<<<<<< HEAD
+                    shipToAddress = new Address();
+                    shipToAddress = l.Address;
+                    string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
+                    string resultAddressLine = shipToAddress.AddressLine;//空值
+                    string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
+                    string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
+                    string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
+                    string resultLocality = shipToAddress.Locality;//城市
+
+                    UpdateShipToAddress(shipToAddress);
+                }                
+=======
                     BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
                     Address shipToAddress;
                     if (l != null)
@@ -892,8 +921,31 @@ namespace IPD12_SuperExpress
                 {
                     MessageBox.Show("Please enter a valid PostalCode!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
+>>>>>>> origin/master
             }
             ResetTimer();
+        }
+
+        private void UpdateShipToAddress(Address address)
+        {
+            string countryName = address.CountryRegion;
+            string countryCode = countryList.Find(c => c.Name.Equals(countryName)).Code;
+            cbCountryTo.Text = countryName;
+
+            provinceList = Globals.db.GetAllProviceByCountryCode(countryCode);
+            cbProvinceStateTo.ItemsSource = provinceList;
+            if (provinceList.Count > 0)
+            {
+                string provinceCode = address.AdminDistrict;
+                string provinceName = provinceList.Find(p => p.ProvinceStateCode.Equals(provinceCode)).ProvinceStateName;
+                cbProvinceStateTo.Text = provinceName;
+            } else
+            {
+                cbProvinceStateTo.Text = string.Empty;
+            }
+
+            tbCityTo.Text = address.Locality;
+            tbPostalCodeTo.Text = address.PostalCode.Replace(" ", "");
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
