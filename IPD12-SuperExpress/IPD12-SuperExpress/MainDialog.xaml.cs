@@ -335,6 +335,20 @@ namespace IPD12_SuperExpress
         }
         private void TestShowShipmentRouteOnMap()
         {
+            /*
+            coordinateList.Add(new Coordinate(45.604438, -73.651505));
+            coordinateList.Add(new Coordinate(43.856324, -107.862930));
+            coordinateList.Add(new Coordinate());
+            coordinateList.Add(new Coordinate());
+            coordinateList.Add(new Coordinate());
+            coordinateList.Add(new Coordinate());
+            coordinateList.Add(new Coordinate());
+            coordinateList.Add(new Coordinate());
+            coordinateList.Add(new Coordinate());
+            coordinateList.Add(new Coordinate());
+            coordinateList.Add(new Coordinate());
+            */
+            /*
             string postalCode = string.Empty;
             string countryCode = string.Empty;
             string cityName = string.Empty;
@@ -380,6 +394,7 @@ namespace IPD12_SuperExpress
             BestZoomLevel = getZoomLevel(maxDistance);
             myMap.ZoomLevel = BestZoomLevel;
             myMap.Focus(); //allows '+' and '-' to zoom the map
+            */
         }
         private void ShowShipmentRouteOnMap()
         {
@@ -801,22 +816,29 @@ namespace IPD12_SuperExpress
 
             geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postalCode + @"?key=" + BingMapsKey;
             Response geocodeResponse = MakeRequest(geocodeRequest);
-            BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
-            Address shipToAddress = new Address();
-            if (l != null)
+            if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
             {
-                shipToAddress = new Address();
-                shipToAddress = l.Address;
-                string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
-                string resultAddressLine = shipToAddress.AddressLine;//空值
-                string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
-                string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
-                string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
-                string resultLocality = shipToAddress.Locality;//城市
+                BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
+                Address shipToAddress = new Address();
+                if (l != null)
+                {
+                    shipToAddress = new Address();
+                    shipToAddress = l.Address;
+                    string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
+                    string resultAddressLine = shipToAddress.AddressLine;//空值
+                    string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
+                    string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
+                    string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
+                    string resultLocality = shipToAddress.Locality;//城市
 
-                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
-                AddPushpinToMap(cd, "T", 3);
+                    Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
+                    AddPushpinToMap(cd, "T", 3);
+                }
             }
+            else
+            {
+                MessageBox.Show("Please enter a valid PostalCode!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }            
         }
 
         private void shipMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -829,18 +851,25 @@ namespace IPD12_SuperExpress
                 AddPushpinToMap(new Coordinate(pinLocation.Latitude, pinLocation.Longitude), "T", 2);
                 string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + BingMapsKey;
                 Response geocodeResponse = MakeRequest(geocodeRequest);
-                BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
-                Address shipToAddress;
-                if (l != null)
+                if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
                 {
-                    shipToAddress = new Address();
-                    shipToAddress = l.Address;
-                    string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
-                    string resultAddressLine = shipToAddress.AddressLine;//空值
-                    string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
-                    string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
-                    string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
-                    string resultLocality = shipToAddress.Locality;//城市
+                    BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
+                    Address shipToAddress;
+                    if (l != null)
+                    {
+                        shipToAddress = new Address();
+                        shipToAddress = l.Address;
+                        string resultPostalCode = shipToAddress.PostalCode;//正确的大写PostalCode
+                        string resultAddressLine = shipToAddress.AddressLine;//空值
+                        string resultAdminDistrict = shipToAddress.AdminDistrict;//省代码
+                        string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
+                        string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
+                        string resultLocality = shipToAddress.Locality;//城市
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid PostalCode!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             ResetTimer();
