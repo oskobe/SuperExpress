@@ -710,8 +710,8 @@ namespace IPD12_SuperExpress
         private void cbCountryFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string countryCode = ((Country)cbCountryFrom.SelectedItem).Code;
-            List<Province> provinceInSelectedCountryList = Globals.db.GetAllProviceByCountryCode(countryCode);
-            cbProvinceStateFrom.ItemsSource = provinceInSelectedCountryList;
+            provinceList = Globals.db.GetAllProviceByCountryCode(countryCode);
+            cbProvinceStateFrom.ItemsSource = provinceList;
             cbProvinceStateFrom.SelectedIndex = 0;
         }
 
@@ -761,7 +761,9 @@ namespace IPD12_SuperExpress
                 string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
                 string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
                 string resultLocality = shipToAddress.Locality;//城市
-                
+
+                UpdateShipToAddress(shipToAddress);
+
                 Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
                 AddPushpinToMap(cd, "T", 2);
             }
@@ -789,9 +791,33 @@ namespace IPD12_SuperExpress
                     string resultAdminDistrict2 = shipToAddress.AdminDistrict2;//城市
                     string resultCountryRegion = shipToAddress.CountryRegion;//国家全名
                     string resultLocality = shipToAddress.Locality;//城市
+
+                    UpdateShipToAddress(shipToAddress);
                 }                
             }
             ResetTimer();
+        }
+
+        private void UpdateShipToAddress(Address address)
+        {
+            string countryName = address.CountryRegion;
+            string countryCode = countryList.Find(c => c.Name.Equals(countryName)).Code;
+            cbCountryTo.Text = countryName;
+
+            provinceList = Globals.db.GetAllProviceByCountryCode(countryCode);
+            cbProvinceStateTo.ItemsSource = provinceList;
+            if (provinceList.Count > 0)
+            {
+                string provinceCode = address.AdminDistrict;
+                string provinceName = provinceList.Find(p => p.ProvinceStateCode.Equals(provinceCode)).ProvinceStateName;
+                cbProvinceStateTo.Text = provinceName;
+            } else
+            {
+                cbProvinceStateTo.Text = string.Empty;
+            }
+
+            tbCityTo.Text = address.Locality;
+            tbPostalCodeTo.Text = address.PostalCode.Replace(" ", "");
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
