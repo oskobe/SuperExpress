@@ -483,8 +483,10 @@ namespace IPD12_SuperExpress
             SolidColorBrush scb = new SolidColorBrush(c);
             string iconURL = "http://openweathermap.org/img/w/" + result.Weather.Icon + ".png";
             maindlg_imgDescription.Source = new BitmapImage(new Uri(iconURL));
+            var targetCountry = (from tempc in countryList where tempc.Code == result.City.Country select tempc).ToList().First();
             mainDlg_lbCountry.Background = scb;
-            mainDlg_lbCountry.Content = result.City.Country;
+            //mainDlg_lbCountry.Content = result.City.Country;
+            mainDlg_lbCountry.Content = ((Country)(targetCountry)).Name;
             mainDlg_lbCity.Background = scb;
             mainDlg_lbCity.Content = result.City.Name;
             mainDlg_lbTemp.Background = scb;
@@ -835,7 +837,7 @@ namespace IPD12_SuperExpress
             string geocodeRequest;
             //Create REST Services geocode request using Locations API
 
-            geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postalCode + @"?key=" + BingMapsKey;
+            geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/CA/QC/Montreal/" + postalCode + @"?key=" + BingMapsKey;
             Response geocodeResponse = MakeRequest(geocodeRequest);
             Address shipToAddress;
             if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
@@ -862,7 +864,7 @@ namespace IPD12_SuperExpress
                 System.Windows.Point mousePosition = e.GetPosition(shipMap);
                 Microsoft.Maps.MapControl.WPF.Location pinLocation = shipMap.ViewportPointToLocation(mousePosition);
                 AddPushpinToMap(new Coordinate(pinLocation.Latitude, pinLocation.Longitude), "T", 2);
-                string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + BingMapsKey;
+                string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/CA/QC/Montreal/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + BingMapsKey;
                 Response geocodeResponse = MakeRequest(geocodeRequest);
                 Address shipToAddress;
                 if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
@@ -873,11 +875,7 @@ namespace IPD12_SuperExpress
                     UpdateShipToAddress(shipToAddress);
                     Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
                     AddPushpinToMap(cd, "T", 2);
-                } 
-                else
-                {
-                    MessageBox.Show("Please enter a valid PostalCode!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
+                }                 
             }
             ResetTimer();
         }
@@ -901,7 +899,7 @@ namespace IPD12_SuperExpress
             }
 
             tbCityTo.Text = address.Locality;
-            tbPostalCodeTo.Text = address.PostalCode.Replace(" ", "");
+            //tbPostalCodeTo.Text = address.PostalCode.Replace(" ", string.Empty);
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
