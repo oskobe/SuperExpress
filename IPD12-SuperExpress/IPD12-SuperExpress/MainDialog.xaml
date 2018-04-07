@@ -82,7 +82,6 @@
                     <Label x:Name="mainDlg_lbDate" Content="" HorizontalAlignment="Left" Margin="1160,30,0,0" VerticalAlignment="Top" Width="107" Background="White" FontSize="14"/>
                     <Image x:Name="maindlg_imgDescription" HorizontalAlignment="Left" Height="78" Margin="1276,21,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-5.222,3.639"/>
                     <Label Content="Track Number：" HorizontalAlignment="Left" Margin="97,37,0,0" VerticalAlignment="Top" Width="117" Height="27"/>
-
                 </Grid>
             </TabItem>
             <TabItem Name="tiShipping" Header="Shipping" Selector.Selected="tiShipping_Selected">
@@ -116,9 +115,9 @@
                             <Label Content="Province/State: " Margin="322,63.5,36,166" Grid.Row="1"/>
                             <ComboBox Name="cbProvinceStateTo" HorizontalAlignment="Left" Margin="325,95.5,0,0" VerticalAlignment="Top" Width="203" Grid.Row="1"/>
                             <Label Content="City:" Margin="322,127.5,37,94" Grid.Row="1"/>
-                            <TextBox Name="tbCityTo" HorizontalAlignment="Left" Margin="326,162.5,0,0" VerticalAlignment="Top" Width="203" Height="22" Grid.Row="1"/>
+                            <TextBox Name="tbCityTo" HorizontalAlignment="Left" Margin="326,162.5,0,0" VerticalAlignment="Top" Width="203" Height="22" Grid.Row="1" GotFocus="tbCityTo_GotFocus"/>
                             <Label Content="Postal Code/Zip:" Margin="322,191.5,36,38" Grid.Row="1"/>
-                            <TextBox Name="tbPostalCodeTo" HorizontalAlignment="Left" Margin="326,223.5,0,0" VerticalAlignment="Top" Width="202" Height="22" Grid.Row="1">
+                            <TextBox Name="tbPostalCodeTo" HorizontalAlignment="Left" Margin="326,223.5,0,0" VerticalAlignment="Top" Width="202" Height="22" Grid.Row="1" GotFocus="tbPostalCodeTo_GotFocus">
                             </TextBox>
                         </Grid>
                     </GroupBox>
@@ -137,9 +136,10 @@
                             <Button Name="btEstimate" Click="btEstimate_Click" Margin="337,245,41.333,19.333">Estimate</Button>
                         </Grid>
                     </GroupBox>
-                    <Label Content="Ship to PostalCode:" Grid.Column="2" HorizontalAlignment="Left" Margin="296,26,0,0" VerticalAlignment="Top" Height="27" Width="140"/>
-                    <TextBox x:Name="shipTab_tbPostalCode" Grid.Column="2" HorizontalAlignment="Left" Height="22" Margin="444,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134" />
-                    <Button x:Name="shipTab_btnSearch" Content="Search&#xD;&#xA;" HorizontalAlignment="Left" Margin="604,30,0,0" VerticalAlignment="Top" Width="101" Height="22" Click="shipTab_btnSearch_Click" Grid.Column="2"/>
+                    <Label Content="Ship to PostalCode:" Grid.Column="2" HorizontalAlignment="Left" Margin="376,28,0,0" VerticalAlignment="Top" Height="27" Width="123"/>
+                    <TextBox x:Name="shipTab_tbPostalCode" Grid.Column="2" HorizontalAlignment="Left" Height="22" Margin="510,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134" Background="#FFC6CB5A" Text="H3E1G4" GotFocus="shipTab_tbPostalCode_GotFocus" />
+                    <Button x:Name="shipTab_btnSearch" Content="Search&#xD;&#xA;" HorizontalAlignment="Left" Margin="649,31,0,0" VerticalAlignment="Top" Width="56" Height="22" Click="shipTab_btnSearch_Click" Grid.Column="2"/>
+                    <Label Content="Note:&#xD;&#xA;*.Click the map, you will get the receiver's address&#xD;&#xA;*.Search the PostalCode, we will fill out the form for you&#xD;&#xA;" HorizontalAlignment="Left" Margin="-1,13,0,0" VerticalAlignment="Top" Height="53" Width="262" FontSize="8" Background="#FFBFD4C0" Foreground="#FF1E3CC3" Grid.ColumnSpan="3"/>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -46,15 +46,11 @@ namespace IPD12_SuperExpress
         List<Pushpin> pushpinList = new List<Pushpin>();
         Pushpin shipMapPushpin;
         MapPolyline currentPolyline;
-        static int earthRadius = 6367;
+        static int earthRadius = 6367;//KM
         double BestZoomLevel = 12;
-        Microsoft.Maps.MapControl.WPF.Location BestCenter = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
-        //double distance;
-        private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
-        private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient("23a61d3a72f546a7a1659131fb9499c0");
-
-        public int currentCount = 0;
-
+        Microsoft.Maps.MapControl.WPF.Location BestCenter = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);        
+        private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient(Globals.APIKEY_OPENWEATHER);
+        public int currentCount = 0;//For timer
         System.Timers.Timer clickTimer;
 
         private void InitTimer()
@@ -617,11 +613,11 @@ namespace IPD12_SuperExpress
             //Create REST Services geocode request using Locations API
             if (postCode != string.Empty)
             {
-                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postCode + @"?key=" + BingMapsKey;
+                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postCode + @"?key=" + Globals.APIKEY_BINGMAPS;
             }
             else
             {
-                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + countryCode + @"/" + cityName + @"?key=" + BingMapsKey;
+                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + countryCode + @"/" + cityName + @"?key=" + Globals.APIKEY_BINGMAPS;
             }
             //Make the request and get the response
             Response geocodeResponse = MakeRequest(geocodeRequest);
@@ -842,13 +838,11 @@ namespace IPD12_SuperExpress
             string geocodeRequest;
             //Create REST Services geocode request using Locations API
 
-            geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/CA/QC/Montreal/" + postalCode + @"?key=" + BingMapsKey;
+            geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postalCode + @"?key=" + Globals.APIKEY_BINGMAPS;
             Response geocodeResponse = MakeRequest(geocodeRequest);
             Address shipToAddress;
             if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
             {
-
-                shipToAddress = new Address();
                 BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
                 shipToAddress = l.Address;
                 UpdateShipToAddress(shipToAddress);
@@ -864,25 +858,23 @@ namespace IPD12_SuperExpress
         private void shipMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             clickTimer.Stop();
-            if (currentCount < 10)
-            {
+            if (currentCount < Globals.SHIPMAP_CLICK_ELASPED_TIME)
+            {                
                 System.Windows.Point mousePosition = e.GetPosition(shipMap);
                 Microsoft.Maps.MapControl.WPF.Location pinLocation = shipMap.ViewportPointToLocation(mousePosition);
                 AddPushpinToMap(new Coordinate(pinLocation.Latitude, pinLocation.Longitude), "T", 2);
-                string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/CA/QC/Montreal/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + BingMapsKey;
-                Response geocodeResponse = MakeRequest(geocodeRequest);
+                string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + Globals.APIKEY_BINGMAPS;
+                Response geocodeResponse = MakeRequest(geocodeRequest);                
                 Address shipToAddress;
                 if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
                 {
-                    BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
-                    shipToAddress = new Address();
-                    shipToAddress = l.Address;
+                    BingMapsRESTToolkit.Location shipToLocation = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];                   
+                    shipToAddress = shipToLocation.Address;
                     UpdateShipToAddress(shipToAddress);
-                    Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
+                    Coordinate cd = new Coordinate(shipToLocation.Point.GetCoordinate().Latitude, shipToLocation.Point.GetCoordinate().Longitude);
                     AddPushpinToMap(cd, "T", 2);
                 }
             }
-            ResetTimer();
         }
 
         private void UpdateShipToAddress(Address address)
@@ -897,24 +889,31 @@ namespace IPD12_SuperExpress
             {
                 string provinceCode = address.AdminDistrict;
                 string provinceName = provinceList.Find(p => p.ProvinceStateCode.Equals(provinceCode)).ProvinceStateName;
+<<<<<<< HEAD
                 cbProvinceStateTo.Text = provinceName;
             }
             else
+=======
+                cbProvinceStateTo.Text = provinceName;                
+            } else
+>>>>>>> d0786ee0b1cd7a67e355749c0c468035d6edadfb
             {
                 cbProvinceStateTo.Text = string.Empty;
             }
-
             tbCityTo.Text = address.Locality;
+            tbCityTo.Background = Brushes.YellowGreen;
             string postalCode = "";
             if (address.PostalCode != null)
             {
                 postalCode = address.PostalCode.Replace(" ", "");
             }
             tbPostalCodeTo.Text = postalCode;
+            tbPostalCodeTo.Background = Brushes.GreenYellow;
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            ResetTimer();
             clickTimer.Start();
         }
 
@@ -928,6 +927,7 @@ namespace IPD12_SuperExpress
             }
         }
 
+<<<<<<< HEAD
         private void tiShipping_Selected(object sender, RoutedEventArgs e)
         {
             string countryNameFrom = (countryList.Find(c => c.Code == Globals.currentUser.CountryCode)).Name;
@@ -943,5 +943,22 @@ namespace IPD12_SuperExpress
             tbCityFrom.Text = Globals.currentUser.CityName;
             tbPostalCodeFrom.Text = Globals.currentUser.PostalCode;
         }
+=======
+        private void tbCityTo_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbCityTo.Background = Brushes.White;
+        }
+
+        private void tbPostalCodeTo_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbPostalCodeTo.Background = Brushes.White;
+        }
+
+        private void shipTab_tbPostalCode_GotFocus(object sender, RoutedEventArgs e)
+        {            
+            shipTab_tbPostalCode.Background = Brushes.White;
+            //shipTab_tbPostalCode.SelectAll();
+        }    
+>>>>>>> d0786ee0b1cd7a67e355749c0c468035d6edadfb
     }
 }

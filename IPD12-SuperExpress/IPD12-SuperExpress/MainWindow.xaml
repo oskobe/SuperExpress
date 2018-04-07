@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IPD12_SuperExpress"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Icon="logo.ico"
         Title="Login" Height="302" Width="329" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,2,-1">
         <Grid.ColumnDefinitions>
