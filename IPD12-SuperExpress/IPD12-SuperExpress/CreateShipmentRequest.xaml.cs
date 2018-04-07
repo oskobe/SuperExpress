@@ -33,6 +33,7 @@ namespace IPD12_SuperExpress
         CostCalculator costCalculator;
         SuperExpressRate rate;
         ShipmentRequest shipmentRequest;
+        int _status;
 
         public CreateShipmentRequest(CostCalculator cal, SuperExpressRate rate)
         {
@@ -180,6 +181,10 @@ namespace IPD12_SuperExpress
                 {
                     PrintPdfInvoice(newGeneratedId);
                 }
+
+                _status = 9;   // Execute successfully, return to first tracking window
+                this.Close();
+                //this.DialogResult = true;
 
             } catch (MySqlException ex)
             {
@@ -389,11 +394,34 @@ namespace IPD12_SuperExpress
                 document.Close();
                 myStream.Close();
 
-
                 //gridBill.item
                 Grid myGrid = new Grid();
 
             }
         }
+
+        private void btCancel_Click(object sender, RoutedEventArgs e)
+        {
+            _status = 0;  // Close current window, return to previous window
+            this.Close();
+            //this.DialogResult = false;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _status = (_status != 9) ? 0 : _status; 
+        }
+
+      
+        public int Status
+        {
+            
+            get
+            {
+                return _status;
+            }
+           
+        }
+     
     }
 }

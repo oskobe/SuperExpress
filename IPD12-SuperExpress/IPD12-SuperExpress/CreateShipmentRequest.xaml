@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IPD12_SuperExpress"
         mc:Ignorable="d"
-        Title="Create Shipment Request" Height="877" Width="1413" WindowStartupLocation="CenterScreen">
+        Title="Create Shipment Request" Height="877" Width="1413" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.206,0.356">
         <Label Content="Create Shipping Request" FontSize="26" HorizontalAlignment="Left" Margin="92,39,0,0" VerticalAlignment="Top"/>
         <Label Content="Please provide the full address to create a new shipping request." FontSize="16" HorizontalAlignment="Left" Margin="92,225,0,0" VerticalAlignment="Top"/>
@@ -55,7 +55,7 @@
         <Label Content="Total Amount:" HorizontalAlignment="Left" Margin="504,169,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblAmount" Content=":::" HorizontalAlignment="Left" Margin="644,169,0,0" VerticalAlignment="Top"/>
 
-        <Button Name="btCancel" IsCancel="True" Content="Cancel" HorizontalAlignment="Left" Margin="347,774,0,0" VerticalAlignment="Top" Width="233"/>
+        <Button Name="btCancel" IsCancel="True" Click="btCancel_Click" Content="Cancel" HorizontalAlignment="Left" Margin="347,774,0,0" VerticalAlignment="Top" Width="233"/>
         <Button Name="btCreate" Click="btCreate_Click" IsDefault="True" Content="Create" HorizontalAlignment="Left" Margin="740,774,0,0" VerticalAlignment="Top" Width="233"/>
 
     </Grid>

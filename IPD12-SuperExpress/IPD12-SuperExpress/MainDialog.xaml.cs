@@ -750,13 +750,21 @@ namespace IPD12_SuperExpress
             try
             {
                 costCalculator.Result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
-
+                this.Hide();
                 ShippingCostCalculatorResult resultDialog = new ShippingCostCalculatorResult(costCalculator);
                 resultDialog.ShowDialog();
+
+                this.ShowDialog();
+                /*
                 if (resultDialog.DialogResult == true)
                 {
-
+                    this.DialogResult = true;
+                } 
+                else
+                {
+                    this.ShowDialog();
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -815,7 +823,7 @@ namespace IPD12_SuperExpress
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            this.DialogResult = true;
+            //this.DialogResult = true;
         }
 
 

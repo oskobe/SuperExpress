@@ -41,7 +41,7 @@
             </ListView.View>
         </ListView>
         <Label Content="Please choose one option to create a new shipment request." FontSize="14" HorizontalAlignment="Left" Margin="20,207,0,0" VerticalAlignment="Top" Width="633" Height="37"/>
-        <Button x:Name="btCancel" Margin="261,670,583,34" Content="Cancel"/>
+        <Button x:Name="btCancel" IsCancel="True" Click="btCancel_Click" Margin="261,670,583,34" Content="Cancel"/>
         <Button x:Name="btCreateShipmentRequest" Click="btCreateShipmentRequest_Click" Margin="593,670,251,34" Content="Create Shipment Request" RenderTransformOrigin="1.429,0.423"/>
 
     </Grid>
