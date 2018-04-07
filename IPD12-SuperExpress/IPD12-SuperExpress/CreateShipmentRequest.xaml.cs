@@ -91,11 +91,9 @@ namespace IPD12_SuperExpress
             tbCityTo.Text = costCalculator.CityTo;
             tbPostalCodeTo.Text = costCalculator.PostalCodeTo;
 
-
-            /* for test start*/
-            tbAddressFrom.Text = "4100 Rue Goyer";
-            tbAddressTo.Text = "3-9992 Av Fontenac";
-            /* for test end */
+            // Set default sender name & address from current user info
+            tbSenderName.Text = Globals.currentUser.Name;
+            tbAddressFrom.Text = Globals.currentUser.Address;
 
         }
 
@@ -152,10 +150,13 @@ namespace IPD12_SuperExpress
             shipmentRequest.EstimatedDeliveryDate = rate.EstimatedDeliveryDateTime;
             shipmentRequest.Weight = costCalculator.Weight.Value??0;
             shipmentRequest.WeightUnit = costCalculator.Weight.Unit.ToString();
-            shipmentRequest.Length = costCalculator.Dimensions.Length??0;
-            shipmentRequest.Width = costCalculator.Dimensions.Width ?? 0;
-            shipmentRequest.Height = costCalculator.Dimensions.Height ?? 0;
-            shipmentRequest.DimensionsUnit = costCalculator.Dimensions.Unit.ToString();
+            if (costCalculator.Dimensions != null)
+            {
+                shipmentRequest.Length = costCalculator.Dimensions.Length ?? 0;
+                shipmentRequest.Width = costCalculator.Dimensions.Width ?? 0;
+                shipmentRequest.Height = costCalculator.Dimensions.Height ?? 0;
+                shipmentRequest.DimensionsUnit = costCalculator.Dimensions.Unit.ToString();
+            }
             shipmentRequest.Amount = rate.Amount;
             shipmentRequest.SenderName = senderName;
             shipmentRequest.Currency = Globals.CURRENCY_CAD.Trim();

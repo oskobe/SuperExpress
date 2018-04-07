@@ -89,7 +89,13 @@ namespace IPD12_SuperExpress
         {
             get
             {
-                return string.Format("{0:0.0} * {1:0.0} * {2:0.0} {3}", Dimensions.Length, Dimensions.Width, Dimensions.Height, Dimensions.Unit);
+                string dimensionsStr = string.Empty;
+
+                if (Dimensions != null)
+                {
+                    dimensionsStr = string.Format("{0:0.0} * {1:0.0} * {2:0.0} {3}", Dimensions.Length, Dimensions.Width, Dimensions.Height, Dimensions.Unit);
+                }
+                return dimensionsStr;
             }
         }
 

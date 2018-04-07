@@ -145,5 +145,21 @@ namespace IPD12_SuperExpress
                 return int.Parse(generatedId.ToString());
             } 
         }
+
+        public User GetUserByUserId(string userId)
+        {
+            User user = null; 
+            MySqlCommand command = new MySqlCommand("SELECT * FROM users WHERE userId = @userId LIMIT 1", conn);
+            command.Parameters.AddWithValue("@userId", userId);
+
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    user = new User((int)reader["id"], (string)reader["userId"], (string)reader["password"], (string)reader["name"], (long)reader["phone"], (string)reader["email"], (string)reader["countryCode"], (string)reader["provinceCode"], (string)reader["cityName"], (string)reader["address"], (string)reader["postalCode"]);
+                }
+                return user;
+            }
+        }
     }
 }

@@ -91,6 +91,10 @@ namespace IPD12_SuperExpress
             shipMap.ZoomLevel = BestZoomLevel;
             try
             {
+                // For test start
+                Globals.currentUser = Globals.db.GetUserByUserId("wjing");
+                // For test end
+
                 InitializeDataFromDatabase();
                 InitializeShippingCostCalculator();
             }
@@ -100,6 +104,7 @@ namespace IPD12_SuperExpress
                 Console.WriteLine("Error opening database connection: " + ex.Message);
                 Environment.Exit(1);
             }
+
         }
         public class Cartesian
         {
@@ -346,7 +351,7 @@ namespace IPD12_SuperExpress
                 pushpin.MouseEnter += new MouseEventHandler(Pushpin_MouseEnter);
                 pushpin.Content = "" + i++;
                 pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
-                
+
                 pushpinList.Add(pushpin);
                 myMap.Children.Add(pushpin);
             }
@@ -475,7 +480,7 @@ namespace IPD12_SuperExpress
         {
             Color c;
             c = Colors.GreenYellow;
-            
+
             if (result.Temperature.Value <= Globals.EXTRAMELY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
             {
                 c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
@@ -702,47 +707,65 @@ namespace IPD12_SuperExpress
             Weight weight = new Weight(doubleWeight, weightUnit);
             costCalculator.Weight = weight;
 
-            double doubleLength = 0, doubleWidth = 0, doubleHeight = 0;
-            if (!double.TryParse(tbLength.Text, out doubleLength))
+            // Dimension can be null, will check if any of length, width, height was input
+            Dimensions dimensions = null;
+            if (!tbLength.Text.Trim().Equals(string.Empty) ||
+                !tbWidth.Text.Trim().Equals(string.Empty) ||
+                !tbHeight.Text.Trim().Equals(string.Empty))
             {
-                MessageBox.Show("Please enter double length.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbLength.Focus();
-                return;
+                double doubleLength = 0, doubleWidth = 0, doubleHeight = 0;
+                if (!double.TryParse(tbLength.Text, out doubleLength))
+                {
+                    MessageBox.Show("Please enter double length.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbLength.Focus();
+                    return;
+                }
+                if (!double.TryParse(tbWidth.Text, out doubleWidth))
+                {
+                    MessageBox.Show("Please enter double width.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbWidth.Focus();
+                    return;
+                }
+                if (!double.TryParse(tbHeight.Text, out doubleHeight))
+                {
+                    MessageBox.Show("Please enter double height.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbHeight.Focus();
+                    return;
+                }
+
+                Dimensions.UnitEnum dimensionUnit = (Dimensions.UnitEnum)Enum.Parse(typeof(Dimensions.UnitEnum), cbDimensionUnit.SelectedItem.ToString(), false);
+                dimensions = new Dimensions(dimensionUnit, doubleLength, doubleWidth, doubleHeight);
             }
-            if (!double.TryParse(tbWidth.Text, out doubleWidth))
-            {
-                MessageBox.Show("Please enter double width.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbWidth.Focus();
-                return;
-            }
-            if (!double.TryParse(tbHeight.Text, out doubleHeight))
-            {
-                MessageBox.Show("Please enter double height.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbHeight.Focus();
-                return;
-            }
-            Dimensions.UnitEnum dimensionUnit = (Dimensions.UnitEnum)Enum.Parse(typeof(Dimensions.UnitEnum), cbDimensionUnit.SelectedItem.ToString(), false);
-            Dimensions dimensions = new Dimensions(dimensionUnit, doubleLength, doubleWidth, doubleHeight);
             costCalculator.Dimensions = dimensions;
 
+
             // Calculate the rate
-            var apiRatesInstance = new RatesApi();
-            var estimateRequest = new RateEstimateRequest(Globals.CARRIER_ID_UPS, costCalculator.CountryFrom.Code, costCalculator.PostalCodeFrom, costCalculator.CountryTo.Code, costCalculator.PostalCodeTo, costCalculator.CityTo, costCalculator.ProvinceTo.ProvinceStateCode, costCalculator.Weight, costCalculator.Dimensions);
+            RatesApi apiRatesInstance = new RatesApi();
+            RateEstimateRequest estimateRequest;
+            if (costCalculator.Dimensions != null)
+            {
+                estimateRequest = new RateEstimateRequest(Globals.CARRIER_ID_UPS, costCalculator.CountryFrom.Code, costCalculator.PostalCodeFrom, costCalculator.CountryTo.Code, costCalculator.PostalCodeTo, costCalculator.CityTo, costCalculator.ProvinceTo.ProvinceStateCode, costCalculator.Weight, costCalculator.Dimensions);
+            }
+            else
+            {
+                estimateRequest = new RateEstimateRequest(Globals.CARRIER_ID_UPS, costCalculator.CountryFrom.Code, costCalculator.PostalCodeFrom, costCalculator.CountryTo.Code, costCalculator.PostalCodeTo, costCalculator.CityTo, costCalculator.ProvinceTo.ProvinceStateCode, costCalculator.Weight);
+            }
+            
             try
             {
                 costCalculator.Result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
 
                 ShippingCostCalculatorResult resultDialog = new ShippingCostCalculatorResult(costCalculator);
                 resultDialog.ShowDialog();
-                if ( resultDialog.DialogResult == true)
+                if (resultDialog.DialogResult == true)
                 {
-                   
+
                 }
             }
             catch (Exception ex)
             {
                 lblStatus.Content = "Exception when calling RatesApi.RatesEstimate: " + ex.Message;
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Shipping fee estimation error: \n" + ex.Message, "Calculator error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -764,11 +787,11 @@ namespace IPD12_SuperExpress
 
         private void InitializeShippingCostCalculator()
         {
-            //List<String> countryNameList = (from country in countryList orderby country.Name select country.Name).ToList();
+            // Set ComboBox default list
             cbCountryFrom.ItemsSource = countryList;//countryNameList;
-            cbCountryFrom.Text = "Canada";
             cbCountryTo.ItemsSource = countryList;
 
+            // Set weight/dimentions unit
             cbWeithtUnit.ItemsSource = Enum.GetNames(typeof(Weight.UnitEnum));
             Weight.UnitEnum defaultWeightUnit = Weight.UnitEnum.Pound;
             cbWeithtUnit.SelectedIndex = cbWeithtUnit.Items.IndexOf(defaultWeightUnit.ToString());
@@ -776,23 +799,6 @@ namespace IPD12_SuperExpress
             cbDimensionUnit.ItemsSource = Enum.GetNames(typeof(Dimensions.UnitEnum));
             Dimensions.UnitEnum defaultDimensionUnit = Dimensions.UnitEnum.Inch;
             cbDimensionUnit.SelectedIndex = cbDimensionUnit.Items.IndexOf(defaultDimensionUnit.ToString());
-
-            /* for test start*/
-            cbProvinceStateFrom.Text = "Quebec";
-            tbCityFrom.Text = "laval";
-            tbPostalCodeFrom.Text = "h7t2t4";
-
-            cbCountryTo.Text = "Canada";
-            cbProvinceStateTo.Text = "Quebec";
-            tbCityTo.Text = "montreal";
-            tbPostalCodeTo.Text = "h3t1e6";
-
-            tbWeight.Text = "0.65";
-            tbLength.Text = "2.33";
-            tbWidth.Text = "3.52";
-            tbHeight.Text = "1.0";
-            /* for test end */
-
         }
 
         private void cbCountryFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -846,13 +852,13 @@ namespace IPD12_SuperExpress
                 BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
                 shipToAddress = l.Address;
                 UpdateShipToAddress(shipToAddress);
-                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);                
-                AddPushpinToMap(cd, "T", 3);                
+                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
+                AddPushpinToMap(cd, "T", 3);
             }
             else
             {
                 MessageBox.Show("Please enter a valid PostalCode!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }            
+            }
         }
 
         private void shipMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -874,7 +880,7 @@ namespace IPD12_SuperExpress
                     UpdateShipToAddress(shipToAddress);
                     Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
                     AddPushpinToMap(cd, "T", 2);
-                }                 
+                }
             }
             ResetTimer();
         }
@@ -892,7 +898,8 @@ namespace IPD12_SuperExpress
                 string provinceCode = address.AdminDistrict;
                 string provinceName = provinceList.Find(p => p.ProvinceStateCode.Equals(provinceCode)).ProvinceStateName;
                 cbProvinceStateTo.Text = provinceName;
-            } else
+            }
+            else
             {
                 cbProvinceStateTo.Text = string.Empty;
             }
@@ -919,6 +926,22 @@ namespace IPD12_SuperExpress
             {
                 Coords.Text = String.Format("Coordinate: {0:f6},{1:f6}", location.Longitude, location.Latitude);
             }
+        }
+
+        private void tiShipping_Selected(object sender, RoutedEventArgs e)
+        {
+            string countryNameFrom = (countryList.Find(c => c.Code == Globals.currentUser.CountryCode)).Name;
+            cbCountryFrom.Text = countryNameFrom;
+
+            Province province = provinceList.Find(p => p.ProvinceStateCode == Globals.currentUser.ProvinceCode);
+            if (province != null)
+            {
+                string provinceNameFrom = province.ProvinceStateName;
+                cbProvinceStateFrom.Text = provinceNameFrom;
+            }
+
+            tbCityFrom.Text = Globals.currentUser.CityName;
+            tbPostalCodeFrom.Text = Globals.currentUser.PostalCode;
         }
     }
 }
