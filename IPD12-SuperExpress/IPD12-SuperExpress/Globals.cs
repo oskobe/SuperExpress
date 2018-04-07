@@ -9,6 +9,8 @@ namespace IPD12_SuperExpress
     public class Globals
     {
         public const string APIKEY_SHIPENGINE = "7YPRCFZhpdEfNSXWHCG5TyZwu6dGx9MwdK+r1R0FrUU";
+        public const string APIKEY_BINGMAPS = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
+        public const string APIKEY_OPENWEATHER = "23a61d3a72f546a7a1659131fb9499c0";
         public const string CARRIER_CODE_UPS = "ups";
         public const string CARRIER_ID_UPS = "se-241902";
         public const int PERIMETER_OF_EARTH = 40075;
@@ -16,6 +18,7 @@ namespace IPD12_SuperExpress
         public const double VERY_COLD = -15;
         public const double SPEECH_POWER = 20.8;
         public const double EXTRAMELY_COLD = -25;
+        public const int SHIPMAP_CLICK_ELASPED_TIME = 10;
         public static Database db=new Database();
         public static string emailExpression = @"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$";
         public static User currentUser;
