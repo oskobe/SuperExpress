@@ -7,51 +7,53 @@
         mc:Ignorable="d"
         Title="Create Shipment Request" Height="877" Width="1413" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.206,0.356">
-        <Label Content="Create Shipping Request" FontSize="36" HorizontalAlignment="Left" Margin="92,39,0,0" VerticalAlignment="Top"/>
+        <Label Content="Create Shipping Request" FontSize="26" HorizontalAlignment="Left" Margin="92,39,0,0" VerticalAlignment="Top"/>
         <Label Content="Please provide the full address to create a new shipping request." FontSize="16" HorizontalAlignment="Left" Margin="92,225,0,0" VerticalAlignment="Top"/>
         <GroupBox Header="Origin/Destination Information" HorizontalAlignment="Left" Height="439" Margin="92,291,0,0" VerticalAlignment="Top" Width="1217">
-            <Grid Margin="0,0,-11.667,-13.667">
-                <Label Content="Ship From Country:" Margin="6,18,686,379"/>
-                <ComboBox Name="cbCountryFrom" SelectionChanged="cbCountryFrom_SelectionChanged" HorizontalAlignment="Left" Margin="8,50,0,0" VerticalAlignment="Top" Width="203"/>
-                <Label Content="Province/State: " Margin="8,82,691,315"/>
-                <ComboBox Name="cbProvinceStateFrom" HorizontalAlignment="Left" Margin="8,114,0,0" VerticalAlignment="Top" Width="203"/>
-                <Label Content="City:" Margin="8,146,691,248"/>
-                <TextBox Name="tbCityFrom" HorizontalAlignment="Left" Margin="8,181,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
-                <Label Content="Postal Code/Zip:" Margin="4,341,688,56"/>
-                <TextBox Name="tbPostalCodeFrom" HorizontalAlignment="Left" Margin="8,373,0,0" VerticalAlignment="Top" Width="203" Height="22">
+            <Grid Margin="0,2,-11.667,-15.667">
+                <Label Content="Sender Name:" Margin="8,18,690,375"/>
+                <TextBox x:Name="tbSenderName" HorizontalAlignment="Left" Margin="8,53,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                <Label Content="Recipient Name:" Margin="621,18,226,375"/>
+                <TextBox x:Name="tbRecipientName" HorizontalAlignment="Left" Margin="621,53,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                <Label Content="Ship From Country:" Margin="6,86,686,311"/>
+                <ComboBox Name="cbCountryFrom" SelectionChanged="cbCountryFrom_SelectionChanged" HorizontalAlignment="Left" Margin="8,118,0,0" VerticalAlignment="Top" Width="203"/>
+                <Label Content="Province/State: " Margin="8,150,691,247"/>
+                <ComboBox Name="cbProvinceStateFrom" HorizontalAlignment="Left" Margin="8,182,0,0" VerticalAlignment="Top" Width="203"/>
+                <Label Content="City:" Margin="8,214,691,180"/>
+                <TextBox Name="tbCityFrom" HorizontalAlignment="Left" Margin="8,249,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                <Label Content="Address:" Margin="6,281,686,116"/>
+                <TextBox x:Name="tbAddressFrom" HorizontalAlignment="Left" Margin="8,313,0,0" VerticalAlignment="Top" Width="518" Height="22"/>
+                <Label Content="Postal Code/Zip:" Margin="4,345,688,52"/>
+                <TextBox Name="tbPostalCodeFrom" HorizontalAlignment="Left" Margin="8,377,0,0" VerticalAlignment="Top" Width="203" Height="22">
                 </TextBox>
-                <Label Content="Address 1:" Margin="6,213,686,184"/>
-                <TextBox x:Name="tbAddressFrom1" HorizontalAlignment="Left" Margin="8,245,0,0" VerticalAlignment="Top" Width="518" Height="22"/>
-                <Label Content="Address 2:" Margin="5,277,686,120"/>
-                <TextBox x:Name="tbAddressFrom2" HorizontalAlignment="Left" Margin="8,309,0,0" VerticalAlignment="Top" Width="518" Height="22"/>
 
-                <Label Content="Ship To Country:" Margin="621,18,227,379"/>
-                <ComboBox Name="cbCountryTo" SelectionChanged="cbCountryTo_SelectionChanged" HorizontalAlignment="Left" Margin="621,50,0,0" VerticalAlignment="Top" Width="203"/>
-                <Label Content="Province/State: " Margin="621,82,227,315"/>
-                <ComboBox Name="cbProvinceStateTo" HorizontalAlignment="Left" Margin="621,114,0,0" VerticalAlignment="Top" Width="203"/>
-                <Label Content="City:" Margin="621,146,227,248"/>
-                <TextBox Name="tbCityTo" HorizontalAlignment="Left" Margin="621,181,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
-                <Label Content="Postal Code/Zip:" Margin="621,341,-802,17"/>
-                <TextBox Name="tbPostalCodeTo" HorizontalAlignment="Left" Margin="621,373,0,0" VerticalAlignment="Top" Width="202" Height="22">
+
+                <Label Content="Ship To Country:" Margin="621,86,227,311"/>
+                <ComboBox Name="cbCountryTo" SelectionChanged="cbCountryTo_SelectionChanged" HorizontalAlignment="Left" Margin="621,118,0,0" VerticalAlignment="Top" Width="203"/>
+                <Label Content="Province/State: " Margin="621,150,227,247"/>
+                <ComboBox Name="cbProvinceStateTo" HorizontalAlignment="Left" Margin="621,182,0,0" VerticalAlignment="Top" Width="203"/>
+                <Label Content="City:" Margin="621,214,227,180"/>
+                <TextBox Name="tbCityTo" HorizontalAlignment="Left" Margin="621,249,0,0" VerticalAlignment="Top" Width="203" Height="22"/>
+                <Label Content="Postal Code/Zip:" Margin="621,345,394,52"/>
+                <TextBox Name="tbPostalCodeTo" HorizontalAlignment="Left" Margin="621,377,0,0" VerticalAlignment="Top" Width="202" Height="22">
                 </TextBox>
-                <Label Content="Address 1:" Margin="621,213,0,184" HorizontalAlignment="Left" Width="518"/>
-                <TextBox x:Name="tbAddressTo1" HorizontalAlignment="Left" Margin="621,245,0,0" VerticalAlignment="Top" Width="518" Height="22"/>
-                <Label Content="Address 2:" Margin="621,277,227,120"/>
-                <TextBox x:Name="tbAddressTo2" HorizontalAlignment="Left" Margin="621,309,0,0" VerticalAlignment="Top" Width="518" Height="22"/>
+                <Label Content="Address:" Margin="621,281,0,116" HorizontalAlignment="Left" Width="518"/>
+                <TextBox x:Name="tbAddressTo" HorizontalAlignment="Left" Margin="621,313,0,0" VerticalAlignment="Top" Width="518" Height="22"/>
+                
             </Grid>
         </GroupBox>
-        <Label Content="Service Type:" HorizontalAlignment="Left" Margin="96,121,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblServiceType" Content=":::" HorizontalAlignment="Left" Margin="236,121,0,0" VerticalAlignment="Top"/>
-        <Label Content="Guaranteed Service: " HorizontalAlignment="Left" Margin="96,147,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblGuaranteedService" Content=":::" HorizontalAlignment="Left" Margin="236,147,0,0" VerticalAlignment="Top"/>
-        <Label Content="Estimated Delivery Date:" HorizontalAlignment="Left" Margin="96,173,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblEstimatedDate" Content=":::" HorizontalAlignment="Left" Margin="236,173,0,0" VerticalAlignment="Top"/>
-        <Label Content="Shipment Weight:" HorizontalAlignment="Left" Margin="503,121,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblWeight" Content=":::" HorizontalAlignment="Left" Margin="643,121,0,0" VerticalAlignment="Top"/>
-        <Label Content="Shipment Dimensions:" HorizontalAlignment="Left" Margin="503,147,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblDimensions" Content=":::" HorizontalAlignment="Left" Margin="643,147,0,0" VerticalAlignment="Top"/>
-        <Label Content="Total Amount:" HorizontalAlignment="Left" Margin="504,173,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblAmount" Content=":::" HorizontalAlignment="Left" Margin="644,173,0,0" VerticalAlignment="Top"/>
+        <Label Content="Service Type:" HorizontalAlignment="Left" Margin="96,117,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblServiceType" Content=":::" HorizontalAlignment="Left" Margin="236,117,0,0" VerticalAlignment="Top"/>
+        <Label Content="Guaranteed Service: " HorizontalAlignment="Left" Margin="96,143,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblGuaranteedService" Content=":::" HorizontalAlignment="Left" Margin="236,143,0,0" VerticalAlignment="Top"/>
+        <Label Content="Estimated Delivery Date:" HorizontalAlignment="Left" Margin="96,169,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblEstimatedDate" Content=":::" HorizontalAlignment="Left" Margin="236,169,0,0" VerticalAlignment="Top"/>
+        <Label Content="Shipment Weight:" HorizontalAlignment="Left" Margin="503,117,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblWeight" Content=":::" HorizontalAlignment="Left" Margin="643,117,0,0" VerticalAlignment="Top"/>
+        <Label Content="Shipment Dimensions:" HorizontalAlignment="Left" Margin="503,143,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblDimensions" Content=":::" HorizontalAlignment="Left" Margin="643,143,0,0" VerticalAlignment="Top"/>
+        <Label Content="Total Amount:" HorizontalAlignment="Left" Margin="504,169,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblAmount" Content=":::" HorizontalAlignment="Left" Margin="644,169,0,0" VerticalAlignment="Top"/>
 
         <Button Name="btCancel" IsCancel="True" Content="Cancel" HorizontalAlignment="Left" Margin="347,774,0,0" VerticalAlignment="Top" Width="233"/>
         <Button Name="btCreate" Click="btCreate_Click" IsDefault="True" Content="Create" HorizontalAlignment="Left" Margin="740,774,0,0" VerticalAlignment="Top" Width="233"/>

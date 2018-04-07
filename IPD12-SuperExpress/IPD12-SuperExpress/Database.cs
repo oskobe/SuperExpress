@@ -92,7 +92,7 @@ namespace IPD12_SuperExpress
 
         public string AddOrder(ShipmentRequest sr)
         {
-            using (MySqlCommand insertCommand = new MySqlCommand("INSERT INTO orders (serviceType, guaranteedService, estimatedDeliveryDate, weight, weightUnit, length, width, height, dimensionsUnit, amount, currency, countryFrom, provinceFrom, cityFrom, address1From, address2From, postalCodeFrom, countryTo, provinceTo, cityTo, address1To, address2To, postalCodeTo) VALUES (@serviceType, @guaranteedService, @estimatedDeliveryDate, @weight, @weightUnit, @length, @width, @height, @dimensionsUnit, @amount, @currency, @countryFrom, @provinceFrom, @cityFrom, @address1From, @address2From, @postalCodeFrom, @countryTo, @provinceTo, @cityTo, @address1To, @address2To, @postalCodeTo); SELECT LAST_INSERT_ID()", conn))
+            using (MySqlCommand insertCommand = new MySqlCommand("INSERT INTO orders (serviceType, guaranteedService, estimatedDeliveryDate, weight, weightUnit, length, width, height, dimensionsUnit, amount, currency, senderName, countryFrom, provinceFrom, cityFrom, addressFrom, postalCodeFrom, recipientName, countryTo, provinceTo, cityTo, addressTo, postalCodeTo) VALUES (@serviceType, @guaranteedService, @estimatedDeliveryDate, @weight, @weightUnit, @length, @width, @height, @dimensionsUnit, @amount, @currency, @senderName, @countryFrom, @provinceFrom, @cityFrom, @addressFrom, @postalCodeFrom, @recipientName, @countryTo, @provinceTo, @cityTo, @addressTo, @postalCodeTo); SELECT LAST_INSERT_ID()", conn))
 
             {
                 insertCommand.Parameters.AddWithValue("@serviceType", sr.ServiceType);
@@ -106,17 +106,17 @@ namespace IPD12_SuperExpress
                 insertCommand.Parameters.AddWithValue("@dimensionsUnit", sr.DimensionsUnit);
                 insertCommand.Parameters.AddWithValue("@amount", sr.Amount);
                 insertCommand.Parameters.AddWithValue("@currency", sr.Currency);
+                insertCommand.Parameters.AddWithValue("@senderName", sr.SenderName);
                 insertCommand.Parameters.AddWithValue("@countryFrom", sr.CountryFrom);
                 insertCommand.Parameters.AddWithValue("@provinceFrom", sr.ProvinceFrom);
                 insertCommand.Parameters.AddWithValue("@cityFrom", sr.CityFrom);
-                insertCommand.Parameters.AddWithValue("@address1From", sr.Address1From);
-                insertCommand.Parameters.AddWithValue("@address2From", sr.Address2From);
+                insertCommand.Parameters.AddWithValue("@addressFrom", sr.AddressFrom);
                 insertCommand.Parameters.AddWithValue("@postalCodeFrom", sr.PostalCodeFrom);
+                insertCommand.Parameters.AddWithValue("@recipientName", sr.RecipientName);
                 insertCommand.Parameters.AddWithValue("@countryTo", sr.CountryTo);
                 insertCommand.Parameters.AddWithValue("@provinceTo", sr.ProvinceTo);
                 insertCommand.Parameters.AddWithValue("@cityTo", sr.CityTo);
-                insertCommand.Parameters.AddWithValue("@address1To", sr.Address1To);
-                insertCommand.Parameters.AddWithValue("@address2To", sr.Address2To);
+                insertCommand.Parameters.AddWithValue("@addressTo", sr.AddressTo);
                 insertCommand.Parameters.AddWithValue("@postalCodeTo", sr.PostalCodeTo);
 
                 var generatedId = insertCommand.ExecuteScalar();

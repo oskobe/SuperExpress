@@ -5,24 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IPD12_SuperExpress"
         mc:Ignorable="d"
-        Title="Shipping Cost Calculator Result" Height="877" Width="1413" WindowStartupLocation="CenterScreen">
+        Title="Shipping Cost Calculator Result" Height="761.666" Width="1066.334" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Results Summary" FontSize="26" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top"/>
         <Label Content="Ship From" FontSize="20" HorizontalAlignment="Left" Margin="20,60,0,0" VerticalAlignment="Top"/>
-        <Label Content="Ship To" FontSize="20" HorizontalAlignment="Left" Margin="334,60,0,0" VerticalAlignment="Top"/>
+        <Label Content="Ship To" FontSize="20" HorizontalAlignment="Left" Margin="414,60,0,0" VerticalAlignment="Top"/>
         <Label Name="lblCityProvinceFrom" Content="City + Province" HorizontalAlignment="Left" Margin="20,102,0,0" VerticalAlignment="Top"/>
         <Label Name="lblCountryFrom" Content="Country" HorizontalAlignment="Left" Margin="20,128,0,0" VerticalAlignment="Top"/>
         <Label Name="lblPostalCodeFrom" Content="PostCode" HorizontalAlignment="Left" Margin="20,154,0,0" VerticalAlignment="Top"/>
-        <Label Name="lblCityProvinceTo" Content="City + Province" HorizontalAlignment="Left" Margin="334,102,0,0" VerticalAlignment="Top"/>
-        <Label Name="lblCountryTo" Content="Country" HorizontalAlignment="Left" Margin="334,128,0,0" VerticalAlignment="Top"/>
-        <Label Name="lblPostalCodeTo" Content="PostCode" HorizontalAlignment="Left" Margin="334,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.813,0.642"/>
-        <Label Content="Shipment Weight:" HorizontalAlignment="Left" Margin="634,102,0,0" VerticalAlignment="Top"/>
-        <Label Content="Shipment Dimensions:" HorizontalAlignment="Left" Margin="634,128,0,0" VerticalAlignment="Top"/>
-        <Label Content="Currency:" HorizontalAlignment="Left" Margin="634,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.813,0.642"/>
-        <Label Name="lblWeight" Content=":::" HorizontalAlignment="Left" Margin="774,102,0,0" VerticalAlignment="Top"/>
-        <Label Name="lblDimensions" Content=":::" HorizontalAlignment="Left" Margin="774,128,0,0" VerticalAlignment="Top"/>
-        <Label Name="lblCurrency" Content="CAD" HorizontalAlignment="Left" Margin="774,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.813,0.642"/>
-        <ListView HorizontalAlignment="Left" Height="366" Margin="20,212,0,0" VerticalAlignment="Top" Width="868" Name="lvShippingCostCalculatorResult" SelectionChanged="lvShippingCostCalculatorResult_SelectionChanged" SelectionMode="Single">
+        <Label Name="lblCityProvinceTo" Content="City + Province" HorizontalAlignment="Left" Margin="414,102,0,0" VerticalAlignment="Top"/>
+        <Label Name="lblCountryTo" Content="Country" HorizontalAlignment="Left" Margin="414,128,0,0" VerticalAlignment="Top"/>
+        <Label Name="lblPostalCodeTo" Content="PostCode" HorizontalAlignment="Left" Margin="414,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.813,0.642"/>
+        <Label Content="Shipment Weight:" HorizontalAlignment="Left" Margin="750,102,0,0" VerticalAlignment="Top"/>
+        <Label Content="Shipment Dimensions:" HorizontalAlignment="Left" Margin="750,128,0,0" VerticalAlignment="Top"/>
+        <Label Content="Currency:" HorizontalAlignment="Left" Margin="750,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.813,0.642"/>
+        <Label Name="lblWeight" Content=":::" HorizontalAlignment="Left" Margin="890,102,0,0" VerticalAlignment="Top"/>
+        <Label Name="lblDimensions" Content=":::" HorizontalAlignment="Left" Margin="890,128,0,0" VerticalAlignment="Top"/>
+        <Label Name="lblCurrency" Content="CAD" HorizontalAlignment="Left" Margin="890,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.813,0.642"/>
+        <ListView HorizontalAlignment="Left" Height="384" Margin="20,249,0,0" VerticalAlignment="Top" Width="1001" Name="lvShippingCostCalculatorResult" SelectionChanged="lvShippingCostCalculatorResult_SelectionChanged" SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="" Width="25">
@@ -40,9 +40,9 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="Please choose one option and click the button &#xD;&#xA;below to create a new shipment request." FontSize="14" HorizontalAlignment="Left" Margin="946,316,0,0" VerticalAlignment="Top" Width="363" Height="49"/>
-        <Button Name="btCreateShipmentRequest" Click="btCreateShipmentRequest_Click" Margin="156,627,1083,193" Content="Create Shipment Request"/>
-        <Button x:Name="btCreateShipmentRequest_Copy" Click="btCreateShipmentRequest_Click" Margin="334,627,905,193" Content="Create Shipment Request" RenderTransformOrigin="1.429,0.423"/>
+        <Label Content="Please choose one option to create a new shipment request." FontSize="14" HorizontalAlignment="Left" Margin="20,207,0,0" VerticalAlignment="Top" Width="633" Height="37"/>
+        <Button x:Name="btCancel" Margin="261,670,583,34" Content="Cancel"/>
+        <Button x:Name="btCreateShipmentRequest" Click="btCreateShipmentRequest_Click" Margin="593,670,251,34" Content="Create Shipment Request" RenderTransformOrigin="1.429,0.423"/>
 
     </Grid>
 </Window>
