@@ -904,14 +904,14 @@ namespace IPD12_SuperExpress
                 cbProvinceStateTo.Text = string.Empty;
             }
             tbCityTo.Text = address.Locality;
-            tbCityTo.Background = Brushes.YellowGreen;
+            tbCityTo.Background = Brushes.LightYellow;
             string postalCode = "";
             if (address.PostalCode != null)
             {
                 postalCode = address.PostalCode.Replace(" ", "");
             }
             tbPostalCodeTo.Text = postalCode;
-            tbPostalCodeTo.Background = Brushes.GreenYellow;
+            tbPostalCodeTo.Background = Brushes.LightYellow;
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
