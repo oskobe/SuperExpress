@@ -889,14 +889,9 @@ namespace IPD12_SuperExpress
             {
                 string provinceCode = address.AdminDistrict;
                 string provinceName = provinceList.Find(p => p.ProvinceStateCode.Equals(provinceCode)).ProvinceStateName;
-<<<<<<< HEAD
                 cbProvinceStateTo.Text = provinceName;
             }
-            else
-=======
-                cbProvinceStateTo.Text = provinceName;                
-            } else
->>>>>>> d0786ee0b1cd7a67e355749c0c468035d6edadfb
+			else
             {
                 cbProvinceStateTo.Text = string.Empty;
             }
@@ -927,7 +922,6 @@ namespace IPD12_SuperExpress
             }
         }
 
-<<<<<<< HEAD
         private void tiShipping_Selected(object sender, RoutedEventArgs e)
         {
             string countryNameFrom = (countryList.Find(c => c.Code == Globals.currentUser.CountryCode)).Name;
@@ -943,7 +937,7 @@ namespace IPD12_SuperExpress
             tbCityFrom.Text = Globals.currentUser.CityName;
             tbPostalCodeFrom.Text = Globals.currentUser.PostalCode;
         }
-=======
+
         private void tbCityTo_GotFocus(object sender, RoutedEventArgs e)
         {
             tbCityTo.Background = Brushes.White;
@@ -959,6 +953,6 @@ namespace IPD12_SuperExpress
             shipTab_tbPostalCode.Background = Brushes.White;
             //shipTab_tbPostalCode.SelectAll();
         }    
->>>>>>> d0786ee0b1cd7a67e355749c0c468035d6edadfb
+
     }
 }
