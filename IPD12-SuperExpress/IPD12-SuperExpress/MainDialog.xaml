@@ -65,21 +65,21 @@
                     <Border Background="Black" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0.8" BorderBrush="White" BorderThickness="2" CornerRadius="5">
                         <StackPanel x:Name="eventsPanel" IsHitTestVisible="False" Canvas.Left="0" Canvas.Top="0"/>
                     </Border>
-                    <GroupBox Header="Weather:" HorizontalAlignment="Left" Height="105" Margin="701,0,0,0" VerticalAlignment="Top" Width="659" FontSize="14"/>
+                    <GroupBox Header="Weather:" HorizontalAlignment="Left" Height="105" Margin="701,0,0,0" VerticalAlignment="Top" Width="659"/>
                     <Label Content="Country:" HorizontalAlignment="Left" Margin="709,28,0,0" VerticalAlignment="Top" />
                     <Label Content="Tempture:" HorizontalAlignment="Left" Margin="709,71,0,0" VerticalAlignment="Top" />
                     <Label Content="Windy:" HorizontalAlignment="Left" Margin="893,72,0,0" VerticalAlignment="Top" />
                     <Label Content="Description:" HorizontalAlignment="Left" Margin="1032,72,0,0" VerticalAlignment="Top" />
                     <Label HorizontalAlignment="Left" Margin="1232,34,0,0" VerticalAlignment="Top">
                     </Label>
-                    <Label x:Name="mainDlg_lbCountry" Content="" HorizontalAlignment="Left" Margin="817,29,0,0" VerticalAlignment="Top" Width="111" Background="White" />
-                    <Label x:Name="mainDlg_lbTemp" Content="" HorizontalAlignment="Left" Margin="818,71,0,0" VerticalAlignment="Top" Width="65" Background="White" />
-                    <Label x:Name="mainDlg_lbWindy" Content="" HorizontalAlignment="Left" Margin="964,72,0,0" VerticalAlignment="Top" Width="60" Background="White" />
-                    <Label x:Name="mainDlg_lbDescription" Content="" HorizontalAlignment="Left" Margin="1138,71,0,0" VerticalAlignment="Top" Width="129" Background="White" />
+                    <Label x:Name="mainDlg_lbCountry" Content="" HorizontalAlignment="Left" Margin="817,29,0,0" VerticalAlignment="Top" Width="111" Background="White" Height="25" />
+                    <Label x:Name="mainDlg_lbTemp" Content="" HorizontalAlignment="Left" Margin="817,73,0,0" VerticalAlignment="Top" Width="65" Background="White" Height="25" />
+                    <Label x:Name="mainDlg_lbWindy" Content="" HorizontalAlignment="Left" Margin="964,74,0,0" VerticalAlignment="Top" Width="60" Background="White" Height="24" />
+                    <Label x:Name="mainDlg_lbDescription" Content="" HorizontalAlignment="Left" Margin="1138,73,0,0" VerticalAlignment="Top" Width="129" Background="White" Height="25" />
                     <Label Content="City:" HorizontalAlignment="Left" Margin="933,30,0,0" VerticalAlignment="Top" />
-                    <Label x:Name="mainDlg_lbCity" Content="" HorizontalAlignment="Left" Margin="996,30,0,0" VerticalAlignment="Top" Width="99" Background="White" />
+                    <Label x:Name="mainDlg_lbCity" Content="" HorizontalAlignment="Left" Margin="996,30,0,0" VerticalAlignment="Top" Width="99" Background="White" Height="26" />
                     <Label Content="Date:" HorizontalAlignment="Left" Margin="1100,30,0,0" VerticalAlignment="Top" />
-                    <Label x:Name="mainDlg_lbDate" Content="" HorizontalAlignment="Left" Margin="1160,30,0,0" VerticalAlignment="Top" Width="107" Background="White" />
+                    <Label x:Name="mainDlg_lbDate" Content="" HorizontalAlignment="Left" Margin="1160,30,0,0" VerticalAlignment="Top" Width="107" Background="White" Height="26" />
                     <Image x:Name="maindlg_imgDescription" HorizontalAlignment="Left" Height="78" Margin="1276,21,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-5.222,3.639"/>
                     <Label Content="Track Number：" HorizontalAlignment="Left" Margin="97,37,0,0" VerticalAlignment="Top" Width="117" Height="27"/>
                 </Grid>

@@ -176,8 +176,10 @@ namespace IPD12_SuperExpress
             try
             {
 
-                //Globals.currentUser = 
-                User user = new User(0, userId, password1, name, phone, email, countryCode, provinceCode, cityName, address, postalCode);
+                // Encript Password
+                string hashPassword = Globals.GetMd5Hash(password1);
+
+                User user = new User(0, userId, hashPassword, name, phone, email, countryCode, provinceCode, cityName, address, postalCode);
                 int newId = Globals.db.AddUser(user);
 
                 //Globals.currentUser.Id = newId;
