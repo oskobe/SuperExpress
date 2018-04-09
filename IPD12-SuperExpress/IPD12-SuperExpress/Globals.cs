@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,5 +29,40 @@ namespace IPD12_SuperExpress
         public const string SHIPPING_INVOICE = "Shipping_Invoice_";
         public const string COUNTRY_CANADA = "Canada";
         public const string DEFAULT_EMAIL = "example@superexpress.com";
+
+        public static string GetMd5Hash(string input)
+        {
+            MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
+
+            byte[] inputBytes = Encoding.Default.GetBytes(input);
+
+            byte[] data = md5Hasher.ComputeHash(inputBytes);
+
+            StringBuilder sBuilder = new StringBuilder();
+
+            // Change to hexadecimal
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+
+            return sBuilder.ToString();
+        }
+
+        public static bool VerifyMd5Hash(string input, string hash)
+        {
+            string hashOfInput = GetMd5Hash(input);
+
+            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
+
+            if (comparer.Compare(hashOfInput, hash) == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

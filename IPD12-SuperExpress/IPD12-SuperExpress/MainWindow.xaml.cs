@@ -63,19 +63,14 @@ namespace IPD12_SuperExpress
                 string passwordInput = pbPassword.Password;
                 if (passwordInDB != string.Empty)
                 {
-                    if (passwordInput.CompareTo(passwordInDB) == 0)
+                    // Check encripted password
+                    if (Globals.VerifyMd5Hash(passwordInput, passwordInDB))
                     {
                         this.Hide();
                         MainDialog dlg = new MainDialog();
                         dlg.ShowDialog();
 
                         this.Close();
-                        /*
-                        if ((bool)dlg.DialogResult)
-                        {
-                            this.Show();
-                        }
-                        */
                     }
                     else
                     {
