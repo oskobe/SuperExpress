@@ -475,8 +475,8 @@ namespace IPD12_SuperExpress
         private void FillWeatherInfoLable(CurrentWeatherResponse result, TrackDetail td)
         {
             Color c;
-            c = Colors.GreenYellow;
-
+            c = Colors.Red;
+            /*
             if (result.Temperature.Value <= Globals.EXTRAMELY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
             {
                 c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
@@ -485,6 +485,7 @@ namespace IPD12_SuperExpress
             {
                 c = Colors.Yellow;//if there is a very terrible weather at current location,alert it with a red color.
             }
+            */
             c.A = 100;
             SolidColorBrush scb = new SolidColorBrush(c);
             string iconURL = "http://openweathermap.org/img/w/" + result.Weather.Icon + ".png";
@@ -496,11 +497,11 @@ namespace IPD12_SuperExpress
             mainDlg_lbCity.Background = scb;
             mainDlg_lbCity.Content = result.City.Name;
             mainDlg_lbTemp.Background = scb;
-            mainDlg_lbTemp.Content = Math.Round(result.Temperature.Value - 273.15) + "°C";
+            mainDlg_lbTemp.Content = -25 + "°C"; //Math.Round(result.Temperature.Value - 273.15) + "°C";
             mainDlg_lbWindy.Background = scb;
             mainDlg_lbWindy.Content = result.Wind.Speed.Value + "m/s";
             mainDlg_lbDescription.Background = scb;
-            mainDlg_lbDescription.Content = result.Weather.Value;
+            mainDlg_lbDescription.Content = "Very Cold and Heavy Snow"; //result.Weather.Value;
             mainDlg_lbDate.Background = scb;
             mainDlg_lbDate.Content = td.Date;
         }
@@ -529,7 +530,7 @@ namespace IPD12_SuperExpress
             CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Location.Latitude, Longitude = cd.Location.Longitude });
             Color c;
             customLabel.Content = string.Format("Country:{0},City:{1},{2}°C", result.City.Country, td.City, Math.Round(result.Temperature.Value - 273.15));
-            c = Colors.GreenYellow;
+            c = Colors.Red;
 
             if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
             {
