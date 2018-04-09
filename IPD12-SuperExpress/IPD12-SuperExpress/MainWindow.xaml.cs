@@ -35,9 +35,9 @@ namespace IPD12_SuperExpress
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            //MainDialog dlg = new MainDialog();
-            //dlg.ShowDialog();
-            
+            MainDialog dlg = new MainDialog();
+            dlg.ShowDialog();
+            /*
             string email = tbEmail.Text;
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -68,14 +68,7 @@ namespace IPD12_SuperExpress
                         this.Hide();
                         MainDialog dlg = new MainDialog();
                         dlg.ShowDialog();
-
-                        this.Close();
-                        /*
-                        if ((bool)dlg.DialogResult)
-                        {
-                            this.Show();
-                        }
-                        */
+                        this.Close();                        
                     }
                     else
                     {
@@ -92,7 +85,7 @@ namespace IPD12_SuperExpress
                 MessageBox.Show("This email account does not exist!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
-            
+            */
             
         }
     }
