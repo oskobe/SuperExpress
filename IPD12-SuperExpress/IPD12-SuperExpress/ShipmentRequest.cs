@@ -22,17 +22,17 @@ namespace IPD12_SuperExpress
         public string DimensionsUnit { get; set; }
         public double Amount { get; set; }
         public string Currency { get; set; }
+        public string SenderName { get; set; }
         public string CountryFrom { get; set; }
         public string ProvinceFrom { get; set; }
         public string CityFrom { get; set; }
-        public string Address1From { get; set; }
-        public string Address2From { get; set; }
+        public string AddressFrom { get; set; }
         public string PostalCodeFrom { get; set; }
+        public string RecipientName { get; set; }
         public string CountryTo { get; set; }
         public string ProvinceTo { get; set; }
         public string CityTo { get; set; }
-        public string Address1To { get; set; }
-        public string Address2To { get; set; }
+        public string AddressTo { get; set; }
         public string PostalCodeTo { get; set; }
     }
 }

@@ -46,15 +46,11 @@ namespace IPD12_SuperExpress
         List<Pushpin> pushpinList = new List<Pushpin>();
         Pushpin shipMapPushpin;
         MapPolyline currentPolyline;
-        static int earthRadius = 6367;
+        static int earthRadius = 6367;//KM
         double BestZoomLevel = 12;
-        Microsoft.Maps.MapControl.WPF.Location BestCenter = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);
-        //double distance;
-        private string BingMapsKey = "AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm";
-        private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient("23a61d3a72f546a7a1659131fb9499c0");
-
-        public int currentCount = 0;
-
+        Microsoft.Maps.MapControl.WPF.Location BestCenter = new Microsoft.Maps.MapControl.WPF.Location(45.404761, -73.9448513);        
+        private readonly OpenWeatherMapClient OpenWeatherMapTestClient = new OpenWeatherMapClient(Globals.APIKEY_OPENWEATHER);
+        public int currentCount = 0;//For timer
         System.Timers.Timer clickTimer;
 
         private void InitTimer()
@@ -91,6 +87,10 @@ namespace IPD12_SuperExpress
             shipMap.ZoomLevel = BestZoomLevel;
             try
             {
+                // For test start
+                Globals.currentUser = Globals.db.GetUserByUserId("wjing");
+                // For test end
+
                 InitializeDataFromDatabase();
                 InitializeShippingCostCalculator();
             }
@@ -100,6 +100,7 @@ namespace IPD12_SuperExpress
                 Console.WriteLine("Error opening database connection: " + ex.Message);
                 Environment.Exit(1);
             }
+
         }
         public class Cartesian
         {
@@ -346,7 +347,7 @@ namespace IPD12_SuperExpress
                 pushpin.MouseEnter += new MouseEventHandler(Pushpin_MouseEnter);
                 pushpin.Content = "" + i++;
                 pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(Convert.ToDouble(cd.Latitude), Convert.ToDouble(cd.Longitude));
-                
+
                 pushpinList.Add(pushpin);
                 myMap.Children.Add(pushpin);
             }
@@ -475,9 +476,14 @@ namespace IPD12_SuperExpress
         {
             Color c;
             c = Colors.GreenYellow;
-            if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
+
+            if (result.Temperature.Value <= Globals.EXTRAMELY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)
             {
                 c = Colors.Red;//if there is a very terrible weather at current location,alert it with a red color.
+            }
+            else if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_POWER)
+            {
+                c = Colors.Yellow;//if there is a very terrible weather at current location,alert it with a red color.
             }
             c.A = 100;
             SolidColorBrush scb = new SolidColorBrush(c);
@@ -607,11 +613,11 @@ namespace IPD12_SuperExpress
             //Create REST Services geocode request using Locations API
             if (postCode != string.Empty)
             {
-                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postCode + @"?key=" + BingMapsKey;
+                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postCode + @"?key=" + Globals.APIKEY_BINGMAPS;
             }
             else
             {
-                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + countryCode + @"/" + cityName + @"?key=" + BingMapsKey;
+                geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + countryCode + @"/" + cityName + @"?key=" + Globals.APIKEY_BINGMAPS;
             }
             //Make the request and get the response
             Response geocodeResponse = MakeRequest(geocodeRequest);
@@ -697,47 +703,73 @@ namespace IPD12_SuperExpress
             Weight weight = new Weight(doubleWeight, weightUnit);
             costCalculator.Weight = weight;
 
-            double doubleLength = 0, doubleWidth = 0, doubleHeight = 0;
-            if (!double.TryParse(tbLength.Text, out doubleLength))
+            // Dimension can be null, will check if any of length, width, height was input
+            Dimensions dimensions = null;
+            if (!tbLength.Text.Trim().Equals(string.Empty) ||
+                !tbWidth.Text.Trim().Equals(string.Empty) ||
+                !tbHeight.Text.Trim().Equals(string.Empty))
             {
-                MessageBox.Show("Please enter double length.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbLength.Focus();
-                return;
+                double doubleLength = 0, doubleWidth = 0, doubleHeight = 0;
+                if (!double.TryParse(tbLength.Text, out doubleLength))
+                {
+                    MessageBox.Show("Please enter double length.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbLength.Focus();
+                    return;
+                }
+                if (!double.TryParse(tbWidth.Text, out doubleWidth))
+                {
+                    MessageBox.Show("Please enter double width.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbWidth.Focus();
+                    return;
+                }
+                if (!double.TryParse(tbHeight.Text, out doubleHeight))
+                {
+                    MessageBox.Show("Please enter double height.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbHeight.Focus();
+                    return;
+                }
+
+                Dimensions.UnitEnum dimensionUnit = (Dimensions.UnitEnum)Enum.Parse(typeof(Dimensions.UnitEnum), cbDimensionUnit.SelectedItem.ToString(), false);
+                dimensions = new Dimensions(dimensionUnit, doubleLength, doubleWidth, doubleHeight);
             }
-            if (!double.TryParse(tbWidth.Text, out doubleWidth))
-            {
-                MessageBox.Show("Please enter double width.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbWidth.Focus();
-                return;
-            }
-            if (!double.TryParse(tbHeight.Text, out doubleHeight))
-            {
-                MessageBox.Show("Please enter double height.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbHeight.Focus();
-                return;
-            }
-            Dimensions.UnitEnum dimensionUnit = (Dimensions.UnitEnum)Enum.Parse(typeof(Dimensions.UnitEnum), cbDimensionUnit.SelectedItem.ToString(), false);
-            Dimensions dimensions = new Dimensions(dimensionUnit, doubleLength, doubleWidth, doubleHeight);
             costCalculator.Dimensions = dimensions;
 
+
             // Calculate the rate
-            var apiRatesInstance = new RatesApi();
-            var estimateRequest = new RateEstimateRequest(Globals.CARRIER_ID_UPS, costCalculator.CountryFrom.Code, costCalculator.PostalCodeFrom, costCalculator.CountryTo.Code, costCalculator.PostalCodeTo, costCalculator.CityTo, costCalculator.ProvinceTo.ProvinceStateCode, costCalculator.Weight, costCalculator.Dimensions);
+            RatesApi apiRatesInstance = new RatesApi();
+            RateEstimateRequest estimateRequest;
+            if (costCalculator.Dimensions != null)
+            {
+                estimateRequest = new RateEstimateRequest(Globals.CARRIER_ID_UPS, costCalculator.CountryFrom.Code, costCalculator.PostalCodeFrom, costCalculator.CountryTo.Code, costCalculator.PostalCodeTo, costCalculator.CityTo, costCalculator.ProvinceTo.ProvinceStateCode, costCalculator.Weight, costCalculator.Dimensions);
+            }
+            else
+            {
+                estimateRequest = new RateEstimateRequest(Globals.CARRIER_ID_UPS, costCalculator.CountryFrom.Code, costCalculator.PostalCodeFrom, costCalculator.CountryTo.Code, costCalculator.PostalCodeTo, costCalculator.CityTo, costCalculator.ProvinceTo.ProvinceStateCode, costCalculator.Weight);
+            }
+            
             try
             {
                 costCalculator.Result = apiRatesInstance.RatesEstimate(estimateRequest, Globals.APIKEY_SHIPENGINE);
-
+                this.Hide();
                 ShippingCostCalculatorResult resultDialog = new ShippingCostCalculatorResult(costCalculator);
                 resultDialog.ShowDialog();
-                if ( resultDialog.DialogResult == true)
+
+                this.ShowDialog();
+                /*
+                if (resultDialog.DialogResult == true)
                 {
-                   
+                    this.DialogResult = true;
+                } 
+                else
+                {
+                    this.ShowDialog();
                 }
+                */
             }
             catch (Exception ex)
             {
                 lblStatus.Content = "Exception when calling RatesApi.RatesEstimate: " + ex.Message;
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Shipping fee estimation error: \n" + ex.Message, "Calculator error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -759,11 +791,11 @@ namespace IPD12_SuperExpress
 
         private void InitializeShippingCostCalculator()
         {
-            //List<String> countryNameList = (from country in countryList orderby country.Name select country.Name).ToList();
+            // Set ComboBox default list
             cbCountryFrom.ItemsSource = countryList;//countryNameList;
-            cbCountryFrom.Text = "Canada";
             cbCountryTo.ItemsSource = countryList;
 
+            // Set weight/dimentions unit
             cbWeithtUnit.ItemsSource = Enum.GetNames(typeof(Weight.UnitEnum));
             Weight.UnitEnum defaultWeightUnit = Weight.UnitEnum.Pound;
             cbWeithtUnit.SelectedIndex = cbWeithtUnit.Items.IndexOf(defaultWeightUnit.ToString());
@@ -771,23 +803,6 @@ namespace IPD12_SuperExpress
             cbDimensionUnit.ItemsSource = Enum.GetNames(typeof(Dimensions.UnitEnum));
             Dimensions.UnitEnum defaultDimensionUnit = Dimensions.UnitEnum.Inch;
             cbDimensionUnit.SelectedIndex = cbDimensionUnit.Items.IndexOf(defaultDimensionUnit.ToString());
-
-            /* for test start*/
-            cbProvinceStateFrom.Text = "Quebec";
-            tbCityFrom.Text = "laval";
-            tbPostalCodeFrom.Text = "h7t2t4";
-
-            cbCountryTo.Text = "Canada";
-            cbProvinceStateTo.Text = "Quebec";
-            tbCityTo.Text = "montreal";
-            tbPostalCodeTo.Text = "h3t1e6";
-
-            tbWeight.Text = "0.65";
-            tbLength.Text = "2.33";
-            tbWidth.Text = "3.52";
-            tbHeight.Text = "1.0";
-            /* for test end */
-
         }
 
         private void cbCountryFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -808,7 +823,7 @@ namespace IPD12_SuperExpress
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            this.DialogResult = true;
+            //this.DialogResult = true;
         }
 
 
@@ -831,47 +846,43 @@ namespace IPD12_SuperExpress
             string geocodeRequest;
             //Create REST Services geocode request using Locations API
 
-            geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/CA/QC/Montreal/" + postalCode + @"?key=" + BingMapsKey;
+            geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + postalCode + @"?key=" + Globals.APIKEY_BINGMAPS;
             Response geocodeResponse = MakeRequest(geocodeRequest);
             Address shipToAddress;
             if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
             {
-
-                shipToAddress = new Address();
                 BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
                 shipToAddress = l.Address;
                 UpdateShipToAddress(shipToAddress);
-                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);                
-                AddPushpinToMap(cd, "T", 3);                
+                Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
+                AddPushpinToMap(cd, "T", 3);
             }
             else
             {
                 MessageBox.Show("Please enter a valid PostalCode!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }            
+            }
         }
 
         private void shipMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             clickTimer.Stop();
-            if (currentCount < 10)
-            {
+            if (currentCount < Globals.SHIPMAP_CLICK_ELASPED_TIME)
+            {                
                 System.Windows.Point mousePosition = e.GetPosition(shipMap);
                 Microsoft.Maps.MapControl.WPF.Location pinLocation = shipMap.ViewportPointToLocation(mousePosition);
                 AddPushpinToMap(new Coordinate(pinLocation.Latitude, pinLocation.Longitude), "T", 2);
-                string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/CA/QC/Montreal/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + BingMapsKey;
-                Response geocodeResponse = MakeRequest(geocodeRequest);
+                string geocodeRequest = @"http://dev.virtualearth.net/REST/v1/Locations/" + pinLocation.Latitude + "," + pinLocation.Longitude + @"?key=" + Globals.APIKEY_BINGMAPS;
+                Response geocodeResponse = MakeRequest(geocodeRequest);                
                 Address shipToAddress;
                 if (geocodeResponse.ResourceSets[0].Resources.Count() != 0)
                 {
-                    BingMapsRESTToolkit.Location l = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];
-                    shipToAddress = new Address();
-                    shipToAddress = l.Address;
+                    BingMapsRESTToolkit.Location shipToLocation = (BingMapsRESTToolkit.Location)geocodeResponse.ResourceSets[0].Resources[0];                   
+                    shipToAddress = shipToLocation.Address;
                     UpdateShipToAddress(shipToAddress);
-                    Coordinate cd = new Coordinate(l.Point.GetCoordinate().Latitude, l.Point.GetCoordinate().Longitude);
+                    Coordinate cd = new Coordinate(shipToLocation.Point.GetCoordinate().Latitude, shipToLocation.Point.GetCoordinate().Longitude);
                     AddPushpinToMap(cd, "T", 2);
-                }                 
+                }
             }
-            ResetTimer();
         }
 
         private void UpdateShipToAddress(Address address)
@@ -887,22 +898,25 @@ namespace IPD12_SuperExpress
                 string provinceCode = address.AdminDistrict;
                 string provinceName = provinceList.Find(p => p.ProvinceStateCode.Equals(provinceCode)).ProvinceStateName;
                 cbProvinceStateTo.Text = provinceName;
-            } else
+            }
+			else
             {
                 cbProvinceStateTo.Text = string.Empty;
             }
-
             tbCityTo.Text = address.Locality;
+            tbCityTo.Background = Brushes.LightYellow;
             string postalCode = "";
             if (address.PostalCode != null)
             {
                 postalCode = address.PostalCode.Replace(" ", "");
             }
             tbPostalCodeTo.Text = postalCode;
+            tbPostalCodeTo.Background = Brushes.LightYellow;
         }
 
         private void shipMap_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            ResetTimer();
             clickTimer.Start();
         }
 
@@ -915,5 +929,38 @@ namespace IPD12_SuperExpress
                 Coords.Text = String.Format("Coordinate: {0:f6},{1:f6}", location.Longitude, location.Latitude);
             }
         }
+
+        private void tiShipping_Selected(object sender, RoutedEventArgs e)
+        {
+            string countryNameFrom = (countryList.Find(c => c.Code == Globals.currentUser.CountryCode)).Name;
+            cbCountryFrom.Text = countryNameFrom;
+
+            Province province = provinceList.Find(p => p.ProvinceStateCode == Globals.currentUser.ProvinceCode);
+            if (province != null)
+            {
+                string provinceNameFrom = province.ProvinceStateName;
+                cbProvinceStateFrom.Text = provinceNameFrom;
+            }
+
+            tbCityFrom.Text = Globals.currentUser.CityName;
+            tbPostalCodeFrom.Text = Globals.currentUser.PostalCode;
+        }
+
+        private void tbCityTo_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbCityTo.Background = Brushes.White;
+        }
+
+        private void tbPostalCodeTo_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbPostalCodeTo.Background = Brushes.White;
+        }
+
+        private void shipTab_tbPostalCode_GotFocus(object sender, RoutedEventArgs e)
+        {            
+            shipTab_tbPostalCode.Background = Brushes.White;
+            //shipTab_tbPostalCode.SelectAll();
+        }    
+
     }
 }

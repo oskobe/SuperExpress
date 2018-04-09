@@ -33,6 +33,7 @@ namespace IPD12_SuperExpress
         CostCalculator costCalculator;
         SuperExpressRate rate;
         ShipmentRequest shipmentRequest;
+        int _status;
 
         public CreateShipmentRequest(CostCalculator cal, SuperExpressRate rate)
         {
@@ -71,6 +72,7 @@ namespace IPD12_SuperExpress
         private void InitializeShipmentRequest()
         {
             //List<String> countryNameList = (from country in countryList orderby country.Name select country.Name).ToList();
+
             lblServiceType.Content = rate.ServiceType;
             lblGuaranteedService.Content = rate.Guaranteed;
             lblEstimatedDate.Content = rate.EstimatedDeliveryDateTimeStr;
@@ -90,19 +92,17 @@ namespace IPD12_SuperExpress
             tbCityTo.Text = costCalculator.CityTo;
             tbPostalCodeTo.Text = costCalculator.PostalCodeTo;
 
-
-            /* for test start*/
-            tbAddressFrom1.Text = "4100 Rue Goyer";
-            tbAddressTo1.Text = "3-9992 Av Fontenac";
-            /* for test end */
+            // Set default sender name & address from current user info
+            tbSenderName.Text = Globals.currentUser.Name;
+            tbAddressFrom.Text = Globals.currentUser.Address;
 
         }
 
         private void cbCountryFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string countryCode = ((Country)cbCountryFrom.SelectedItem).Code;
-            List<Province> provinceInSelectedCountryList = Globals.db.GetAllProviceByCountryCode(countryCode);
-            cbProvinceStateFrom.ItemsSource = provinceInSelectedCountryList;
+            provinceList = Globals.db.GetAllProviceByCountryCode(countryCode);
+            cbProvinceStateFrom.ItemsSource = provinceList;
             cbProvinceStateFrom.SelectedIndex = 0;
         }
 
@@ -116,14 +116,32 @@ namespace IPD12_SuperExpress
 
         private void btCreate_Click(object sender, RoutedEventArgs e)
         {
-            if (tbAddressFrom1.Text.Trim().Equals(string.Empty))
+            string senderName = tbSenderName.Text.Trim();
+            if (senderName.Equals(string.Empty))
             {
-                MessageBox.Show("Please enter the origin address1.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter the sender name.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                tbSenderName.Focus();
                 return;
             }
-            if (tbAddressTo1.Text.Trim().Equals(string.Empty))
+            string recipientName = tbRecipientName.Text.Trim();
+            if (recipientName.Equals(string.Empty))
             {
-                MessageBox.Show("Please enter the destination address1.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter the recipient name.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                tbRecipientName.Focus();
+                return;
+            }
+            string addressFrom = tbAddressFrom.Text.Trim();
+            if (addressFrom.Equals(string.Empty))
+            {
+                MessageBox.Show("Please enter the origin address.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                tbAddressFrom.Focus();
+                return;
+            }
+            string addressTo = tbAddressTo.Text.Trim();
+            if (addressTo.Equals(string.Empty))
+            {
+                MessageBox.Show("Please enter the destination address.", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                tbAddressTo.Focus();
                 return;
             }
 
@@ -133,23 +151,26 @@ namespace IPD12_SuperExpress
             shipmentRequest.EstimatedDeliveryDate = rate.EstimatedDeliveryDateTime;
             shipmentRequest.Weight = costCalculator.Weight.Value??0;
             shipmentRequest.WeightUnit = costCalculator.Weight.Unit.ToString();
-            shipmentRequest.Length = costCalculator.Dimensions.Length??0;
-            shipmentRequest.Width = costCalculator.Dimensions.Width ?? 0;
-            shipmentRequest.Height = costCalculator.Dimensions.Height ?? 0;
-            shipmentRequest.DimensionsUnit = costCalculator.Dimensions.Unit.ToString();
+            if (costCalculator.Dimensions != null)
+            {
+                shipmentRequest.Length = costCalculator.Dimensions.Length ?? 0;
+                shipmentRequest.Width = costCalculator.Dimensions.Width ?? 0;
+                shipmentRequest.Height = costCalculator.Dimensions.Height ?? 0;
+                shipmentRequest.DimensionsUnit = costCalculator.Dimensions.Unit.ToString();
+            }
             shipmentRequest.Amount = rate.Amount;
+            shipmentRequest.SenderName = senderName;
             shipmentRequest.Currency = Globals.CURRENCY_CAD.Trim();
             shipmentRequest.CountryFrom = cbCountryFrom.Text;
             shipmentRequest.ProvinceFrom = cbProvinceStateFrom.Text;
             shipmentRequest.CityFrom = tbCityFrom.Text;
-            shipmentRequest.Address1From = tbAddressFrom1.Text;
-            shipmentRequest.Address2From = tbAddressFrom2.Text;
+            shipmentRequest.AddressFrom = addressFrom;
             shipmentRequest.PostalCodeFrom = tbPostalCodeFrom.Text;
+            shipmentRequest.RecipientName = recipientName;
             shipmentRequest.CountryTo = cbCountryTo.Text;
             shipmentRequest.ProvinceTo = cbProvinceStateTo.Text;
             shipmentRequest.CityTo = tbCityTo.Text;
-            shipmentRequest.Address1To = tbAddressTo1.Text;
-            shipmentRequest.Address2To = tbAddressTo2.Text;
+            shipmentRequest.AddressTo = addressTo;
             shipmentRequest.PostalCodeTo = tbPostalCodeTo.Text;
 
             try
@@ -160,6 +181,10 @@ namespace IPD12_SuperExpress
                 {
                     PrintPdfInvoice(newGeneratedId);
                 }
+
+                _status = 9;   // Execute successfully, return to first tracking window
+                this.Close();
+                //this.DialogResult = true;
 
             } catch (MySqlException ex)
             {
@@ -224,22 +249,22 @@ namespace IPD12_SuperExpress
                 cell.Colspan = 3;
                 table.AddCell(cell);
                 // FIXED ME
-                cell = new PdfPCell(new Phrase("David Lee", normal));
+                cell = new PdfPCell(new Phrase(shipmentRequest.SenderName, normal));
                 cell.Border = 0;
                 cell.Colspan = 3;
                 table.AddCell(cell);
                 // FIXED ME
-                cell = new PdfPCell(new Phrase("Brain Jobs", normal));
+                cell = new PdfPCell(new Phrase(shipmentRequest.RecipientName, normal));
                 cell.Border = 0;
                 cell.Colspan = 3;
                 table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase(shipmentRequest.Address1From + " " + shipmentRequest.Address2From, normal));
+                cell = new PdfPCell(new Phrase(shipmentRequest.AddressFrom, normal));
                 cell.Border = 0;
                 cell.Colspan = 3;
                 table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase(shipmentRequest.Address1To + " " + shipmentRequest.Address2To, normal));
+                cell = new PdfPCell(new Phrase(shipmentRequest.AddressTo, normal));
                 cell.Border = 0;
                 cell.Colspan = 3;
                 table.AddCell(cell);
@@ -369,11 +394,34 @@ namespace IPD12_SuperExpress
                 document.Close();
                 myStream.Close();
 
-
                 //gridBill.item
                 Grid myGrid = new Grid();
 
             }
         }
+
+        private void btCancel_Click(object sender, RoutedEventArgs e)
+        {
+            _status = 0;  // Close current window, return to previous window
+            this.Close();
+            //this.DialogResult = false;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _status = (_status != 9) ? 0 : _status; 
+        }
+
+      
+        public int Status
+        {
+            
+            get
+            {
+                return _status;
+            }
+           
+        }
+     
     }
 }

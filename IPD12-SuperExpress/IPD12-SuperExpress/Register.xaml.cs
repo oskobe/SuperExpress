@@ -175,11 +175,13 @@ namespace IPD12_SuperExpress
 
             try
             {
-                Globals.currentUser = new User(0, userId, password1, name, phone, email, countryCode, provinceCode, cityName, address, postalCode);
-                int newId = Globals.db.AddUser(Globals.currentUser);
 
-                Globals.currentUser.Id = newId;
-                Globals.currentUser.Password = string.Empty;
+                //Globals.currentUser = 
+                User user = new User(0, userId, password1, name, phone, email, countryCode, provinceCode, cityName, address, postalCode);
+                int newId = Globals.db.AddUser(user);
+
+                //Globals.currentUser.Id = newId;
+                //Globals.currentUser.Password = string.Empty;
 
                 MessageBox.Show("Add user Successfully, \nplease login by using your email.", "Succusss", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();

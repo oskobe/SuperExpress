@@ -35,13 +35,13 @@ namespace IPD12_SuperExpress
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            MainDialog dlg = new MainDialog();
-            dlg.ShowDialog();
-            /*
+            //MainDialog dlg = new MainDialog();
+            //dlg.ShowDialog();
+            
             string email = tbEmail.Text;
             if (string.IsNullOrWhiteSpace(email))
             {
-                MessageBox.Show("Please enter an email");
+                MessageBox.Show("Please enter an email", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 tbEmail.Text = "";
                 tbEmail.Focus();
                 return;
@@ -49,39 +49,51 @@ namespace IPD12_SuperExpress
             MatchCollection mc = Regex.Matches(email, Globals.emailExpression);
             if (mc.Count == 0)
             {
-                MessageBox.Show("Please enter an valid email(example@gmail.com)");
+                MessageBox.Show("Please enter a valid email(example@gmail.com)", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 tbEmail.Text = "";
                 tbEmail.Focus();
                 return;
             }
-            string passwordInDB = Globals.db.SelectPasswordByEmail(email);
-            string passwordInput = pbPassword.Password;
-            if (passwordInDB != string.Empty)
+
+            Globals.currentUser = Globals.db.GetUserByEmail(email);
+             
+            if (Globals.currentUser != null)
             {
-                if (passwordInput.CompareTo(passwordInDB) == 0)
+                string passwordInDB = Globals.currentUser.Password;
+                string passwordInput = pbPassword.Password;
+                if (passwordInDB != string.Empty)
                 {
-                    this.Hide();
-                    MainDialog dlg = new MainDialog();
-                    dlg.ShowDialog();
-                    if ((bool)dlg.DialogResult)
+                    if (passwordInput.CompareTo(passwordInDB) == 0)
                     {
-                        this.Show();
+                        this.Hide();
+                        MainDialog dlg = new MainDialog();
+                        dlg.ShowDialog();
+
+                        this.Close();
+                        /*
+                        if ((bool)dlg.DialogResult)
+                        {
+                            this.Show();
+                        }
+                        */
                     }
-                }
-                else
-                {
-                    pbPassword.Password = "";
-                    pbPassword.Focus();
-                    MessageBox.Show("Your password is not correct!");
+                    else
+                    {
+                        pbPassword.Password = "";
+                        pbPassword.Focus();
+                        MessageBox.Show("Your password is not correct!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
             }
             else
             {
-                tbEmail.Text = "";
+                //tbEmail.Text = "";
                 tbEmail.Focus();
-                MessageBox.Show("This email account is not exist!");
-            }   
-            */
+                MessageBox.Show("This email account does not exist!", "Input error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            
+            
         }
     }
 }

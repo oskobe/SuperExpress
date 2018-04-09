@@ -91,16 +91,41 @@ namespace IPD12_SuperExpress
             SuperExpressRate rate = (SuperExpressRate)lvShippingCostCalculatorResult.SelectedItem;
             if (rate != null)
             {
+                this.Hide();
                 CreateShipmentRequest requestDialog = new CreateShipmentRequest(costCalculator, rate);
-                if (requestDialog.ShowDialog() == true)
+                requestDialog.ShowDialog();
+                
+                if (requestDialog.Status == 9)
                 {
-
+                    this.Close();
+                } else
+                {
+                    this.ShowDialog();
                 }
-            } else
+
+
+                /*
+                if (requestDialog.DialogResult == true)
+                {
+                    this.DialogResult = true;
+                }
+                else
+                {
+                    this.ShowDialog();
+                }
+                */
+            }
+            else
             {
                 MessageBox.Show("Please choose one shipping option", "Selection error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             
+        }
+
+        private void btCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            //this.DialogResult = false;
         }
     }
 }
