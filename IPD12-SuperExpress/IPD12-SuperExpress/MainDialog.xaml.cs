@@ -529,7 +529,7 @@ namespace IPD12_SuperExpress
             System.Windows.Controls.Label customLabel = new System.Windows.Controls.Label();
             CurrentWeatherResponse result = await OpenWeatherMapTestClient.CurrentWeather.GetByCoordinates(new Coordinates { Latitude = cd.Location.Latitude, Longitude = cd.Location.Longitude });
             Color c;
-            customLabel.Content = string.Format("Country:{0},City:{1},{2}°C", result.City.Country, td.City, Math.Round(result.Temperature.Value - 273.15));
+            customLabel.Content = string.Format("Country:{0},City:{1},{2}°C", result.City.Country, td.City,-25); //Math.Round(result.Temperature.Value - 273.15));
             c = Colors.Red;
 
             if (result.Temperature.Value <= Globals.VERY_COLD || result.Wind.Speed.Value >= Globals.SPEECH_HURRICANE)

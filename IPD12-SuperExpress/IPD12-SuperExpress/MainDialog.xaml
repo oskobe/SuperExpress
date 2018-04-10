@@ -11,10 +11,14 @@
         <TabControl Name="tcTrackingOrShipping" HorizontalAlignment="Left" Height="708" Margin="10,70,0,0" VerticalAlignment="Top" Width="1376">
             <TabItem Name="tiTracking" Header="Tracking">
                 <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32*"/>
+                        <ColumnDefinition Width="425*"/>
+                    </Grid.ColumnDefinitions>
                     <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="15,41,0,0" VerticalAlignment="Top" Width="64" Height="21">
                         <ComboBoxItem Content="UPS" IsSelected="True"/>
                     </ComboBox>
-                    <ListView x:Name="lvTrackDetails" HorizontalAlignment="Left" Height="555" Margin="15,110,0,0" VerticalAlignment="Top" Width="640" SelectionMode="Single" >
+                    <ListView x:Name="lvTrackDetails" HorizontalAlignment="Left" Height="555" Margin="15,110,0,0" VerticalAlignment="Top" Width="640" SelectionMode="Single" Grid.ColumnSpan="2" >
 
                         <ListView.View>
                             <GridView>
@@ -37,10 +41,10 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <TextBox x:Name="tbTrackNumber" HorizontalAlignment="Left" Height="22" Margin="219,41,0,0" TextWrapping="Wrap" Text="1Z8W11E70400554344" VerticalAlignment="Top" Width="193" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible"/>
-                    <Button x:Name="btTrack" Click="btTrack_Click" Content="Track" HorizontalAlignment="Left" Margin="451,40,0,0" VerticalAlignment="Top" Width="123" Height="22"/>
+                    <TextBox x:Name="tbTrackNumber" HorizontalAlignment="Left" Height="22" Margin="123.5,41,0,0" TextWrapping="Wrap" Text="1Z8W11E70400554344" VerticalAlignment="Top" Width="193" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible" Grid.Column="1"/>
+                    <Button x:Name="btTrack" Click="btTrack_Click" Content="Track" HorizontalAlignment="Left" Margin="355.5,40,0,0" VerticalAlignment="Top" Width="123" Height="22" Grid.Column="1"/>
 
-                    <WPF:Map x:Name="myMap" CredentialsProvider="AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm"  Margin="701,110,0,15" MouseMove="myMap_MouseMove">
+                    <WPF:Map x:Name="myMap" CredentialsProvider="AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm"  Margin="605.5,110,0,15" MouseMove="myMap_MouseMove" Grid.Column="1">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="11*" />
@@ -62,26 +66,26 @@
                         </Border>
 
                     </WPF:Map>
-                    <Border Background="Black" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0.8" BorderBrush="White" BorderThickness="2" CornerRadius="5">
+                    <Border Background="Black" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0.8" BorderBrush="White" BorderThickness="2" CornerRadius="5" Grid.Column="1">
                         <StackPanel x:Name="eventsPanel" IsHitTestVisible="False" Canvas.Left="0" Canvas.Top="0"/>
                     </Border>
-                    <GroupBox Header="Weather:" HorizontalAlignment="Left" Height="105" Margin="701,0,0,0" VerticalAlignment="Top" Width="659"/>
-                    <Label Content="Country:" HorizontalAlignment="Left" Margin="709,28,0,0" VerticalAlignment="Top" />
-                    <Label Content="Tempture:" HorizontalAlignment="Left" Margin="709,71,0,0" VerticalAlignment="Top" />
-                    <Label Content="Windy:" HorizontalAlignment="Left" Margin="893,72,0,0" VerticalAlignment="Top" />
-                    <Label Content="Description:" HorizontalAlignment="Left" Margin="1032,72,0,0" VerticalAlignment="Top" />
-                    <Label HorizontalAlignment="Left" Margin="1232,34,0,0" VerticalAlignment="Top">
+                    <GroupBox Header="Weather:" HorizontalAlignment="Left" Height="105" Margin="605.5,0,0,0" VerticalAlignment="Top" Width="659" Grid.Column="1"/>
+                    <Label Content="Country:" HorizontalAlignment="Left" Margin="613.5,28,0,0" VerticalAlignment="Top" Grid.Column="1" />
+                    <Label Content="Tempture:" HorizontalAlignment="Left" Margin="613.5,71,0,0" VerticalAlignment="Top" Grid.Column="1" />
+                    <Label Content="Windy:" HorizontalAlignment="Left" Margin="797.5,72,0,0" VerticalAlignment="Top" Grid.Column="1" />
+                    <Label Content="Description:" HorizontalAlignment="Left" Margin="936.5,72,0,0" VerticalAlignment="Top" Grid.Column="1" />
+                    <Label HorizontalAlignment="Left" Margin="1136.5,34,0,0" VerticalAlignment="Top" Grid.Column="1">
                     </Label>
-                    <Label x:Name="mainDlg_lbCountry" Content="" HorizontalAlignment="Left" Margin="817,29,0,0" VerticalAlignment="Top" Width="111" Background="White" Height="25" />
-                    <Label x:Name="mainDlg_lbTemp" Content="" HorizontalAlignment="Left" Margin="817,73,0,0" VerticalAlignment="Top" Width="65" Background="White" Height="25" />
-                    <Label x:Name="mainDlg_lbWindy" Content="" HorizontalAlignment="Left" Margin="964,74,0,0" VerticalAlignment="Top" Width="60" Background="White" Height="24" />
-                    <Label x:Name="mainDlg_lbDescription" Content="" HorizontalAlignment="Left" Margin="1138,73,0,0" VerticalAlignment="Top" Width="129" Background="White" Height="25" />
-                    <Label Content="City:" HorizontalAlignment="Left" Margin="933,30,0,0" VerticalAlignment="Top" />
-                    <Label x:Name="mainDlg_lbCity" Content="" HorizontalAlignment="Left" Margin="996,30,0,0" VerticalAlignment="Top" Width="99" Background="White" Height="26" />
-                    <Label Content="Date:" HorizontalAlignment="Left" Margin="1100,30,0,0" VerticalAlignment="Top" />
-                    <Label x:Name="mainDlg_lbDate" Content="" HorizontalAlignment="Left" Margin="1160,30,0,0" VerticalAlignment="Top" Width="107" Background="White" Height="26" />
-                    <Image x:Name="maindlg_imgDescription" HorizontalAlignment="Left" Height="78" Margin="1276,21,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-5.222,3.639"/>
-                    <Label Content="Track Number：" HorizontalAlignment="Left" Margin="97,37,0,0" VerticalAlignment="Top" Width="117" Height="27"/>
+                    <Label x:Name="mainDlg_lbCountry" Content="" HorizontalAlignment="Left" Margin="721.5,29,0,0" VerticalAlignment="Top" Width="111" Background="White" Height="25" Grid.Column="1" />
+                    <Label x:Name="mainDlg_lbTemp" Content="" HorizontalAlignment="Left" Margin="721.5,73,0,0" VerticalAlignment="Top" Width="65" Background="White" Height="25" Grid.Column="1" />
+                    <Label x:Name="mainDlg_lbWindy" Content="" HorizontalAlignment="Left" Margin="868.5,74,0,0" VerticalAlignment="Top" Width="60" Background="White" Height="24" Grid.Column="1" />
+                    <Label x:Name="mainDlg_lbDescription" Content="" HorizontalAlignment="Left" Margin="1042.5,73,0,0" VerticalAlignment="Top" Width="129" Background="White" Height="25" Grid.Column="1" />
+                    <Label Content="City:" HorizontalAlignment="Left" Margin="837.5,30,0,0" VerticalAlignment="Top" Grid.Column="1" />
+                    <Label x:Name="mainDlg_lbCity" Content="" HorizontalAlignment="Left" Margin="900.5,30,0,0" VerticalAlignment="Top" Width="99" Background="White" Height="26" Grid.Column="1" />
+                    <Label Content="Date:" HorizontalAlignment="Left" Margin="1004.5,30,0,0" VerticalAlignment="Top" Grid.Column="1" />
+                    <Label x:Name="mainDlg_lbDate" Content="" HorizontalAlignment="Left" Margin="1064.5,30,0,0" VerticalAlignment="Top" Width="107" Background="White" Height="26" Grid.Column="1" />
+                    <Image x:Name="maindlg_imgDescription" HorizontalAlignment="Left" Height="78" Margin="1180.5,21,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-5.222,3.639" Grid.Column="1"/>
+                    <Label Content="Track Number：" HorizontalAlignment="Left" Margin="1.5,37,0,0" VerticalAlignment="Top" Width="117" Height="27" Grid.Column="1"/>
                 </Grid>
             </TabItem>
             <TabItem Name="tiShipping" Header="Shipping" Selector.Selected="tiShipping_Selected">
@@ -139,7 +143,7 @@
                     <Label Content="Ship to PostalCode:" Grid.Column="2" HorizontalAlignment="Left" Margin="376,28,0,0" VerticalAlignment="Top" Height="27" Width="123"/>
                     <TextBox x:Name="shipTab_tbPostalCode" Grid.Column="2" HorizontalAlignment="Left" Height="22" Margin="510,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134" Background="LightYellow" Text="H3E1G4" GotFocus="shipTab_tbPostalCode_GotFocus" />
                     <Button x:Name="shipTab_btnSearch" Content="Search&#xD;&#xA;" HorizontalAlignment="Left" Margin="649,31,0,0" VerticalAlignment="Top" Width="56" Height="22" Click="shipTab_btnSearch_Click" Grid.Column="2"/>
-                    <Label Content="Note:  Fill out the recepient's address by&#xA;* Click the map&#xA;* Enter a valid postal code, and click &quot;Search&quot; button&#xA;" HorizontalAlignment="Left" Margin="1,6,0,0" VerticalAlignment="Top" Height="58" Width="305" FontSize="12" Background="LightCyan" Foreground="Red" Grid.ColumnSpan="3"/>
+                    <Label Content="Note:  Fill out the recepient's address by&#xA;* Click the map&#xA;* Enter a valid postal code, and click &quot;Search&quot; button&#xA;" HorizontalAlignment="Left" Margin="1,6,0,0" VerticalAlignment="Top" Height="58" Width="315" FontSize="12" Background="LightCyan" Foreground="Red" Grid.ColumnSpan="3"/>
                 </Grid>
             </TabItem>
         </TabControl>
