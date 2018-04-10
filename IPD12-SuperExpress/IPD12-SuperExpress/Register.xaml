@@ -7,7 +7,7 @@
         xmlns:my="clr-namespace:MyUserControl;assembly=MyUserControl"
         mc:Ignorable="d"
         Title="Register" Height="564.677" Width="767.129" WindowStartupLocation="CenterScreen">
-    <Grid Margin="0,0,2,-1">
+    <Grid Margin="0,0,2,-1" Background="#FFE5E5E5">
         <Label Content="User ID:" HorizontalAlignment="Left" Margin="128,28,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="regDlg_tbUserId" HorizontalAlignment="Left" Height="23" Margin="216,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
         <Label Content="Password:" HorizontalAlignment="Left" Margin="117,65,0,0" VerticalAlignment="Top"/>
@@ -34,7 +34,7 @@
         <TextBox x:Name="regDlg_tbAddress" HorizontalAlignment="Left" Height="23" Margin="216,373,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="457"/>
         <Label Content="PostCode:" HorizontalAlignment="Left" Margin="116,408,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="regDlg_tbPostalCode" HorizontalAlignment="Left" Height="23" Margin="216,410,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
-        <Button Name="btRegister" Click="btRegister_Click" Content="Register" HorizontalAlignment="Left" Margin="391,475,0,0" VerticalAlignment="Top" Width="114"/>
+        <Button Name="btRegister" IsDefault="True" Click="btRegister_Click" Content="Register" HorizontalAlignment="Left" Margin="391,475,0,0" VerticalAlignment="Top" Width="114"/>
         <Button Name="btClear" Click="btClear_Click" Content="Clear" HorizontalAlignment="Left" Margin="216,475,0,0" VerticalAlignment="Top" Width="114"/>
 
 

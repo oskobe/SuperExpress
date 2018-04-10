@@ -645,11 +645,14 @@ namespace IPD12_SuperExpress
                 }
 
                 lvTrackDetails.ItemsSource = trackDetailList;
+                lblStatus.Content = string.Empty;
 
             }
             catch (Exception ex)
             {
-                lblStatus.Content += "Exception when calling TrackingApi.TrackingTrack: " + ex.Message;
+                string errorMessage = Globals.GetErrorMessage(ex.Message);
+                lblStatus.Content = "Exception when calling TrackingApi.TrackingTrack: " + errorMessage;
+                MessageBox.Show("Shipment tracking error: \n" + errorMessage, "Tracking error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             CleanPushpinAndPolylineOfMap();
             ShowShipmentRouteOnMap();
@@ -766,11 +769,13 @@ namespace IPD12_SuperExpress
                     this.ShowDialog();
                 }
                 */
+                lblStatus.Content = string.Empty;
             }
             catch (Exception ex)
             {
-                lblStatus.Content = "Exception when calling RatesApi.RatesEstimate: " + ex.Message;
-                MessageBox.Show("Shipping fee estimation error: \n" + ex.Message, "Calculator error", MessageBoxButton.OK, MessageBoxImage.Error);
+                string errorMessage = Globals.GetErrorMessage(ex.Message);
+                lblStatus.Content = "Exception when calling RatesApi.RatesEstimate: " + errorMessage;
+                MessageBox.Show("Shipping fee estimation error: \n" + errorMessage, "Calculator error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
