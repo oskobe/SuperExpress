@@ -1,0 +1,38 @@
+﻿<Window x:Class="IPD12_SuperExpress.Tracking"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"        
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:local="clr-namespace:IPD12_SuperExpress"
+        
+        mc:Ignorable="d"
+        Title="Tracking" Height="862" Width="1120">
+    <Grid Margin="0,0,2,-21">
+        <Label x:Name="label" Content="Tracking" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="50" Width="125" FontSize="24"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="15,65,0,0" VerticalAlignment="Top" Width="105" Height="21">
+            <ComboBoxItem Content="UPS" IsSelected="True"/>
+        </ComboBox>
+        <ListView x:Name="lvTrackDetails" HorizontalAlignment="Left" Height="555" Margin="15,110,0,0" VerticalAlignment="Top" Width="640">
+            
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Location" Width="160" DisplayMemberBinding="{Binding Location}" />
+                    <GridViewColumn Header="Date" Width="80" DisplayMemberBinding="{Binding Date}" />
+                    <GridViewColumn Header="Local Time" Width="80" DisplayMemberBinding="{Binding LocalTime}" />
+                    <GridViewColumn Header="Activity" Width="290"  DisplayMemberBinding="{Binding Activity}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBox Name="tbTrackNumber" HorizontalAlignment="Left" Height="21" Margin="149,65,0,0" TextWrapping="Wrap" Text="1Z89E5Y0DK99172830" VerticalAlignment="Top" Width="155"/>
+        <Button Name="btTrack" Click="btTrack_Click" Content="Track" HorizontalAlignment="Left" Margin="334,66,0,0" VerticalAlignment="Top" Width="75"/>
+        <StatusBar HorizontalAlignment="Left" Height="34" Margin="0,798,0,0" VerticalAlignment="Top" Width="1100">
+            <Label x:Name="lblStatus" Content=":::" Width="911" Height="157"/>
+
+        </StatusBar>
+        <Button x:Name="btnTracking" Content="Tracking" HorizontalAlignment="Left" Margin="432,69,0,0" VerticalAlignment="Top" Width="105" Height="35" FontSize="18" Click="btnTracking_Click"/>
+
+        <m:Map x:Name="myMap" CredentialsProvider="AuqsNVXfKfPx5B6juGoyi9rYuEZkIkYns-8GRbMbrx3BnhxpT5KsRNrRUgbyOpsm" Center="47.740,-122.125" ZoomLevel="11" Margin="655,130,10,187"/>
+
+    </Grid>
+</Window>

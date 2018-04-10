@@ -1,0 +1,210 @@
+DAILY SCRUM - EVERY DAY AT 9AM
+==============================
+
+
+
+Each member writes down answers to 3 questions:
+
+<< current date goes here >>
+1. What I have done / not done since last Scrum?
+2. What I plan to do from this scrum to next? (next 24 hours)
+3. Where do I need assistance? What do I need to figure out?
+
+
+2018/03/27 Jing Wang
+1. Done since last scrum:
+- Created project Proposal (first page)
+- Did rearch on ShipEngine API
+2. Plan until next Scrum
+- Continue doing research on ShipEngine API
+- Code on package tracking function
+3. Need assistance / figure things out
+- Find out how to parse JSON format document
+
+2018/03/27 Jie Zhu
+1. Done since last scrum:
+ - Created windows,Database structure
+ - Tested APIs to make sure whether it is practical
+ - Built github and trello
+2. Plan until next Scrum
+ - Test map control component
+ - Develop the core part first
+3. Need assistance / figure things out
+ - How to use bing map component
+ - How to display city label on map component when just know the city name.
+
+2018/03/28 Jie Zhu
+1. Done since last scrum:
+ - Got know how to use bing maps,bing REST and bing spatial
+ - Added some labels what I want on the bing maps.
+ - Converted city name, postalCode to coordinate and displayed on bing maps
+2. Plan until next Scrum
+ - Make core part of bing maps
+ - Adjust structure of Main dialog
+3. Need assistance / figure things out
+ - Parse xml data
+
+
+2018/03/28 Jing Wang
+1. Done since last scrum:
+- Coding on track package window
+- Coding on estimate price & time window
+2. Plan until next Scrum
+- Finish coding of above two windows (basic function)
+3. Need assistance / figure things out
+- Find out how to set local currency for estimating shipping price
+
+2018/03/29 Jie Zhu
+1. Done since last scrum:
+ - Got know how to parse xml and json data from bing maps and REST
+ - Made a part of core functions to make a friendly application 
+2. Plan until next Scrum
+ - Finish the basic function about maps
+ - Adjust structure of Main dialog
+3. Need assistance / figure things out
+ - Nothing special.
+
+2018/03/29 Jing Wang
+1. Done since last scrum:
+- Re-design shipping cost calculator screen
+- Fix bugs for package tracking 
+- import data to country province/state city table
+2. Plan until next Scrum
+- Finish coding of shipping fee & time estimation
+3. Need assistance / figure things out
+- Nothing special.
+
+2018/03/30 Jie Zhu
+1. Done since last scrum:
+ - Finished the basic function about maps,and enhanced some method
+2. Plan until next Scrum
+ - Finish the registion dialog 
+3. Need assistance / figure things out
+ - Need jing to move some function from ship dialog to register.
+
+2018/04/01 Jie Zhu
+1. Done since last scrum:
+ - Finished the registion dialog.
+2. Plan until next Scrum
+ - To find a good weather API
+ - Finish all function of login dialog. 
+3. Need assistance / figure things out
+ - Nothing
+
+2018/04/02 Jie Zhu
+1. Done since last scrum:
+ - Used the OpenWeatherMap API to display the weather information.
+ - Finish all function of login dialog.
+2. Plan until next Scrum
+ - Develop alert function depend on terrible weather. 
+3. Need assistance / figure things out
+ - Nothing
+
+2018/04/02 Jing Wang
+1. Done since last scrum:
+- Finished shipping cost calculator screen
+- Design create shipment request screen 
+- Did research on radio button as list view column(Easter weekend)
+2. Plan until next Scrum
+- Finish coding of create shipment request 
+3. Need assistance / figure things out
+- Nothing special.
+
+2018/04/03 Jie Zhu
+1. Done since last scrum:
+ - Developed alert function depend on terrible weather. 
+2. Plan until next Scrum
+ - Add event handler to every pushpin element. 
+3. Need assistance / figure things out
+ - Nothing
+
+
+2018/04/03 Jing Wang
+1. Done since last scrum:
+- Finished creating shipment request
+2. Plan until next Scrum
+- Do resarch on PDF printing
+- Finalize the whole project
+3. Need assistance / figure things out
+- Nothing special.
+
+2018/04/04 Jie Zhu
+1. Done since last scrum:
+ - Added event handler to every pushpin element. 
+ - Displayed weather information in a information box with icon.
+2. Plan until next Scrum
+ - Add my own control on bing map. 
+3. Need assistance / figure things out
+ - Nothing
+
+2018/04/04 Jing Wang
+1. Done since last scrum:
+- Finsh PDF invoice printing research (using ITextSharp)
+2. Plan until next Scrum
+- Finalize the whole project
+3. Need assistance / figure things out
+- Nothing special.
+
+
+2018/04/05 Jing Wang
+1. Done since last scrum:
+- Finsh PDF invoice printing implementation
+2. Plan until next Scrum
+- Finalize the whole project, and prepare Pesentation PPT
+3. Need assistance / figure things out
+- Nothing special.
+
+2018/04/05 Jie Zhu
+1. Done since last scrum:
+ - Added my own control with our logo icon on bing map.It is called Super View.
+2. Plan until next Scrum
+ - Improve the code. 
+3. Need assistance / figure things out
+ - Nothing
+
+
+2018/04/06 Jie Zhu
+1. Done since last scrum:
+ - Added a function based on bing REST API and maps to automatically fill receiver's address.
+ - Improved some part of code.
+2. Plan until next Scrum
+ - Improve code as much as possible. 
+3. Need assistance / figure things out
+ - Nothing
+
+
+2018/04/06 Jing Wang
+1. Done since last scrum:
+- Did research on multiple windows switch
+- Re-design register window
+2. Plan until next Scrum
+- Finish coding for register window
+- Finish windows switch
+- Fix bugs
+- Finalize the whole project, and prepare Pesentation PPT
+3. Need assistance / figure things out
+- Nothing special.
+
+
+2018/04/09 Jie Zhu
+1. Done since last scrum:
+ - Tested most of function
+ - Optimized some bug.
+2. Plan until next Scrum
+ - Prepare the presentation. 
+3. Need assistance / figure things out
+ - Nothing
+
+2018/04/09 Jing Wang
+1. Done since last scrum:
+- Finshed multiple windows switch
+- Register window coding
+- Research on MD5 encription
+- Research on Placeholder on textbox
+2. Plan until next Scrum
+- Implement MD5 encription
+- Implement placeholder for login window
+- Finalize the whole project, and prepare Pesentation PPT
+3. Need assistance / figure things out
+- Nothing special.
+
