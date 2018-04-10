@@ -34,7 +34,7 @@
         <TextBox x:Name="regDlg_tbAddress" HorizontalAlignment="Left" Height="23" Margin="216,373,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="457"/>
         <Label Content="PostCode:" HorizontalAlignment="Left" Margin="116,408,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="regDlg_tbPostalCode" HorizontalAlignment="Left" Height="23" Margin="216,410,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225"/>
-        <Button Name="btRegister" Click="btRegister_Click" Content="Register" HorizontalAlignment="Left" Margin="391,475,0,0" VerticalAlignment="Top" Width="114"/>
+        <Button Name="btRegister" IsDefault="True" Click="btRegister_Click" Content="Register" HorizontalAlignment="Left" Margin="391,475,0,0" VerticalAlignment="Top" Width="114"/>
         <Button Name="btClear" Click="btClear_Click" Content="Clear" HorizontalAlignment="Left" Margin="216,475,0,0" VerticalAlignment="Top" Width="114"/>
 
 

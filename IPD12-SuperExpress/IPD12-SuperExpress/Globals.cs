@@ -64,5 +64,22 @@ namespace IPD12_SuperExpress
                 return false;
             }
         }
+
+        public static string GetErrorMessage(string input)
+        {
+            string newStr1, newStr2;
+            int idx1 = input.IndexOf("message");
+            if (idx1 >= 0){
+                newStr1 = input.Substring(idx1 + 11);
+                int idx2 = newStr1.IndexOf("\"");
+                newStr2 = newStr1.Substring(0, idx2);
+            }
+            else
+            {
+                newStr2 = input;
+            }
+           
+            return newStr2;
+        }
     }
 }

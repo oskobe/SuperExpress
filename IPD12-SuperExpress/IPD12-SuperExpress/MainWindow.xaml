@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:IPD12_SuperExpress"
         xmlns:my="clr-namespace:MyUserControl;assembly=MyUserControl"
         Title="Login" Height="302" Width="351" WindowStartupLocation="CenterScreen">
-    <Grid Margin="0,0,2,-1">
+    <Grid Margin="0,0,2,-1" Background="#FFE5E5E5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="165*"/>
@@ -18,7 +18,7 @@
 
         <my:WaterMarkTextBox Name="tbEmail" Watermark="Please Enter your Email" Grid.ColumnSpan="2" Grid.Column="1" Margin="61,83,2,150.667" />
         <PasswordBox x:Name="pbPassword" Grid.Column="1" HorizontalAlignment="Left" Margin="61,143,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="225" Height="21" PasswordChar="*"/>
-        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Left" Margin="12,205,0,0" VerticalAlignment="Top" Width="75" Grid.Column="2" Click="btnLogin_Click"/>
+        <Button x:Name="btnLogin" IsDefault="True" Content="Login" HorizontalAlignment="Left" Margin="12,205,0,0" VerticalAlignment="Top" Width="75" Grid.Column="2" Click="btnLogin_Click"/>
         <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Margin="85,205,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Click="btnRegister_Click"/>
     </Grid>
 </Window>
